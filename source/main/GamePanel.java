@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	Thread gameThread;
 	TileManager tileManager = new TileManager(this);
-	MouseListener mouseListener = new MouseListener(this, tileManager);
+	Mouse mouseListener = new Mouse(this, tileManager);
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(width, height));
@@ -43,9 +43,9 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				if (!SwingUtilities.isRightMouseButton(event)) {
-					tileManager.placeBuildable(MouseListener.mouseCoordinate, 0);
+					tileManager.placeBuildable(Mouse.mouseCoordinate, 0);
 				} else {
-					tileManager.removeBuildable(MouseListener.mouseCoordinate);
+					tileManager.removeBuildable(Mouse.mouseCoordinate);
 				}
 			}
 		});

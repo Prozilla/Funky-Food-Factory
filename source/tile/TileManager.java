@@ -14,7 +14,7 @@ import java.awt.image.AffineTransformOp;
 import source.buildable.Buildable;
 import source.buildable.Conveyor;
 import source.main.GamePanel;
-import source.main.MouseListener;
+import source.main.Mouse;
 
 public class TileManager {
 
@@ -164,8 +164,9 @@ public class TileManager {
 
 				drawTile(graphics2D, tiles.get("floor").sprites[0], x, y);
 
-				if (column == MouseListener.mouseCoordinate.x && row == MouseListener.mouseCoordinate.y) {
-					graphics2D.setColor(new Color(1f, 1f, 1f, 0.5f));
+				// Hover
+				if (column == Mouse.mouseCoordinate.x && row == Mouse.mouseCoordinate.y) {
+					graphics2D.setColor(new Color(1f, 1f, 1f, 0.25f));
 					graphics2D.fillRect(x, y, GamePanel.tileSize, GamePanel.tileSize);
 				}
 
