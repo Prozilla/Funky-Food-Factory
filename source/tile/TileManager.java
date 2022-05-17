@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -12,25 +13,33 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 
 import source.buildable.Buildable;
-import source.buildable.Conveyor;
+import source.buildable.building.Exporter;
+import source.buildable.building.Importer;
+import source.buildable.connectable.Conveyor;
+import source.item.Item;
 import source.main.GamePanel;
 import source.main.Mouse;
 
 public class TileManager {
 
-	final String tilesPath = "../../textures/";
+	final String tilesPath = "../../textures/tiles/";
+	final String itemsPath = "../../textures/items/";
 
 	GamePanel gamePanel;
 
-	Map<String, Tile> tiles;
+	public Map<String, Tile> tiles;
+	Map<String, BufferedImage> itemTextures;
+
 	public Map<Point, Buildable> coordinateToBuildable = new HashMap<Point, Buildable>();
+	ArrayList<Item> items = new ArrayList<Item>();
 
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 
 		addTiles();
-		placeBuildable(new Point(5, 4), 0);
-		placeBuildable(new Point(10, 4), 0);
+		addItems();
+		placeBuildable(new Point(5, 3), 1, 0);
+		placeBuildable(new Point(10, 3), 2, 180);
 	}
 
 	public void addTiles() {
@@ -38,6 +47,8 @@ public class TileManager {
 
 		addTile(new String[]{"conveyor", "curved_conveyor"});
 		addTile(new String[]{"floor"});
+		addTile(new String[]{"importer"});
+		addTile(new String[]{"exporter"});
 	}
 
 	public void addTile(String[] names) {
@@ -54,12 +65,41 @@ public class TileManager {
 		}
 	}
 
+	public void addItems() {
+		itemTextures = new HashMap<String, BufferedImage>();
+
+		addItem("iron_ore");
+	}
+
+	public void addItem(String name) {
+		try {
+			itemTextures.put(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", itemsPath, name))));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	public void spawnItem(String name, Point coordinate) {
+		int xOffset = GamePanel.tileSize / 2 - Item.size / 2;
+		int yOffset = GamePanel.tileSize / 2- Item.size / 2;
+
+		Point center = new Point(coordinate.x * GamePanel.tileSize + GamePanel.tileSize + xOffset, coordinate.y * GamePanel.tileSize + yOffset);
+
+		float range = GamePanel.tileSize - GamePanel.pixelScale * Conveyor.borderWidth;
+		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
+
+		Item item = new Item(center.x, center.y, itemTextures.get(name));
+		// item.offset = offset;
+
+		items.add(item);
+	}
+
 	public static Point coordinateToPosition(Point coordinate) {
 		return new Point(coordinate.x * GamePanel.tileSize, coordinate.y * GamePanel.tileSize);
 	}
 
-	public static Point positionToCoordinate(Point coordinate) {
-		return new Point(coordinate.x / GamePanel.tileSize, coordinate.y / GamePanel.tileSize);
+	public static Point positionToCoordinate(Point point) {
+		return new Point((int)Math.floor(point.x / GamePanel.tileSize), (int)Math.floor(point.y / GamePanel.tileSize));
 	}
 
 	public static BufferedImage rotateImage(BufferedImage image, double degrees) {
@@ -71,7 +111,35 @@ public class TileManager {
 		return op.filter(image, null);
 	}
 
-	public void placeBuildable(Point coordinate, int type) {
+	public static BufferedImage mirrorImageVertically(BufferedImage image) {
+		AffineTransform transform = AffineTransform.getScaleInstance(-1, 1);
+		transform.translate(-image.getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		return op.filter(image, null);
+	}
+
+	public static Point moveInDirection(int direction, int distance) {
+		Point point = new Point(0, 0);
+
+		switch (direction) {
+			case 0:
+				point = new Point(0, -distance);
+				break;
+			case 1:
+				point = new Point(distance, 0);
+				break;
+			case 2:
+				point = new Point(0, distance);
+				break;
+			case 3:
+				point = new Point(-distance, 0);
+				break;
+		}
+
+		return point;
+	}
+
+	public void placeBuildable(Point coordinate, int type, int rotation) {
 		Point point = coordinateToPosition(coordinate);
 		Buildable buildable;
 
@@ -81,6 +149,12 @@ public class TileManager {
 		switch (type) {
 			case 0:
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
+				break;
+			case 1:
+				buildable = new Importer(point.x, point.y, rotation, tiles.get("importer"), gamePanel, this);
+				break;
+			case 2:
+				buildable = new Exporter(point.x, point.y, rotation, tiles.get("exporter"), gamePanel, this);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
@@ -126,7 +200,7 @@ public class TileManager {
 				if (buildables[i] != null) {
 					int oppositeDirection = (i + 2) % 4;
 
-					if (buildable.input == -1) {
+					if (buildable.input == -1 && buildables[i].output != -2) {
 						buildables[i].setConnection(false, oppositeDirection);
 						buildable.setConnection(true, i);
 					} else if (buildable.input != i && buildables[i].input == -1) {
@@ -157,6 +231,9 @@ public class TileManager {
 		if (tiles == null)
 			return;
 
+		ArrayList<Buildable> buildables = new ArrayList<Buildable>();
+
+		// Draw floor
 		for (int column = 0; column < gamePanel.horizontalTiles; column++) {
 			int x = column * GamePanel.tileSize;
 			for (int row = 0; row < gamePanel.verticalTiles; row++) {
@@ -172,15 +249,99 @@ public class TileManager {
 
 				Buildable buildable = coordinateToBuildable.get(new Point(column, row));
 
-				if (buildable != null)
-					buildable.draw(graphics2D);
+				if (buildable != null) {
+					if (buildable instanceof Conveyor) {
+						buildable.draw(graphics2D);
+					} else {
+						buildables.add(buildable);
+					}
+				}
 			}
+		}
+
+		// Draw items
+		drawItems(graphics2D);
+
+		// Draw buildings
+		for (int i = 0; i < buildables.size(); i++) {
+			buildables.get(i).draw(graphics2D);
 		}
 	}
 
 	// TO DO: implement random rotation
 	public void drawTile(Graphics2D graphics2D, BufferedImage sprite, int x, int y) {
 		graphics2D.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+	}
+
+	public void drawItems(Graphics2D graphics2D) {
+		for (int i = 0; i < items.size(); i++) {
+			Item item = items.get(i);
+			Point coordinate = item.coordinate;
+
+			Buildable buildable = coordinateToBuildable.get(coordinate);
+			Conveyor conveyor = (buildable != null && buildable instanceof Conveyor) ? (Conveyor)buildable : null;
+
+			// Point offset = moveInDirection(conveyor.input, Item.size);
+			// Point point = coordinateToPosition(coordinate);
+			// coordinate = positionToCoordinate(new Point(point.x + offset.x, point.y + offset.y));
+
+			// buildable = coordinateToBuildable.get(coordinate);
+			// conveyor = (buildable != null && buildable instanceof Conveyor) ? (Conveyor)buildable : conveyor;
+
+			// System.out.println("Item coordinate: " + item.coordinate);
+			// System.out.println("Conveyor coordinate: " + item.coordinate);
+
+			if (conveyor != null) {
+				Point offset = moveInDirection(conveyor.input, GamePanel.tileSize / 2 + Item.size / 2);
+
+				switch (conveyor.input) {
+					case 0:
+						offset.y += Item.size / 2;
+						break;
+					case 1:
+						offset.x -= Item.size / 2;
+						break;
+					case 2:
+						offset.y -= Item.size / 2;
+						break;
+					case 3:
+						offset.x += Item.size / 2;
+						break;
+				}
+
+				if (conveyor.input == 0) {
+					offset.x += Item.size;
+				} else if (conveyor.input == 1) {
+					offset.y -= Item.size;
+				}
+
+				Point point = new Point(item.x + offset.x, item.y + offset.y);
+				Point offsetCoordinate = positionToCoordinate(point);
+
+				// Get previous conveyor coordinate
+				Point previousCoordinateOffset = moveInDirection(conveyor.input, 1);
+				Point previousCoordinate = new Point(coordinate.x + previousCoordinateOffset.x, coordinate.y + previousCoordinateOffset.y);
+
+				int direction;
+				if (!offsetCoordinate.equals(previousCoordinate) && conveyor.output != -1) {
+					direction = conveyor.output;
+					// graphics2D.setColor(Color.yellow);
+				} else {
+					direction = (conveyor.input + 2) % 4;
+					// graphics2D.setColor(Color.cyan);
+				}
+
+				// graphics2D.fillRect(point.x, point.y, GamePanel.pixelScale, GamePanel.pixelScale);
+
+				Point movement = moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * conveyor.speed));
+
+				item.x += movement.x;
+				item.y += movement.y;
+				item.coordinate = positionToCoordinate(new Point(item.x, item.y));
+			}
+
+			item.draw(graphics2D);
+		}
 	}
 
 }

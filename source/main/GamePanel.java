@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Screen settings
 	public final static int originalTileSize = 16;
-	public final static int pixelScale = 6;
+	public final static int pixelScale = 5;
 	public final static int tileSize = originalTileSize * pixelScale;
 
 	public final int horizontalTiles = 16;
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				if (!SwingUtilities.isRightMouseButton(event)) {
-					tileManager.placeBuildable(Mouse.mouseCoordinate, 0);
+					tileManager.placeBuildable(Mouse.mouseCoordinate, 0, 0);
 				} else {
 					tileManager.removeBuildable(Mouse.mouseCoordinate);
 				}

@@ -30,7 +30,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 			lastDragCoordinate = mouseCoordinate;
 
 			if (!SwingUtilities.isRightMouseButton(event)) {
-				tileManager.placeBuildable(Mouse.mouseCoordinate, 0);
+				tileManager.placeBuildable(Mouse.mouseCoordinate, 0, 0);
 			} else {
 				tileManager.removeBuildable(Mouse.mouseCoordinate);
 			}

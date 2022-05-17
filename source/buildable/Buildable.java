@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
+import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.tile.Tile;
 import source.tile.TileManager;
@@ -13,39 +14,46 @@ import source.tile.TileManager;
 public class Buildable {
 
 	// Debugging
-	boolean showConnections = false;
+	boolean showConnections = true;
 
 	int x = 0;
 	int y = 0;
+	public int rotation = 0;
 	public Point coordinate = new Point(0, 0);
 
-	final float animationSpeed = 10f;
-	final int frameCount = 4;
+	Conveyor conveyor;
+
+	float animationSpeed = 10f;
+	public int frameCount = 1;
 	int frame = 0;
 	float frameTime = 0;
+	public BufferedImage currentSprite;
+	public boolean mirrorSprite = false;
 
+	// -1: unset, -2: NaN
 	public int input = -1;
 	public int output = -1;
 
-	ArrayList<Integer> connections = new ArrayList<Integer>();
+	public ArrayList<Integer> connections = new ArrayList<Integer>();
 
-	Tile tile;
-	GamePanel gamePanel;
-	TileManager tileManager;
+	public Tile tile;
+	public GamePanel gamePanel;
+	public TileManager tileManager;
 
 	public Buildable(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager) {
 		this.x = x;
 		this.y = y;
 		this.coordinate = TileManager.positionToCoordinate(new Point(x, y));
 		this.tile = tile;
+		this.currentSprite = tile.sprites[0];
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
 	}
 
 	public void setConnection(boolean isInput, int direction) {
-		if (isInput) {
+		if (isInput && input != -2) {
 			input = direction;
-		} else if (!isInput) {
+		} else if (!isInput && output != -2) {
 			output = direction;
 		}
 
@@ -58,29 +66,26 @@ public class Buildable {
 		// System.out.println("out: " + outDirection);
 	}
 
-	public void draw(Graphics2D graphics2D) {
-		BufferedImage sprite = tile.sprites[0];
-		int rotation = 0;
+	public void addConveyor(int rotation) {
+		conveyor = new Conveyor(x, y, tileManager.tiles.get("conveyor"), gamePanel, tileManager);
+		conveyor.rotation = rotation;
+	}
 
-		if (connections.contains(1) && connections.contains(2)) {
-			sprite = tile.sprites[1];
-		} else if (connections.contains(2) && connections.contains(3)) {
-			sprite = tile.sprites[1];
-			rotation = 90;
-		} else if (connections.contains(3) && connections.contains(0)) {
-			sprite = tile.sprites[1];
-			rotation = 180;
-		} else if (connections.contains(0) && connections.contains(1)) {
-			sprite = tile.sprites[1];
-			rotation = 270;
-		} else if (connections.contains(2) || connections.contains(0)) {
-			rotation = 90;
+	public void draw(Graphics2D graphics2D) {
+		// Draw conveyor underneath building
+		if (conveyor != null) {
+			conveyor.draw(graphics2D);
 		}
 
 		frame = ((int)Math.round(gamePanel.time * animationSpeed)) % frameCount;
 
 		// Crop to current frame
-		sprite = sprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
+		BufferedImage sprite = currentSprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
+
+		// Mirror image
+		if (mirrorSprite) {
+			sprite = TileManager.mirrorImageVertically(sprite);
+		}
 
 		// Apply rotation
 		if (rotation != 0) {
