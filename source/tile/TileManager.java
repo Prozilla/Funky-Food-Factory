@@ -13,53 +13,59 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 
 import source.buildable.Buildable;
+import source.buildable.Building;
 import source.buildable.building.Exporter;
 import source.buildable.building.Importer;
 import source.buildable.connectable.Conveyor;
 import source.item.Item;
 import source.main.GamePanel;
 import source.main.Mouse;
+import source.main.UI;
 
 public class TileManager {
 
-	final String tilesPath = "../../textures/tiles/";
-	final String itemsPath = "../../textures/items/";
+	final String tilesPath = "textures/tiles/";
+	final String itemsPath = "textures/items/";
 
 	GamePanel gamePanel;
 
+	public Tile currentTile;
 	public Map<String, Tile> tiles;
 	Map<String, BufferedImage> itemTextures;
 
 	public Map<Point, Buildable> coordinateToBuildable = new HashMap<Point, Buildable>();
-	ArrayList<Item> items = new ArrayList<Item>();
+	public ArrayList<Item> items = new ArrayList<Item>();
 
 	public TileManager(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 
 		addTiles();
 		addItems();
-		placeBuildable(new Point(5, 3), 1, 0);
-		placeBuildable(new Point(10, 3), 2, 180);
+		placeBuildable(new Point(6, 3), "importer", 0);
+		placeBuildable(new Point(9, 3), "exporter", 180);
 	}
 
 	public void addTiles() {
 		tiles = new HashMap<String, Tile>();
 
-		addTile(new String[]{"conveyor", "curved_conveyor"});
-		addTile(new String[]{"floor"});
-		addTile(new String[]{"importer"});
-		addTile(new String[]{"exporter"});
+		addTile(tiles, new String[]{"conveyor", "curved_conveyor"});
+		addTile(tiles, new String[]{"floor"});
+		addTile(tiles, new String[]{"importer"});
+		addTile(tiles, new String[]{"exporter"});
+
+		currentTile = tiles.get("conveyor");
 	}
 
-	public void addTile(String[] names) {
+	public void addTile(Map<String, Tile> map, String[] names) {
 		try {
 			BufferedImage[] sprites = new BufferedImage[names.length];
 
 			for (int i = 0; i < names.length; i++) {
+				System.out.println(String.format("%s%s.png", tilesPath, names[i]));
 				sprites[i] = ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", tilesPath, names[i])));
 			}
 
-			tiles.put(names[0], new Tile(names[0], sprites));
+			map.put(names[0], new Tile(names[0], sprites));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -88,7 +94,7 @@ public class TileManager {
 		float range = GamePanel.tileSize - GamePanel.pixelScale * Conveyor.borderWidth;
 		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
 
-		Item item = new Item(center.x, center.y, itemTextures.get(name));
+		Item item = new Item(center.x, center.y, name, itemTextures.get(name));
 		// item.offset = offset;
 
 		items.add(item);
@@ -139,21 +145,21 @@ public class TileManager {
 		return point;
 	}
 
-	public void placeBuildable(Point coordinate, int type, int rotation) {
+	public void placeBuildable(Point coordinate, String name, int rotation) {
 		Point point = coordinateToPosition(coordinate);
 		Buildable buildable;
 
 		if (coordinateToBuildable.containsKey(coordinate))
 			return;
 
-		switch (type) {
-			case 0:
+		switch (name) {
+			case "conveyor":
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
 				break;
-			case 1:
+			case "importer":
 				buildable = new Importer(point.x, point.y, rotation, tiles.get("importer"), gamePanel, this);
 				break;
-			case 2:
+			case "exporter":
 				buildable = new Exporter(point.x, point.y, rotation, tiles.get("exporter"), gamePanel, this);
 				break;
 			default:
@@ -162,7 +168,6 @@ public class TileManager {
 		}
 
 		coordinateToBuildable.put(coordinate, buildable);
-
 		updateBuildableConnections(coordinate);
 	}
 
@@ -233,7 +238,7 @@ public class TileManager {
 
 		ArrayList<Buildable> buildables = new ArrayList<Buildable>();
 
-		// Draw floor
+		// Draw floor and conveyors
 		for (int column = 0; column < gamePanel.horizontalTiles; column++) {
 			int x = column * GamePanel.tileSize;
 			for (int row = 0; row < gamePanel.verticalTiles; row++) {
@@ -242,7 +247,7 @@ public class TileManager {
 				drawTile(graphics2D, tiles.get("floor").sprites[0], x, y);
 
 				// Hover
-				if (column == Mouse.mouseCoordinate.x && row == Mouse.mouseCoordinate.y) {
+				if (UI.hoveringTile == null && column == Mouse.mouseCoordinate.x && row == Mouse.mouseCoordinate.y) {
 					graphics2D.setColor(new Color(1f, 1f, 1f, 0.25f));
 					graphics2D.fillRect(x, y, GamePanel.tileSize, GamePanel.tileSize);
 				}
@@ -251,9 +256,14 @@ public class TileManager {
 
 				if (buildable != null) {
 					if (buildable instanceof Conveyor) {
+						// Draw conveyor
 						buildable.draw(graphics2D);
 					} else {
 						buildables.add(buildable);
+
+						// Draw building conveyor
+						if (buildable.conveyor != null)
+							buildable.conveyor.draw(graphics2D);
 					}
 				}
 			}
@@ -280,21 +290,18 @@ public class TileManager {
 
 			Buildable buildable = coordinateToBuildable.get(coordinate);
 			Conveyor conveyor = (buildable != null && buildable instanceof Conveyor) ? (Conveyor)buildable : null;
+			boolean buildingConveyor = false;
 
-			// Point offset = moveInDirection(conveyor.input, Item.size);
-			// Point point = coordinateToPosition(coordinate);
-			// coordinate = positionToCoordinate(new Point(point.x + offset.x, point.y + offset.y));
-
-			// buildable = coordinateToBuildable.get(coordinate);
-			// conveyor = (buildable != null && buildable instanceof Conveyor) ? (Conveyor)buildable : conveyor;
-
-			// System.out.println("Item coordinate: " + item.coordinate);
-			// System.out.println("Conveyor coordinate: " + item.coordinate);
+			if (conveyor == null && buildable != null && buildable.conveyor != null) {
+				conveyor = buildable.conveyor;
+				buildingConveyor = true;
+			}
 
 			if (conveyor != null) {
-				Point offset = moveInDirection(conveyor.input, GamePanel.tileSize / 2 + Item.size / 2);
+				int direction = !buildingConveyor ? (conveyor.input + 2) % 4 : (conveyor.rotation / 90 + 1) % 4;
+				Point offset = moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
 
-				switch (conveyor.input) {
+				switch (direction) {
 					case 0:
 						offset.y += Item.size / 2;
 						break;
@@ -309,9 +316,9 @@ public class TileManager {
 						break;
 				}
 
-				if (conveyor.input == 0) {
+				if (direction == 0) {
 					offset.x += Item.size;
-				} else if (conveyor.input == 1) {
+				} else if (direction == 1) {
 					offset.y -= Item.size;
 				}
 
@@ -319,15 +326,21 @@ public class TileManager {
 				Point offsetCoordinate = positionToCoordinate(point);
 
 				// Get previous conveyor coordinate
-				Point previousCoordinateOffset = moveInDirection(conveyor.input, 1);
+				Point previousCoordinateOffset = moveInDirection(direction, 1);
 				Point previousCoordinate = new Point(coordinate.x + previousCoordinateOffset.x, coordinate.y + previousCoordinateOffset.y);
 
-				int direction;
-				if (!offsetCoordinate.equals(previousCoordinate) && conveyor.output != -1) {
-					direction = conveyor.output;
+				if (buildingConveyor) {
+					direction = (conveyor.rotation / 90 + 3) % 4;
+				}
+
+				if (!offsetCoordinate.equals(previousCoordinate)) {
+					if (!buildingConveyor && conveyor.output != -1) {
+						direction = conveyor.output;
+					} else if (buildable instanceof Building) {
+						((Building)buildable).processItem(item);
+					}
 					// graphics2D.setColor(Color.yellow);
 				} else {
-					direction = (conveyor.input + 2) % 4;
 					// graphics2D.setColor(Color.cyan);
 				}
 

@@ -26,15 +26,17 @@ public class Mouse implements MouseMotionListener, MouseListener {
 	public void mouseDragged(MouseEvent event) {
 		updateCursor(event.getPoint());
 
-		if (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate) {
-			lastDragCoordinate = mouseCoordinate;
+		if (UI.hoveringTile == null) {
+			if (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate) {
+				lastDragCoordinate = mouseCoordinate;
 
-			if (!SwingUtilities.isRightMouseButton(event)) {
-				tileManager.placeBuildable(Mouse.mouseCoordinate, 0, 0);
-			} else {
-				tileManager.removeBuildable(Mouse.mouseCoordinate);
+				gamePanel.handleClick(SwingUtilities.isRightMouseButton(event));
 			}
+		} else {
+
 		}
+
+		
 	}
 
 	@Override
@@ -55,11 +57,11 @@ public class Mouse implements MouseMotionListener, MouseListener {
 
 	public void updateCursor(Point point) {
 		Point coordinate = TileManager.positionToCoordinate(point);
+		mousePosition = point;
 
 		if (mouseCoordinate.equals(coordinate))
 			return;
 
-		mousePosition = point;
 		mouseCoordinate = coordinate;
 	}
 

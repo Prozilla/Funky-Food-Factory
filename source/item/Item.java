@@ -9,8 +9,10 @@ import source.tile.TileManager;
 
 public class Item {
 
-	final static int pixelSize = 8;
+	final static int pixelSize = GamePanel.originalTileSize / 2;
 	public final static int size = pixelSize * GamePanel.pixelScale;
+
+	public String name;
 	
 	public int x = 0;
 	public int y = 0;
@@ -19,9 +21,10 @@ public class Item {
 
 	BufferedImage sprite;
 
-	public Item(int x, int y, BufferedImage sprite) {
+	public Item(int x, int y, String name, BufferedImage sprite) {
 		this.x = x;
 		this.y = y;
+		this.name = name;
 		this.coordinate = TileManager.positionToCoordinate(new Point(x, y));
 		this.sprite = sprite;
 	}

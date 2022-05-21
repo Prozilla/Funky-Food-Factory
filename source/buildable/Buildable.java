@@ -14,14 +14,14 @@ import source.tile.TileManager;
 public class Buildable {
 
 	// Debugging
-	boolean showConnections = true;
+	boolean showConnections = false;
 
 	int x = 0;
 	int y = 0;
 	public int rotation = 0;
 	public Point coordinate = new Point(0, 0);
 
-	Conveyor conveyor;
+	public Conveyor conveyor;
 
 	float animationSpeed = 10f;
 	public int frameCount = 1;
@@ -60,10 +60,6 @@ public class Buildable {
 		connections = new ArrayList<Integer>();
 		connections.add(input);
 		connections.add(output);
-
-		// System.out.println("coordinate: " + coordinate);
-		// System.out.println("in: " + inDirection);
-		// System.out.println("out: " + outDirection);
 	}
 
 	public void addConveyor(int rotation) {
@@ -72,11 +68,6 @@ public class Buildable {
 	}
 
 	public void draw(Graphics2D graphics2D) {
-		// Draw conveyor underneath building
-		if (conveyor != null) {
-			conveyor.draw(graphics2D);
-		}
-
 		frame = ((int)Math.round(gamePanel.time * animationSpeed)) % frameCount;
 
 		// Crop to current frame
@@ -95,11 +86,11 @@ public class Buildable {
 		graphics2D.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
 
 		if (showConnections) {
-			if (input != -1) {
+			if (input != -1 && input != -2) {
 				drawDirection(true, input, graphics2D);
 			}
 
-			if (output != -1) {
+			if (output != -1 && output != -2) {
 				drawDirection(false, output, graphics2D);
 			}
 		}

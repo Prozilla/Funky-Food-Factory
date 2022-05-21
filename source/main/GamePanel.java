@@ -29,9 +29,14 @@ public class GamePanel extends JPanel implements Runnable {
 	public double time = 0;
 	public double deltaTime = 0;
 
+	// System
 	Thread gameThread;
 	TileManager tileManager = new TileManager(this);
 	Mouse mouseListener = new Mouse(this, tileManager);
+	UI ui = new UI(this, tileManager);
+
+	// Player
+	public int score = 0;
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(width, height));
@@ -42,13 +47,22 @@ public class GamePanel extends JPanel implements Runnable {
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
-				if (!SwingUtilities.isRightMouseButton(event)) {
-					tileManager.placeBuildable(Mouse.mouseCoordinate, 0, 0);
-				} else {
-					tileManager.removeBuildable(Mouse.mouseCoordinate);
-				}
+				handleClick(SwingUtilities.isRightMouseButton(event));
 			}
 		});
+	}
+
+	public void handleClick(boolean isRightMouseButton) {
+		if (UI.hoveringTile == null) {
+			if (!isRightMouseButton) {
+				tileManager.placeBuildable(Mouse.mouseCoordinate, tileManager.currentTile.name, 0);
+			} else {
+				tileManager.removeBuildable(Mouse.mouseCoordinate);
+			}
+		} else if (!isRightMouseButton) {
+			tileManager.currentTile = UI.hoveringTile;
+			System.out.println(UI.hoveringTile.name);
+		}
 	}
 
 	public void startGameThread() {
@@ -98,7 +112,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D graphics2D = (Graphics2D)graphics;
 
+		// Draw tiles
 		tileManager.draw(graphics2D);
+
+		// Draw UI
+		ui.draw(graphics2D);
 
 		graphics2D.dispose();
 	}

@@ -3,6 +3,7 @@ package source.buildable.building;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import source.buildable.Buildable;
 import source.buildable.Building;
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
@@ -25,7 +26,8 @@ public class Importer extends Building {
 
 	@Override
 	public void draw(Graphics2D graphics2D) {
-		Conveyor conveyor = (Conveyor)tileManager.coordinateToBuildable.get(new Point(coordinate.x + 1, coordinate.y));
+		Buildable buildable = tileManager.coordinateToBuildable.get(new Point(coordinate.x + 1, coordinate.y));
+		Conveyor conveyor = buildable instanceof Conveyor ? (Conveyor)buildable : null;
 
 		if (conveyor != null) {
 			timeUntilNextSpawn -= gamePanel.deltaTime / gamePanel.fps;
