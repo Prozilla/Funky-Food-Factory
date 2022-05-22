@@ -9,14 +9,16 @@ import java.awt.event.MouseEvent;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import source.item.ItemManager;
 import source.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
 	// Screen settings
-	public final static int originalTileSize = 16;
-	public final static int pixelScale = 5;
-	public final static int tileSize = originalTileSize * pixelScale;
+	public final static int originalTileSize = 32;
+	public final static int tileScale = 3;
+	public final static int itemScale = 2;
+	public final static int tileSize = originalTileSize * tileScale;
 
 	public final int horizontalTiles = 16;
 	public final int verticalTiles = 10;
@@ -32,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// System
 	Thread gameThread;
 	TileManager tileManager = new TileManager(this);
+	ItemManager itemManager = new ItemManager(this, tileManager);
 	Mouse mouseListener = new Mouse(this, tileManager);
 	UI ui = new UI(this, tileManager);
 
@@ -50,6 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
 				handleClick(SwingUtilities.isRightMouseButton(event));
 			}
 		});
+
+		tileManager.itemManager = itemManager;
 	}
 
 	public void handleClick(boolean isRightMouseButton) {

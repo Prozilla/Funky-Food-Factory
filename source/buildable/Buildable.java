@@ -8,13 +8,11 @@ import java.awt.image.BufferedImage;
 
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
+import source.main.UI;
 import source.tile.Tile;
 import source.tile.TileManager;
 
 public class Buildable {
-
-	// Debugging
-	boolean showConnections = false;
 
 	int x = 0;
 	int y = 0;
@@ -23,16 +21,18 @@ public class Buildable {
 
 	public Conveyor conveyor;
 
-	float animationSpeed = 10f;
+	float animationSpeed = 10f; // 10f
 	public int frameCount = 1;
 	int frame = 0;
 	float frameTime = 0;
 	public BufferedImage currentSprite;
 	public boolean mirrorSprite = false;
+	public int spriteVariant = 0;
 
 	// -1: unset, -2: NaN
 	public int input = -1;
 	public int output = -1;
+	public boolean curved;
 
 	public ArrayList<Integer> connections = new ArrayList<Integer>();
 
@@ -68,10 +68,23 @@ public class Buildable {
 	}
 
 	public void draw(Graphics2D graphics2D) {
-		frame = ((int)Math.round(gamePanel.time * animationSpeed)) % frameCount;
+		if (frameCount > 0) {
+			int frameOffset = (coordinate.x % 3) * 4 + ((coordinate.y) % 3) * -4;
+
+			// if (curved) {
+			// 	frameOffset = (coordinate.x % 3) * -4;
+			// }
+
+			frame = Math.abs((int)Math.round(gamePanel.time * animationSpeed) + (mirrorSprite ? frameOffset : -frameOffset)) % frameCount;
+		}
+
+		// System.out.println(frame);
+
+		// Crop to sprite variant
+		BufferedImage sprite = currentSprite.getSubimage(spriteVariant * GamePanel.originalTileSize, 0, GamePanel.originalTileSize, currentSprite.getHeight());
 
 		// Crop to current frame
-		BufferedImage sprite = currentSprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
+		sprite = sprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
 
 		// Mirror image
 		if (mirrorSprite) {
@@ -85,7 +98,7 @@ public class Buildable {
 
 		graphics2D.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
 
-		if (showConnections) {
+		if (UI.showConnections) {
 			if (input != -1 && input != -2) {
 				drawDirection(true, input, graphics2D);
 			}
@@ -94,12 +107,18 @@ public class Buildable {
 				drawDirection(false, output, graphics2D);
 			}
 		}
+
+		if (UI.showCurrentFrame) {
+			graphics2D.setColor(UI.backgroundColorB);
+			graphics2D.setFont(graphics2D.getFont().deriveFont(UI.font.PLAIN, 22f));
+			graphics2D.drawString(frame + "", x, y + 11);
+		}
 	}
 
 	public void drawDirection(boolean in, int direction, Graphics2D graphics2D) {
 		Point point = new Point(0, 0);
 		int offset = GamePanel.tileSize / 3;
-		int size = in ? GamePanel.tileSize / 4 : GamePanel.tileSize / 5;
+		int size = in ? GamePanel.tileSize / 6 : GamePanel.tileSize / 7;
 		Point center = new Point(x + GamePanel.tileSize / 2 - size / 2, y + GamePanel.tileSize / 2 - size / 2);
 
 		graphics2D.setColor(Color.black);

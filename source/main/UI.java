@@ -18,15 +18,23 @@ import source.tile.Tile;
 
 public class UI {
 
+	// Debugging
+	public static final boolean showConnections = false;
+	public static final boolean showItemOrientation = false;
+	public static final boolean showCurrentFrame = false;
+
 	final int invSlotSize = 125;
 	final int invSlotIconSize = 100;
 	final int invSlotRadius = 25;
 	final int invHorizontalMargin = 25;
 	final int invVerticalMargin = 50;
+
+	public final static Color backgroundColorA = new Color(0.09f, 0.07f, 0.15f, 0.85f);
+	public final static Color backgroundColorB = new Color(0.09f, 0.07f, 0.15f, 0.95f);
 	
 	GamePanel gamePanel;
 	TileManager tileManager;
-	Font font;
+	public static Font font;
 
 	public static Tile hoveringTile;
 
@@ -37,6 +45,7 @@ public class UI {
 		this.tileManager = tileManager;
 
 		tileManager.addTile(buildables, new String[]{"conveyor"});
+		tileManager.addTile(buildables, new String[]{"smelter"});
 		tileManager.addTile(buildables, new String[]{"importer"});
 		tileManager.addTile(buildables, new String[]{"exporter"});
 		
@@ -85,11 +94,7 @@ public class UI {
 	}
 
 	public void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering) {
-		if (!hovering) {
-			graphics2D.setColor(new Color(0.15f, 0.15f, 0.15f, 0.85f));
-		} else {
-			graphics2D.setColor(new Color(0.15f, 0.15f, 0.15f, 1f));
-		}
+		graphics2D.setColor(hovering ? backgroundColorB : backgroundColorA);
 
 		graphics2D.fillRoundRect(x, y, invSlotSize, invSlotSize, invSlotRadius, invSlotRadius);
 

@@ -6,19 +6,20 @@ import java.awt.Point;
 import source.buildable.Buildable;
 import source.buildable.Building;
 import source.buildable.connectable.Conveyor;
+import source.item.ItemManager;
 import source.main.GamePanel;
 import source.tile.Tile;
 import source.tile.TileManager;
 
 public class Importer extends Building {
 
-	float itemSpawnDelay = 1f;
+	float itemSpawnDelay = 1.5f;
 	double timeUntilNextSpawn = itemSpawnDelay;
 
 	boolean stopSpawning = false;
 
-	public Importer(int x, int y, int rotation, Tile tile, GamePanel gamePanel, TileManager tileManager) {
-		super(x, y, tile, gamePanel, tileManager);
+	public Importer(int x, int y, int rotation, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
+		super(x, y, tile, gamePanel, tileManager, itemManager);
 		this.rotation = rotation;
 		this.input = -2;
 		this.addConveyor(this.rotation);
@@ -26,17 +27,14 @@ public class Importer extends Building {
 
 	@Override
 	public void draw(Graphics2D graphics2D) {
-		Buildable buildable = tileManager.coordinateToBuildable.get(new Point(coordinate.x + 1, coordinate.y));
-		Conveyor conveyor = buildable instanceof Conveyor ? (Conveyor)buildable : null;
-
-		if (conveyor != null) {
+		if (output > -1) {
 			timeUntilNextSpawn -= gamePanel.deltaTime / gamePanel.fps;
 
 			if (timeUntilNextSpawn <= 0) {
 				timeUntilNextSpawn = itemSpawnDelay;
 
 				if (!stopSpawning) {
-					tileManager.spawnItem("iron_ore", coordinate);
+					itemManager.spawnItem("iron_ore", coordinate);
 					// stopSpawning = true;
 				}
 			}
