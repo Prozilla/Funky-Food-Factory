@@ -90,8 +90,16 @@ public class Item {
 					direction = conveyor.output;
 					graphics2D.setColor(Color.yellow);
 				} else if (buildable instanceof Building) {
-					((Building)buildable).processItem(this);
-					graphics2D.setColor(Color.green);
+					// Only process item if it has passed the center of the building
+					Point nextPositionOffset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
+					Point nextPosition = new Point(x + nextPositionOffset.x, y + nextPositionOffset.y);
+
+					Point nextCoordinate = TileManager.positionToCoordinate(nextPosition);
+
+					if (!nextCoordinate.equals(coordinate)) {
+						((Building)buildable).processItem(this);
+						graphics2D.setColor(Color.green);
+					}
 				}
 			} else {
 				graphics2D.setColor(Color.cyan);

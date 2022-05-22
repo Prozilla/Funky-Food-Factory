@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
+import source.buildable.building.Smelter;
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.main.UI;

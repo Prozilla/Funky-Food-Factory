@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
 		});
 
 		tileManager.itemManager = itemManager;
+		tileManager.loadFactory();
 	}
 
 	public void handleClick(boolean isRightMouseButton) {

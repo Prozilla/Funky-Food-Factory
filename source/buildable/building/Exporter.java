@@ -19,7 +19,19 @@ public class Exporter extends Building {
 	@Override
 	public void processItem(Item item) {
 		itemManager.items.remove(item);
-		gamePanel.score++;
+
+		int reward = 0;
+
+		switch (item.name) {
+			case "iron_ore":
+				reward = 1;
+				break;
+			case "iron_ingot":
+				reward = 2;
+				break;
+		}
+
+		gamePanel.score += reward;
 	}
 	
 }

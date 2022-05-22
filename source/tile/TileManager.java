@@ -18,7 +18,6 @@ import source.buildable.building.Exporter;
 import source.buildable.building.Importer;
 import source.buildable.building.Smelter;
 import source.buildable.connectable.Conveyor;
-import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Mouse;
@@ -40,6 +39,9 @@ public class TileManager {
 		this.gamePanel = gamePanel;
 
 		addTiles();
+	}
+
+	public void loadFactory() {
 		placeBuildable(new Point(10, 1), "importer", 0);
 		placeBuildable(new Point(9, 1), "conveyor", 0);
 		placeBuildable(new Point(8, 1), "conveyor", 0);
@@ -53,6 +55,12 @@ public class TileManager {
 		placeBuildable(new Point(4, 5), "conveyor", 0);
 		placeBuildable(new Point(3, 5), "conveyor", 0);
 		placeBuildable(new Point(2, 5), "exporter", 0);
+
+		placeBuildable(new Point(6, 5), "exporter", 0);
+		placeBuildable(new Point(8, 5), "smelter", 0);
+		placeBuildable(new Point(10, 5), "importer", 0);
+		placeBuildable(new Point(7, 5), "conveyor", 0);
+		placeBuildable(new Point(9, 5), "conveyor", 0);
 	}
 
 	public void addTiles() {

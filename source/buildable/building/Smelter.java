@@ -17,7 +17,19 @@ public class Smelter extends Building {
 
 	@Override
 	public void processItem(Item item) {
+		String outputName = item.name;
 
+		switch (item.name) {
+			case "iron_ore":
+				outputName = "iron_ingot";
+				break;
+		}
+
+		if (outputName != item.name) {
+			Item outputItem = new Item(item.x, item.y, outputName, itemManager.itemTextures.get(outputName), gamePanel, tileManager);
+			itemManager.items.remove(item);
+			itemManager.items.add(outputItem);
+		}
 	}
 	
 }

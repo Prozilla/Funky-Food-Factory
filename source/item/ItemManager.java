@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Graphics2D;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
 
 import source.buildable.connectable.Conveyor;
@@ -17,9 +16,12 @@ import source.tile.TileManager;
 public class ItemManager {
 
 	final String itemsPath = "textures/";
+	final String recipesPath = "building/recipes/Recipes.json";
 
-	Map<String, BufferedImage> itemTextures;
+	public Map<String, BufferedImage> itemTextures;
 	public ArrayList<Item> items = new ArrayList<Item>();
+
+	public Map<Item, Item> recipes;
 
 	GamePanel gamePanel;
 	TileManager tileManager;
@@ -29,6 +31,7 @@ public class ItemManager {
 		this.tileManager = tileManager;
 
 		addItems();
+		addRecipes();
 	}
 
 	public void addItems() {
@@ -45,6 +48,10 @@ public class ItemManager {
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
+	}
+
+	public void addRecipes() {
+		// recipes.put("")
 	}
 
 	public void spawnItem(String name, Point coordinate) {
