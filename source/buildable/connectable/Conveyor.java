@@ -22,6 +22,8 @@ public class Conveyor extends Connectable {
 		spriteVariant = 0;
 		currentSprite = tile.sprites[0];
 		rotation = 0;
+		cropToInput = false;
+		cropToOutput = false;
 
 		curved = (input > -1 && output > -1 && !((connections.contains(0) && connections.contains(2)) || (connections.contains(1) && connections.contains(3))));
 
@@ -34,6 +36,12 @@ public class Conveyor extends Connectable {
 
 			if (connections.contains(2) || connections.contains(0)) {
 				rotation = 90;
+			}
+
+			if (input == -2) {
+				cropToOutput = true;
+			} else if (output == -2) {
+				cropToInput = true;
 			}
 		} else {
 			if (input == (output + 1) % 4) {

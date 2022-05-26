@@ -9,11 +9,11 @@ import source.tile.TileManager;
 
 public class Exporter extends Building {
 
-	public Exporter(int x, int y, int rotation, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
+	public Exporter(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
 		super(x, y, tile, gamePanel, tileManager, itemManager);
-		this.rotation = rotation;
-		this.output = -2;
-		this.addConveyor(this.rotation);
+		this.addConveyor();
+		this.setConnection(false, -2);
+		this.setConnection(true, (direction + 2) % 4);
 	}
 
 	@Override

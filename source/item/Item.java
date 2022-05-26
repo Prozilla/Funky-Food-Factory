@@ -44,13 +44,13 @@ public class Item {
 		Conveyor conveyor = (buildable != null && buildable instanceof Conveyor) ? (Conveyor)buildable : null;
 		boolean buildingConveyor = false;
 
-		if (conveyor == null && buildable != null && buildable.conveyor != null) {
-			conveyor = buildable.conveyor;
+		if (conveyor == null && buildable != null && buildable.buildingConveyor != null) {
+			conveyor = buildable.buildingConveyor;
 			buildingConveyor = true;
 		}
 
 		if (conveyor != null) {
-			int direction = !buildingConveyor ? (conveyor.input + 2) % 4 : (conveyor.rotation / 90 + 1) % 4;
+			int direction = !buildingConveyor ? conveyor.input > -1 ? (conveyor.input + 2) % 4 : conveyor.output : (conveyor.rotation / 90 + 1) % 4;
 			Point offset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
 
 			switch (direction) {
@@ -68,12 +68,6 @@ public class Item {
 					break;
 			}
 
-			// if (direction == 0) {
-			// 	offset.x += Item.size;
-			// } else if (direction == 1) {
-			// 	offset.y -= Item.size;
-			// }
-
 			Point point = new Point(x + offset.x, y + offset.y);
 			Point offsetCoordinate = TileManager.positionToCoordinate(point);
 
@@ -81,9 +75,9 @@ public class Item {
 			Point previousCoordinateOffset = TileManager.moveInDirection(direction, 1);
 			Point previousCoordinate = new Point(coordinate.x + previousCoordinateOffset.x / 2, coordinate.y + previousCoordinateOffset.y / 2);
 
-			if (buildingConveyor) {
-				direction = (conveyor.rotation / 90 + 3) % 4;
-			}
+			// if (buildingConveyor) {
+			// 	direction = (conveyor.rotation / 90 + 3) % 4;
+			// }
 
 			if (!offsetCoordinate.equals(previousCoordinate)) {
 				if (!buildingConveyor && conveyor.output != -1) {
@@ -110,6 +104,7 @@ public class Item {
 				graphics2D.setColor(Color.white);
 				graphics2D.fillRect(x, y, GamePanel.tileScale, GamePanel.tileScale);
 			}
+
 
 			Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * conveyor.speed));
 

@@ -42,25 +42,15 @@ public class TileManager {
 	}
 
 	public void loadFactory() {
-		placeBuildable(new Point(10, 1), "importer", 0);
-		placeBuildable(new Point(9, 1), "conveyor", 0);
-		placeBuildable(new Point(8, 1), "conveyor", 0);
-		placeBuildable(new Point(8, 2), "conveyor", 0);
+		placeBuildable(new Point(6, 5), "exporter", 3);
+		placeBuildable(new Point(7, 5), "conveyor", 0);
+		placeBuildable(new Point(8, 5), "conveyor", 0);
+		placeBuildable(new Point(9, 5), "conveyor", 0);
+		placeBuildable(new Point(9, 4), "smelter", 0);
+		placeBuildable(new Point(9, 3), "conveyor", 0);
 		placeBuildable(new Point(8, 3), "conveyor", 0);
 		placeBuildable(new Point(7, 3), "conveyor", 0);
-		placeBuildable(new Point(6, 3), "smelter", 0);
-		placeBuildable(new Point(5, 3), "conveyor", 0);
-		placeBuildable(new Point(4, 3), "conveyor", 0);
-		placeBuildable(new Point(4, 4), "conveyor", 0);
-		placeBuildable(new Point(4, 5), "conveyor", 0);
-		placeBuildable(new Point(3, 5), "conveyor", 0);
-		placeBuildable(new Point(2, 5), "exporter", 0);
-
-		placeBuildable(new Point(6, 5), "exporter", 0);
-		placeBuildable(new Point(8, 5), "smelter", 0);
-		placeBuildable(new Point(10, 5), "importer", 0);
-		placeBuildable(new Point(7, 5), "conveyor", 0);
-		placeBuildable(new Point(9, 5), "conveyor", 0);
+		placeBuildable(new Point(6, 3), "importer", 1);
 	}
 
 	public void addTiles() {
@@ -135,7 +125,7 @@ public class TileManager {
 		return point;
 	}
 
-	public void placeBuildable(Point coordinate, String name, int rotation) {
+	public void placeBuildable(Point coordinate, String name, int direction) {
 		Point point = coordinateToPosition(coordinate);
 		Buildable buildable;
 
@@ -147,13 +137,13 @@ public class TileManager {
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
 				break;
 			case "importer":
-				buildable = new Importer(point.x, point.y, rotation, tiles.get("importer"), gamePanel, this, itemManager);
+				buildable = new Importer(point.x, point.y, direction, tiles.get("importer"), gamePanel, this, itemManager);
 				break;
 			case "exporter":
-				buildable = new Exporter(point.x, point.y, rotation, tiles.get("exporter"), gamePanel, this, itemManager);
+				buildable = new Exporter(point.x, point.y, direction, tiles.get("exporter"), gamePanel, this, itemManager);
 				break;
 			case "smelter":
-				buildable = new Smelter(point.x, point.y, rotation, tiles.get("smelter"), gamePanel, this, itemManager);
+				buildable = new Smelter(point.x, point.y, tiles.get("smelter"), gamePanel, this, itemManager);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
@@ -166,7 +156,6 @@ public class TileManager {
 
 	public void removeBuildable(Point coordinate) {
 		coordinateToBuildable.remove(coordinate);
-
 		updateCoordinate(coordinate);
 	}
 
@@ -212,8 +201,8 @@ public class TileManager {
 						buildables.add(buildable);
 
 						// Draw building conveyor
-						if (buildable.conveyor != null)
-							buildable.conveyor.draw(graphics2D);
+						if (buildable.buildingConveyor != null)
+							buildable.buildingConveyor.draw(graphics2D);
 					}
 				}
 			}

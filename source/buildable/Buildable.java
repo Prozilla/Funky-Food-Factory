@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
+import java.awt.AlphaComposite;
 
-import source.buildable.building.Smelter;
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.main.UI;
@@ -17,23 +17,34 @@ public class Buildable {
 
 	int x = 0;
 	int y = 0;
-	public int rotation = 0;
 	public Point coordinate = new Point(0, 0);
 
-	public Conveyor conveyor;
+	public Conveyor buildingConveyor;
 
+	// Animation
 	float animationSpeed = 10f; // 10f
 	public int frameCount = 1;
 	int frame = 0;
 	float frameTime = 0;
 	public BufferedImage currentSprite;
-	public boolean mirrorSprite = false;
 	public int spriteVariant = 0;
 
-	// -1: unset, -2: NaN
+	public int spawnAnimationDuration = 10;
+
+	// Sprite properties
+	public int rotation = 0;
+	public boolean mirrorSprite = false;
+	public boolean cropToInput = false;
+	public boolean cropToOutput = false;
+
+	// Connections (-1: unset, -2: NaN)
 	public int input = -1;
 	public int output = -1;
 	public boolean curved;
+	public boolean allowAutoRotation = false;
+
+	double age = 0;
+	double death; // Should be set to the current age when building gets deleted (to do remove animation)
 
 	public ArrayList<Integer> connections = new ArrayList<Integer>();
 
@@ -58,14 +69,22 @@ public class Buildable {
 			output = direction;
 		}
 
+		if (buildingConveyor != null) {
+			buildingConveyor.setConnection(true, this.input);
+			buildingConveyor.setConnection(false, this.output);
+		}
+
 		connections = new ArrayList<Integer>();
 		connections.add(input);
 		connections.add(output);
 	}
 
-	public void addConveyor(int rotation) {
-		conveyor = new Conveyor(x, y, tileManager.tiles.get("conveyor"), gamePanel, tileManager);
-		conveyor.rotation = rotation;
+	public void addConveyor() {
+		buildingConveyor = new Conveyor(x, y, tileManager.tiles.get("conveyor"), gamePanel, tileManager);
+	}
+
+	public float easeOutQuad(float time) {
+		return 1 - (1 - time) * (1 - time);
 	}
 
 	public void draw(Graphics2D graphics2D) {
@@ -79,13 +98,18 @@ public class Buildable {
 			frame = Math.abs((int)Math.round(gamePanel.time * animationSpeed) + (mirrorSprite ? frameOffset : -frameOffset)) % frameCount;
 		}
 
-		// System.out.println(frame);
-
 		// Crop to sprite variant
 		BufferedImage sprite = currentSprite.getSubimage(spriteVariant * GamePanel.originalTileSize, 0, GamePanel.originalTileSize, currentSprite.getHeight());
 
 		// Crop to current frame
 		sprite = sprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
+
+		// Crop to a side
+		if (cropToOutput) {
+			sprite = sprite.getSubimage(0, 0, GamePanel.originalTileSize / 2, GamePanel.originalTileSize);
+		} else if (cropToInput) {
+			sprite = sprite.getSubimage(GamePanel.originalTileSize / 2, 0, GamePanel.originalTileSize / 2, GamePanel.originalTileSize);
+		}
 
 		// Mirror image
 		if (mirrorSprite) {
@@ -97,7 +121,38 @@ public class Buildable {
 			sprite = TileManager.rotateImage(sprite, rotation);
 		}
 
-		graphics2D.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+		// Apply cropping
+		int spriteX = x;
+		int spriteY = y;
+		int width = GamePanel.tileSize;
+		int height = GamePanel.tileSize;
+
+		if (rotation != 90) {
+			if (((cropToInput && !mirrorSprite) || (cropToOutput && mirrorSprite))) {
+				spriteX = x + GamePanel.tileSize / 2;
+			}
+
+			if (cropToOutput || cropToInput) {
+				width = GamePanel.tileSize / 2;
+			}
+		} else {
+			if (((cropToInput && !mirrorSprite) || (cropToOutput && mirrorSprite))) {
+				spriteY = y + GamePanel.tileSize / 2;
+			}
+
+			if (cropToOutput || cropToInput) {
+				height = GamePanel.tileSize / 2;
+			}
+		}
+
+		// Apply animation
+		float scale = age < spawnAnimationDuration ? easeOutQuad((float)(age / spawnAnimationDuration)) : 1f;
+		graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, scale));
+
+		// Draw to screen
+		// graphics2D.fillRect(spriteX, spriteY, width, height);
+		graphics2D.drawImage(sprite, (int)(spriteX + (width - width * scale) / 2), (int)(spriteY + (height - height * scale) / 2), (int)(width * scale), (int)(height * scale), null);
+		graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
 		if (UI.showConnections) {
 			if (input != -1 && input != -2) {
@@ -108,6 +163,8 @@ public class Buildable {
 				drawDirection(false, output, graphics2D);
 			}
 		}
+
+		age += gamePanel.deltaTime;
 
 		if (UI.showCurrentFrame) {
 			graphics2D.setColor(UI.backgroundColorB);

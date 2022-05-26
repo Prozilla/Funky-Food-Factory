@@ -9,10 +9,10 @@ import source.tile.TileManager;
 
 public class Smelter extends Building {
 
-	public Smelter(int x, int y, int rotation, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
+	public Smelter(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
 		super(x, y, tile, gamePanel, tileManager, itemManager);
-		this.rotation = rotation;
-		this.addConveyor(this.rotation);
+		this.addConveyor();
+		this.allowAutoRotation = true;
 	}
 
 	@Override

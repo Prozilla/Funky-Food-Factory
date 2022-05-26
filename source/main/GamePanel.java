@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void handleClick(boolean isRightMouseButton) {
 		if (UI.hoveringTile == null) {
 			if (!isRightMouseButton) {
-				tileManager.placeBuildable(Mouse.mouseCoordinate, tileManager.currentTile.name, 0);
+				tileManager.placeBuildable(Mouse.mouseCoordinate, tileManager.currentTile.name, 1);
 			} else {
 				tileManager.removeBuildable(Mouse.mouseCoordinate);
 			}
