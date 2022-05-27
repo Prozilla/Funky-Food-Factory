@@ -6,7 +6,7 @@ https://user-images.githubusercontent.com/63581117/169697163-05117876-6e67-4fd2-
 
 ## Download
 
-1. Go [here](https://github.com/Prozilla/Funky-Factories/blob/main/build/FunkyFactories.jar) to download the executable jar file.
+1. Go [here](https://github.com/Prozilla/Funky-Factories/tree/main/builds) and download the latest version as an executable jar file.
 2. If you don't already have a JRE, go to [Oracle](https://www.oracle.com/java/technologies/downloads/) and click download on the latest version.
 3. Finally, simple open the jar file and the game should launch in a new window (note that this window is currently unable to be resized or changed to fullscreen mode).
 
