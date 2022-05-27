@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -23,22 +26,28 @@ public class UI {
 	public static final boolean showItemOrientation = false;
 	public static final boolean showCurrentFrame = false;
 
-	final int invSlotSize = 125;
-	final int invSlotIconSize = 100;
+	final String fontsPath = "fonts/";
+	final String iconsPath = "icons/";
+
+	final int invSlotSize = 100;
+	final int invSlotIconSize = 75;
 	final int invSlotRadius = 25;
-	final int invHorizontalMargin = 25;
-	final int invVerticalMargin = 50;
+	final int invHorizontalMargin = 20;
+	final int invVerticalMargin = 35;
 
 	public final static Color backgroundColorA = new Color(0.09f, 0.07f, 0.15f, 0.85f);
 	public final static Color backgroundColorB = new Color(0.09f, 0.07f, 0.15f, 0.95f);
 	
 	GamePanel gamePanel;
 	TileManager tileManager;
+
 	public static Font font;
+	final int fontSize = 33;
 
 	public static Tile hoveringTile;
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
+	Map<String, BufferedImage> iconTextures;
 
 	public UI(GamePanel gamePanel, TileManager tileManager) {
 		this.gamePanel = gamePanel;
@@ -50,23 +59,42 @@ public class UI {
 		tileManager.addTile(buildables, new String[]{"exporter"});
 		
 		try {
-			InputStream inputStream = getClass().getResourceAsStream("fonts/Retro Gaming.ttf");
+			InputStream inputStream = getClass().getResourceAsStream(fontsPath + "Retro Gaming.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 		} catch (FontFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		addIcons();
+	}
+
+	public void addIcons() {
+		iconTextures = new HashMap<String, BufferedImage>();
+
+		addIcon("coin");
+	}
+
+	public void addIcon(String name) {
+		try {
+			System.out.println(String.format("Reading %s%s.png", iconsPath, name));
+			iconTextures.put(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", iconsPath, name))));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	public void draw(Graphics2D graphics2D) {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); 
+		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+		graphics2D.drawImage(iconTextures.get("coin"), 50, 50 - (int)(fontSize / 10f * 9f), fontSize, fontSize, null);
 
 		graphics2D.setFont(font);
 		graphics2D.setColor(Color.white);
-		graphics2D.setFont(graphics2D.getFont().deriveFont(font.PLAIN, 33f));
-		graphics2D.drawString("Score: " + gamePanel.score, 50, 50);
+		graphics2D.setFont(graphics2D.getFont().deriveFont(font.PLAIN, fontSize));
+		graphics2D.drawString(Integer.toString(gamePanel.score), 50 + fontSize + 10, 50);
 
 		drawInventory(graphics2D);
 	}
@@ -83,7 +111,7 @@ public class UI {
 			Tile tile = buildables.get(key);
 			boolean hovering = false;
 
-			if (Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + invSlotSize && Mouse.mousePosition.y >= yStart && Mouse.mousePosition.y < yStart + invSlotSize)
+			if (Mouse.mousePosition != null && Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + invSlotSize && Mouse.mousePosition.y >= yStart && Mouse.mousePosition.y < yStart + invSlotSize)
 			{
 				hoveringTile = tile;
 				hovering = true;

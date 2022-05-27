@@ -10,16 +10,25 @@ import source.tile.TileManager;
 
 public class Mouse implements MouseMotionListener, MouseListener {
 
+	public static Point mousePosition;
+	public static Point mouseCoordinate;
+
+	public static Point viewportMousePosition;
+	public static Point viewportMouseCoordinate;
+
+	Point lastDragCoordinate;
+	public static Point dragStart;
+
+	public static boolean holdingRightMouseButton = false;
+
 	GamePanel gamePanel;
 	TileManager tileManager;
+	Viewport viewport;
 
-	public static Point mousePosition = new Point(0, 0);
-	public static Point mouseCoordinate = new Point(0, 0);
-	Point lastDragCoordinate;
-
-	public Mouse(GamePanel gamePanel, TileManager tileManager) {
+	public Mouse(GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
+		this.viewport = viewport;
 	}
 
 	@Override
@@ -27,16 +36,19 @@ public class Mouse implements MouseMotionListener, MouseListener {
 		updateCursor(event.getPoint());
 
 		if (UI.hoveringTile == null) {
-			if (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate) {
+			if (!SwingUtilities.isMiddleMouseButton(event) && (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate)) {
 				lastDragCoordinate = mouseCoordinate;
 
 				gamePanel.handleClick(SwingUtilities.isRightMouseButton(event));
-			}
-		} else {
 
+				if (SwingUtilities.isRightMouseButton(event))
+					holdingRightMouseButton = true;
+			}
 		}
 
-		
+		if (dragStart != null) {
+			viewport.pan(dragStart, mousePosition);
+		}
 	}
 
 	@Override
@@ -46,8 +58,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		Point point = event.getPoint();
-		updateCursor(point);
+		updateCursor(event.getPoint());
 	}
 
 	public static boolean hoveringTile(int x, int y) {
@@ -56,13 +67,11 @@ public class Mouse implements MouseMotionListener, MouseListener {
 	}
 
 	public void updateCursor(Point point) {
-		Point coordinate = TileManager.positionToCoordinate(point);
 		mousePosition = point;
+		mouseCoordinate = TileManager.positionToCoordinate(point);
 
-		if (mouseCoordinate.equals(coordinate))
-			return;
-
-		mouseCoordinate = coordinate;
+		viewportMousePosition = viewport.viewportToPosition(point);
+		viewportMouseCoordinate = TileManager.positionToCoordinate(viewportMousePosition);
 	}
 
 	@Override
@@ -71,8 +80,8 @@ public class Mouse implements MouseMotionListener, MouseListener {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		
+	public void mousePressed(MouseEvent event) {
+
 	}
 
 	@Override
@@ -82,7 +91,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
+
 	}
 	
 }

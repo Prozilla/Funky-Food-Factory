@@ -4,13 +4,14 @@ import source.buildable.Building;
 import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
+import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
 
 public class Exporter extends Building {
 
-	public Exporter(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager) {
-		super(x, y, tile, gamePanel, tileManager, itemManager);
+	public Exporter(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
+		super(x, y, tile, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.setConnection(false, -2);
 		this.setConnection(true, (direction + 2) % 4);

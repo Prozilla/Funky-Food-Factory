@@ -1,8 +1,6 @@
 package source.tile;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import source.buildable.Buildable;
 import source.buildable.Connectable;
@@ -22,6 +21,7 @@ import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Mouse;
 import source.main.UI;
+import source.main.Viewport;
 
 public class TileManager {
 
@@ -29,14 +29,16 @@ public class TileManager {
 
 	GamePanel gamePanel;
 	public ItemManager itemManager;
+	Viewport viewport;
 
 	public Tile currentTile;
 	public Map<String, Tile> tiles;
 
 	public Map<Point, Buildable> coordinateToBuildable = new HashMap<Point, Buildable>();
 
-	public TileManager(GamePanel gamePanel) {
+	public TileManager(GamePanel gamePanel, Viewport viewport) {
 		this.gamePanel = gamePanel;
+		this.viewport = viewport;
 
 		addTiles();
 	}
@@ -125,30 +127,36 @@ public class TileManager {
 		return point;
 	}
 
-	public void placeBuildable(Point coordinate, String name, int direction) {
-		Point point = coordinateToPosition(coordinate);
+	public Buildable createBuildable(Point coordinate, String name, int direction) {
 		Buildable buildable;
-
-		if (coordinateToBuildable.containsKey(coordinate))
-			return;
+		Point point = coordinateToPosition(coordinate);
 
 		switch (name) {
 			case "conveyor":
-				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
+				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);
 				break;
 			case "importer":
-				buildable = new Importer(point.x, point.y, direction, tiles.get("importer"), gamePanel, this, itemManager);
+				buildable = new Importer(point.x, point.y, direction, tiles.get("importer"), gamePanel, this, itemManager, viewport);
 				break;
 			case "exporter":
-				buildable = new Exporter(point.x, point.y, direction, tiles.get("exporter"), gamePanel, this, itemManager);
+				buildable = new Exporter(point.x, point.y, direction, tiles.get("exporter"), gamePanel, this, itemManager, viewport);
 				break;
 			case "smelter":
-				buildable = new Smelter(point.x, point.y, tiles.get("smelter"), gamePanel, this, itemManager);
+				buildable = new Smelter(point.x, point.y, tiles.get("smelter"), gamePanel, this, itemManager, viewport);
 				break;
 			default:
-				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this);
+				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);
 				break;
 		}
+
+		return buildable;
+	}
+
+	public void placeBuildable(Point coordinate, String name, int direction) {
+		if (coordinateToBuildable.containsKey(coordinate))
+			return;
+
+		Buildable buildable = createBuildable(coordinate, name, direction);
 
 		coordinateToBuildable.put(coordinate, buildable);
 		updateCoordinate(coordinate);
@@ -168,7 +176,19 @@ public class TileManager {
 			coordinateToBuildable.get(new Point(coordinate.x - 1, coordinate.y)), // 3
 		};
 
-		Connectable.updateBuildableConnections(buildable, buildables);
+		Connectable.updateBuildableConnections(buildable, buildables, true);
+	}
+
+	void updateBuilding(Buildable buildable) {
+		Point coordinate = buildable.coordinate;
+		Buildable[] buildables = new Buildable[]{
+			coordinateToBuildable.get(new Point(coordinate.x, coordinate.y - 1)), // 0
+			coordinateToBuildable.get(new Point(coordinate.x + 1, coordinate.y)), // 1
+			coordinateToBuildable.get(new Point(coordinate.x, coordinate.y + 1)), // 2
+			coordinateToBuildable.get(new Point(coordinate.x - 1, coordinate.y)), // 3
+		};
+
+		Connectable.updateBuildableConnections(buildable, buildables, false);
 	}
 
 	public void draw(Graphics2D graphics2D) {
@@ -182,27 +202,35 @@ public class TileManager {
 			int x = column * GamePanel.tileSize;
 			for (int row = 0; row < gamePanel.verticalTiles; row++) {
 				int y = row * GamePanel.tileSize;
+				Point coordinate = new Point(column, row);
 
 				drawTile(graphics2D, tiles.get("floor").sprites[0], x, y);
 
 				// Hover
-				if (UI.hoveringTile == null && column == Mouse.mouseCoordinate.x && row == Mouse.mouseCoordinate.y) {
-					graphics2D.setColor(new Color(1f, 1f, 1f, 0.25f));
-					graphics2D.fillRect(x, y, GamePanel.tileSize, GamePanel.tileSize);
+				if (UI.hoveringTile == null && Mouse.mouseCoordinate != null && column == Mouse.viewportMouseCoordinate.x && row == Mouse.viewportMouseCoordinate.y) {
+					// viewport.drawRect(graphics2D, x, y, GamePanel.tileSize, GamePanel.tileSize, new Color(1f, 1f, 1f, 0.25f));
+
+					// Draw ghost building
+					if (!coordinateToBuildable.containsKey(coordinate) && !Mouse.holdingRightMouseButton) {
+						Buildable ghostBuildable = createBuildable(coordinate, currentTile.name, 1);
+						updateBuilding(ghostBuildable);
+
+						drawGhostBuildable(graphics2D, ghostBuildable, x, y);
+					}
 				}
 
-				Buildable buildable = coordinateToBuildable.get(new Point(column, row));
+				Buildable buildable = coordinateToBuildable.get(coordinate);
 
 				if (buildable != null) {
 					if (buildable instanceof Conveyor) {
 						// Draw conveyor
-						buildable.draw(graphics2D);
+						buildable.draw(graphics2D, false);
 					} else {
 						buildables.add(buildable);
 
 						// Draw building conveyor
 						if (buildable.buildingConveyor != null)
-							buildable.buildingConveyor.draw(graphics2D);
+							buildable.buildingConveyor.draw(graphics2D, false);
 					}
 				}
 			}
@@ -213,13 +241,17 @@ public class TileManager {
 
 		// Draw buildings
 		for (int i = 0; i < buildables.size(); i++) {
-			buildables.get(i).draw(graphics2D);
+			buildables.get(i).draw(graphics2D, false);
 		}
+	}
+
+	public void drawGhostBuildable(Graphics2D graphics2D, Buildable ghostBuildable, int x, int y) {
+		ghostBuildable.draw(graphics2D, true);
 	}
 
 	// TO DO: implement random rotation
 	public void drawTile(Graphics2D graphics2D, BufferedImage sprite, int x, int y) {
-		graphics2D.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+		viewport.drawSprite(graphics2D, sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, 1, false);
 	}
 
 }

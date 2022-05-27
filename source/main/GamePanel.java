@@ -1,13 +1,14 @@
 package source.main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import source.item.ItemManager;
 import source.tile.TileManager;
@@ -16,16 +17,16 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Screen settings
 	public final static int originalTileSize = 32;
-	public final static int tileScale = 3;
-	public final static int itemScale = 2;
-	public final static int tileSize = originalTileSize * tileScale;
+	public static float tileScaleMultiplier = 2;
+	public static float itemScaleMultiplier = tileScaleMultiplier / 3 * 2;
+	public static int tileSize = (int)(originalTileSize * tileScaleMultiplier);
 
-	public final int horizontalTiles = 16;
-	public final int verticalTiles = 10;
+	public int horizontalTiles = 14;
+	public int verticalTiles = 10;
 
 	// Window settings
-	final int width = horizontalTiles * tileSize;
-	final int height = verticalTiles * tileSize;
+	public int width = horizontalTiles * tileSize;
+	public int height = verticalTiles * tileSize;
 
 	public int fps = 60;
 	public double time = 0;
@@ -33,16 +34,16 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// System
 	Thread gameThread;
-	TileManager tileManager = new TileManager(this);
-	ItemManager itemManager = new ItemManager(this, tileManager);
-	Mouse mouseListener = new Mouse(this, tileManager);
+	Viewport viewport = new Viewport(this);
+	TileManager tileManager = new TileManager(this, viewport);
+	ItemManager itemManager = new ItemManager(this, tileManager, viewport);
+	Mouse mouseListener = new Mouse(this, tileManager, viewport);
 	UI ui = new UI(this, tileManager);
 
 	// Player
 	public int score = 0;
 
 	public GamePanel() {
-		this.setPreferredSize(new Dimension(width, height));
 		this.setBackground(Color.black);
 		this.addMouseMotionListener(mouseListener);
 		this.setDoubleBuffered(true);
@@ -50,24 +51,50 @@ public class GamePanel extends JPanel implements Runnable {
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
-				handleClick(SwingUtilities.isRightMouseButton(event));
+				if (!SwingUtilities.isMiddleMouseButton(event))
+					handleClick(SwingUtilities.isRightMouseButton(event));
+
+				if (SwingUtilities.isMiddleMouseButton(event))
+					Mouse.dragStart = event.getPoint();
+
+				if (SwingUtilities.isRightMouseButton(event))
+					Mouse.holdingRightMouseButton = true;
+			}
+
+			public void mouseReleased(MouseEvent event) {
+				Mouse.dragStart = null;
+				viewport.stopPan();
+				Mouse.holdingRightMouseButton = false;
+			}
+
+			public void mouseExited(MouseEvent event) {
+				System.out.println("Mouse exit");
+				Mouse.mousePosition = null;
+				Mouse.mouseCoordinate = null;
+				UI.hoveringTile = null;
+			}
+		});
+
+		addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent event) {
+				viewport.zoom(event.getWheelRotation() / -2f);
 			}
 		});
 
 		tileManager.itemManager = itemManager;
-		tileManager.loadFactory();
+		// tileManager.loadFactory();
 	}
 
 	public void handleClick(boolean isRightMouseButton) {
 		if (UI.hoveringTile == null) {
 			if (!isRightMouseButton) {
-				tileManager.placeBuildable(Mouse.mouseCoordinate, tileManager.currentTile.name, 1);
+				tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
 			} else {
-				tileManager.removeBuildable(Mouse.mouseCoordinate);
+				tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
 			}
 		} else if (!isRightMouseButton) {
 			tileManager.currentTile = UI.hoveringTile;
-			System.out.println(UI.hoveringTile.name);
 		}
 	}
 

@@ -1,16 +1,17 @@
 package source.buildable;
 
 import source.main.GamePanel;
+import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
 
 public class Connectable extends Buildable {
 
-	public Connectable(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager) {
-		super(x, y, tile, gamePanel, tileManager);
+	public Connectable(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
+		super(x, y, tile, gamePanel, tileManager, viewport);
 	}
 
-	public static void updateBuildableConnections(Buildable centerBuildable, Buildable[] neighbourBuildables) {
+	public static void updateBuildableConnections(Buildable centerBuildable, Buildable[] neighbourBuildables, boolean setNeighbourConnections) {
 		if (centerBuildable != null) {
 			// Check if any neighbouring buildables already have an input or output
 			for (int i = 0; i < neighbourBuildables.length; i++) {
@@ -22,12 +23,14 @@ public class Connectable extends Buildable {
 					if ((neighbourBuildable.input == -1 || (neighbourBuildable.buildingConveyor != null && neighbourBuildable.input == oppositeDirection))
 						&& neighbourBuildable.output != -1 && centerBuildable.output == -1) {
 						// Connect output
-						neighbourBuildable.setConnection(true, oppositeDirection);
+						if (setNeighbourConnections)
+							neighbourBuildable.setConnection(true, oppositeDirection);
 						centerBuildable.setConnection(false, i);
 					} else if ((neighbourBuildable.output == -1 || (neighbourBuildable.buildingConveyor != null && neighbourBuildable.output == oppositeDirection))
 						&& neighbourBuildable.input != -1 && centerBuildable.input == -1) {
 						// Connect input
-						neighbourBuildable.setConnection(false, oppositeDirection);
+						if (setNeighbourConnections)
+							neighbourBuildable.setConnection(false, oppositeDirection);
 						centerBuildable.setConnection(true, i);
 					}
 				}
@@ -40,7 +43,8 @@ public class Connectable extends Buildable {
 
 				if (neighbourBuildable != null && neighbourBuildable.input == -1 && neighbourBuildable.output == -1 && centerBuildable.input == -1) {
 					// Connect input
-					neighbourBuildable.setConnection(false, oppositeDirection);
+					if (setNeighbourConnections)
+						neighbourBuildable.setConnection(false, oppositeDirection);
 					centerBuildable.setConnection(true, i);
 				}
 			}

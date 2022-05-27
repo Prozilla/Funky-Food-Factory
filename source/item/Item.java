@@ -11,11 +11,12 @@ import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.tile.TileManager;
 import source.main.UI;
+import source.main.Viewport;
 
 public class Item {
 
-	final static int pixelSize = GamePanel.originalTileSize / 2;
-	public final static int size = pixelSize * GamePanel.itemScale;
+	public final static int pixelSize = GamePanel.originalTileSize / 2;
+	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);
 
 	public String name;
 	
@@ -28,8 +29,9 @@ public class Item {
 
 	GamePanel gamePanel;
 	TileManager tileManager;
+	Viewport viewport;
 
-	public Item(int x, int y, String name, BufferedImage sprite, GamePanel gamePanel, TileManager tileManager) {
+	public Item(int x, int y, String name, BufferedImage sprite, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		this.x = x;
 		this.y = y;
 		this.name = name;
@@ -37,6 +39,7 @@ public class Item {
 		this.sprite = sprite;
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
+		this.viewport = viewport;
 	}
 
 	public void move(Graphics2D graphics2D) {
@@ -100,13 +103,13 @@ public class Item {
 			}
 
 			if (UI.showItemOrientation) {
-				graphics2D.fillRect(point.x, point.y, GamePanel.tileScale, GamePanel.tileScale);
+				graphics2D.fillRect(point.x, point.y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
 				graphics2D.setColor(Color.white);
-				graphics2D.fillRect(x, y, GamePanel.tileScale, GamePanel.tileScale);
+				graphics2D.fillRect(x, y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
 			}
 
 
-			Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * conveyor.speed));
+			Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * Conveyor.speed));
 
 			x += movement.x;
 			y += movement.y;
@@ -115,7 +118,7 @@ public class Item {
 	}
 
 	public void draw(Graphics2D graphics2D) {
-		graphics2D.drawImage(sprite, x + offset.x - size / 2, y + offset.y - size / 2, size, size, null);
+		viewport.drawSprite(graphics2D, sprite, (int)((x + offset.x - size / 2)), (int)((y + offset.y - size / 2)), size, size, 1, true);
 	}
 
 }

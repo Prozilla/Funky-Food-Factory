@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
+import source.main.Viewport;
 import source.tile.TileManager;
 
 public class ItemManager {
@@ -25,10 +26,12 @@ public class ItemManager {
 
 	GamePanel gamePanel;
 	TileManager tileManager;
+	Viewport viewport;
 
-	public ItemManager(GamePanel gamePanel, TileManager tileManager) {
+	public ItemManager(GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
+		this.viewport = viewport;
 
 		addItems();
 		addRecipes();
@@ -60,10 +63,10 @@ public class ItemManager {
 
 		Point center = new Point(coordinate.x * GamePanel.tileSize + xOffset, coordinate.y * GamePanel.tileSize + yOffset);
 
-		float range = GamePanel.tileSize - GamePanel.tileScale * Conveyor.borderWidth;
+		float range = GamePanel.tileSize - GamePanel.tileScaleMultiplier * Conveyor.borderWidth;
 		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
 
-		Item item = new Item(center.x, center.y, name, itemTextures.get(name), gamePanel, tileManager);
+		Item item = new Item(center.x, center.y, name, itemTextures.get(name), gamePanel, tileManager, viewport);
 		// item.offset = offset;
 
 		items.add(item);
