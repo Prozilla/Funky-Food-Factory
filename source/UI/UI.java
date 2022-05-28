@@ -1,4 +1,4 @@
-package source.main;
+package source.UI;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -17,6 +17,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
+import source.main.GamePanel;
+import source.main.Mouse;
 import source.tile.Tile;
 
 public class UI {
@@ -89,14 +91,17 @@ public class UI {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		drawScore(graphics2D);
+		drawInventory(graphics2D);
+	}
+
+	public void drawScore(Graphics2D graphics2D) {
 		graphics2D.drawImage(iconTextures.get("coin"), 50, 50 - (int)(fontSize / 10f * 9f), fontSize, fontSize, null);
 
 		graphics2D.setFont(font);
 		graphics2D.setColor(Color.white);
-		graphics2D.setFont(graphics2D.getFont().deriveFont(font.PLAIN, fontSize));
+		graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, fontSize));
 		graphics2D.drawString(Integer.toString(gamePanel.score), 50 + fontSize + 10, 50);
-
-		drawInventory(graphics2D);
 	}
 
 	public void drawInventory(Graphics2D graphics2D) {

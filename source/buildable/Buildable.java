@@ -5,10 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
+import java.awt.Font;
 
+import source.UI.UI;
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
-import source.main.UI;
 import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
@@ -22,7 +23,7 @@ public class Buildable {
 	public Conveyor buildingConveyor;
 
 	// Animation
-	float animationSpeed = 20f; // 10f
+	public float animationSpeed = 10;
 	public int frameCount = 1;
 	int frame = 0;
 	float frameTime = 0;
@@ -44,7 +45,7 @@ public class Buildable {
 	public boolean allowAutoRotation = false;
 
 	double age = 0;
-	double death; // Should be set to the current age when building gets deleted (to do remove animation)
+	double death; // TO do: Should be set to the current age when building gets deleted (to do remove animation)
 
 	public ArrayList<Integer> connections = new ArrayList<Integer>();
 
@@ -170,7 +171,7 @@ public class Buildable {
 
 		if (UI.showCurrentFrame) {
 			graphics2D.setColor(UI.backgroundColorB);
-			graphics2D.setFont(graphics2D.getFont().deriveFont(UI.font.PLAIN, 22f));
+			graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 22f));
 			graphics2D.drawString(frame + "", x, y + 11);
 		}
 	}

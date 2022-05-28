@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import source.UI.UI;
 import source.item.ItemManager;
 import source.tile.TileManager;
 
@@ -68,7 +69,6 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			public void mouseExited(MouseEvent event) {
-				System.out.println("Mouse exit");
 				Mouse.mousePosition = null;
 				Mouse.mouseCoordinate = null;
 				UI.hoveringTile = null;
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
 		});
 
 		tileManager.itemManager = itemManager;
-		// tileManager.loadFactory();
+		tileManager.loadFactory();
 	}
 
 	public void handleClick(boolean isRightMouseButton) {

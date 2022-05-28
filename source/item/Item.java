@@ -5,12 +5,12 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
+import source.UI.UI;
 import source.buildable.Buildable;
 import source.buildable.Building;
 import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.tile.TileManager;
-import source.main.UI;
 import source.main.Viewport;
 
 public class Item {
@@ -25,13 +25,19 @@ public class Item {
 	public Point offset = new Point(0, 0);
 	public Point coordinate = new Point(0, 0);
 
+	public boolean clogged = false;
+	final int clogGap = 4;
+
+	public Building lastBuilding;
+
 	BufferedImage sprite;
 
 	GamePanel gamePanel;
 	TileManager tileManager;
 	Viewport viewport;
+	ItemManager itemManager;
 
-	public Item(int x, int y, String name, BufferedImage sprite, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
+	public Item(int x, int y, String name, BufferedImage sprite, GamePanel gamePanel, TileManager tileManager, Viewport viewport, ItemManager itemManager) {
 		this.x = x;
 		this.y = y;
 		this.name = name;
@@ -40,6 +46,7 @@ public class Item {
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
 		this.viewport = viewport;
+		this.itemManager = itemManager;
 	}
 
 	public void move(Graphics2D graphics2D) {
@@ -53,67 +60,98 @@ public class Item {
 		}
 
 		if (conveyor != null) {
-			int direction = !buildingConveyor ? conveyor.input > -1 ? (conveyor.input + 2) % 4 : conveyor.output : (conveyor.rotation / 90 + 1) % 4;
-			Point offset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
+			if (!clogged) {
+				int direction = !buildingConveyor ? conveyor.input > -1 ? (conveyor.input + 2) % 4 : conveyor.output : (conveyor.rotation / 90 + 1) % 4;
+				Point offset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
 
-			switch (direction) {
-				case 0:
-					offset.y += Item.size / 2;
-					break;
-				case 1:
-					offset.x -= Item.size / 2;
-					break;
-				case 2:
-					offset.y -= Item.size / 2;
-					break;
-				case 3:
-					offset.x += Item.size / 2;
-					break;
-			}
-
-			Point point = new Point(x + offset.x, y + offset.y);
-			Point offsetCoordinate = TileManager.positionToCoordinate(point);
-
-			// Get previous conveyor coordinate
-			Point previousCoordinateOffset = TileManager.moveInDirection(direction, 1);
-			Point previousCoordinate = new Point(coordinate.x + previousCoordinateOffset.x / 2, coordinate.y + previousCoordinateOffset.y / 2);
-
-			// if (buildingConveyor) {
-			// 	direction = (conveyor.rotation / 90 + 3) % 4;
-			// }
-
-			if (!offsetCoordinate.equals(previousCoordinate)) {
-				if (!buildingConveyor && conveyor.output != -1) {
-					direction = conveyor.output;
-					graphics2D.setColor(Color.yellow);
-				} else if (buildable instanceof Building) {
-					// Only process item if it has passed the center of the building
-					Point nextPositionOffset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
-					Point nextPosition = new Point(x + nextPositionOffset.x, y + nextPositionOffset.y);
-
-					Point nextCoordinate = TileManager.positionToCoordinate(nextPosition);
-
-					if (!nextCoordinate.equals(coordinate)) {
-						((Building)buildable).processItem(this);
-						graphics2D.setColor(Color.green);
-					}
+				switch (direction) {
+					case 0:
+						offset.y += Item.size / 2;
+						break;
+					case 1:
+						offset.x -= Item.size / 2;
+						break;
+					case 2:
+						offset.y -= Item.size / 2;
+						break;
+					case 3:
+						offset.x += Item.size / 2;
+						break;
 				}
-			} else {
-				graphics2D.setColor(Color.cyan);
+
+				Point point = new Point(x + offset.x, y + offset.y);
+				Point offsetCoordinate = TileManager.positionToCoordinate(point);
+
+				// Get previous conveyor coordinate
+				Point previousCoordinateOffset = TileManager.moveInDirection(direction, 1);
+				Point previousCoordinate = new Point(coordinate.x + previousCoordinateOffset.x / 2, coordinate.y + previousCoordinateOffset.y / 2);
+
+				if (!offsetCoordinate.equals(previousCoordinate)) {
+					if (!buildingConveyor && conveyor.output != -1) {
+						direction = conveyor.output;
+						graphics2D.setColor(Color.yellow);
+					} else if (buildable instanceof Building) {
+						// Only process item if it has passed the center of the building
+						Point nextPositionOffset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
+						Point nextPosition = new Point(x + nextPositionOffset.x, y + nextPositionOffset.y);
+
+						Point nextCoordinate = TileManager.positionToCoordinate(nextPosition);
+
+						if (!nextCoordinate.equals(coordinate)) {
+							((Building)buildable).processItem(this);
+							graphics2D.setColor(Color.green);
+						}
+					}
+				} else {
+					graphics2D.setColor(Color.cyan);
+				}
+
+				if (UI.showItemOrientation) {
+					graphics2D.fillRect(point.x, point.y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
+					graphics2D.setColor(Color.white);
+					graphics2D.fillRect(x, y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
+				}
+
+
+				Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * Conveyor.itemSpeed));
+
+				x += movement.x;
+				y += movement.y;
+				coordinate = TileManager.positionToCoordinate(new Point(x, y));
 			}
 
-			if (UI.showItemOrientation) {
-				graphics2D.fillRect(point.x, point.y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
-				graphics2D.setColor(Color.white);
-				graphics2D.fillRect(x, y, (int)GamePanel.tileScaleMultiplier, (int)GamePanel.tileScaleMultiplier);
+			if (lastBuilding != null && !coordinate.equals(lastBuilding.coordinate))
+				lastBuilding = null;
+
+			checkForClogs(buildable, conveyor);			
+		} else {
+			clogged = true;
+		}
+	}
+
+	public void checkForClogs(Buildable buildable, Conveyor conveyor) {
+		clogged = false;
+
+		if (buildable instanceof Building) {
+			Building building = (Building)(buildable);
+
+			if (building != lastBuilding && building.inputItem != null && name != building.inputItem) {
+				clogged = true;
 			}
+		}
 
+		for (int i = 0; i < itemManager.items.size(); i++) {
+			Item item = itemManager.items.get(i);
+			boolean inFront = !conveyor.mirrorSprite ? x > item.x || y > item.y : x < item.x || y < item.y;
 
-			Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * Conveyor.speed));
+			if (item.clogged && inFront) {
+				double distance = (x - item.x) * (x - item.x) + (y - item.y) * (y - item.y);
+				double minDistance = (clogGap + size) * (clogGap + size);
 
-			x += movement.x;
-			y += movement.y;
-			coordinate = TileManager.positionToCoordinate(new Point(x, y));
+				if (distance < minDistance) {
+					clogged = true;
+				}
+			}
 		}
 	}
 

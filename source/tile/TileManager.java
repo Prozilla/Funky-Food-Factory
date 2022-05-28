@@ -11,6 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import source.UI.UI;
 import source.buildable.Buildable;
 import source.buildable.Connectable;
 import source.buildable.building.Exporter;
@@ -20,7 +21,6 @@ import source.buildable.connectable.Conveyor;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Mouse;
-import source.main.UI;
 import source.main.Viewport;
 
 public class TileManager {
@@ -49,9 +49,9 @@ public class TileManager {
 		placeBuildable(new Point(8, 5), "conveyor", 0);
 		placeBuildable(new Point(9, 5), "conveyor", 0);
 		placeBuildable(new Point(9, 4), "smelter", 0);
-		placeBuildable(new Point(9, 3), "conveyor", 0);
-		placeBuildable(new Point(8, 3), "conveyor", 0);
 		placeBuildable(new Point(7, 3), "conveyor", 0);
+		placeBuildable(new Point(8, 3), "conveyor", 0);
+		placeBuildable(new Point(9, 3), "conveyor", 0);
 		placeBuildable(new Point(6, 3), "importer", 1);
 	}
 

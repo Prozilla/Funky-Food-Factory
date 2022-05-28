@@ -9,6 +9,9 @@ import source.tile.TileManager;
 
 public class Building extends Buildable {
 
+	public String inputItem;
+	public String outputItem;
+
 	public ItemManager itemManager;
 
 	public Building(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
@@ -17,7 +20,7 @@ public class Building extends Buildable {
 	}
 
 	public void processItem(Item item) {
-
+		item.lastBuilding = this;
 	}
 	
 }

@@ -14,22 +14,18 @@ public class Smelter extends Building {
 		super(x, y, tile, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
+		this.inputItem = "iron_ore";
+		this.outputItem = "iron_ingot";
 	}
 
 	@Override
 	public void processItem(Item item) {
-		String outputName = item.name;
+		super.processItem(item);
 
-		switch (item.name) {
-			case "iron_ore":
-				outputName = "iron_ingot";
-				break;
-		}
-
-		if (outputName != item.name) {
-			Item outputItem = new Item(item.x, item.y, outputName, itemManager.itemTextures.get(outputName), gamePanel, tileManager, viewport);
+		if (item.name == inputItem) {
+			Item output = new Item(item.x, item.y, outputItem, itemManager.itemTextures.get(outputItem), gamePanel, tileManager, viewport, itemManager);
 			itemManager.items.remove(item);
-			itemManager.items.add(outputItem);
+			itemManager.items.add(output);
 		}
 	}
 	

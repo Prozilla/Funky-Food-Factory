@@ -66,7 +66,7 @@ public class ItemManager {
 		float range = GamePanel.tileSize - GamePanel.tileScaleMultiplier * Conveyor.borderWidth;
 		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
 
-		Item item = new Item(center.x, center.y, name, itemTextures.get(name), gamePanel, tileManager, viewport);
+		Item item = new Item(center.x, center.y, name, itemTextures.get(name), gamePanel, tileManager, viewport, this);
 		// item.offset = offset;
 
 		items.add(item);

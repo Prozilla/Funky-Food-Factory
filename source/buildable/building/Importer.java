@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import source.buildable.Building;
+import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Viewport;
@@ -15,6 +16,7 @@ public class Importer extends Building {
 	float itemSpawnDelay = 1.5f;
 	double timeUntilNextSpawn = itemSpawnDelay;
 
+	int itemsSpawned = 0;
 	boolean stopSpawning = false;
 
 	public Importer(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
@@ -39,8 +41,21 @@ public class Importer extends Building {
 					timeUntilNextSpawn = itemSpawnDelay;
 
 					if (!stopSpawning) {
-						itemManager.spawnItem("iron_ore", coordinate);
-						// stopSpawning = true;
+						boolean clogged = false;
+						for (int i = 0; i < itemManager.items.size(); i++) {
+							Item item = itemManager.items.get(i);
+							if (coordinate.equals(item.coordinate))
+								clogged = true;
+						}
+
+						if (!clogged) {
+							itemManager.spawnItem("iron_ore", coordinate);
+							itemsSpawned++;
+
+							if (itemsSpawned == 1) {
+								// stopSpawning = true;
+							}
+						}
 					}
 				}
 			} else {
