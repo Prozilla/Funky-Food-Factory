@@ -1,6 +1,6 @@
-*.class
+**/*.class
 .classpath
 .project
 
-/.vscode
-/gamedesign
+.vscode
+gamedesign
