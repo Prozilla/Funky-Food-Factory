@@ -33,7 +33,6 @@ public class UI {
 
 	final int invSlotSize = 100;
 	final int invSlotIconSize = 75;
-	final int invSlotRadius = 25;
 	final int invHorizontalMargin = 20;
 	final int invVerticalMargin = 35;
 
@@ -44,8 +43,10 @@ public class UI {
 	TileManager tileManager;
 
 	public static Font font;
-	final int fontSize = 33;
+	public final static int fontSize = 33;
+	public final static int cornerRadius = 25;
 
+	public static Modal currentModal;
 	public static Tile hoveringTile;
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
@@ -91,6 +92,9 @@ public class UI {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		if (currentModal != null)
+			currentModal.draw(graphics2D);
+
 		drawScore(graphics2D);
 		drawInventory(graphics2D);
 	}
@@ -98,9 +102,8 @@ public class UI {
 	public void drawScore(Graphics2D graphics2D) {
 		graphics2D.drawImage(iconTextures.get("coin"), 50, 50 - (int)(fontSize / 10f * 9f), fontSize, fontSize, null);
 
-		graphics2D.setFont(font);
 		graphics2D.setColor(Color.white);
-		graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, fontSize));
+		graphics2D.setFont(font.deriveFont(Font.PLAIN, fontSize));
 		graphics2D.drawString(Integer.toString(gamePanel.score), 50 + fontSize + 10, 50);
 	}
 
@@ -129,7 +132,7 @@ public class UI {
 	public void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering) {
 		graphics2D.setColor(hovering ? backgroundColorB : backgroundColorA);
 
-		graphics2D.fillRoundRect(x, y, invSlotSize, invSlotSize, invSlotRadius, invSlotRadius);
+		graphics2D.fillRoundRect(x, y, invSlotSize, invSlotSize, cornerRadius, cornerRadius);
 
 		int difference = (invSlotSize - invSlotIconSize) / 2;
 		int iconX = x + difference;

@@ -13,13 +13,11 @@ import source.main.GamePanel;
 import source.tile.TileManager;
 import source.main.Viewport;
 
-public class Item {
+public class Item extends AbstractItem {
 
 	public final static int pixelSize = GamePanel.originalTileSize / 2;
 	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);
 
-	public String name;
-	
 	public int x = 0;
 	public int y = 0;
 	public Point offset = new Point(0, 0);
@@ -30,19 +28,28 @@ public class Item {
 
 	public Building lastBuilding;
 
-	BufferedImage sprite;
-
 	GamePanel gamePanel;
 	TileManager tileManager;
 	Viewport viewport;
 	ItemManager itemManager;
 
 	public Item(int x, int y, String name, BufferedImage sprite, GamePanel gamePanel, TileManager tileManager, Viewport viewport, ItemManager itemManager) {
+		super(name, sprite);
 		this.x = x;
 		this.y = y;
 		this.name = name;
 		this.coordinate = TileManager.positionToCoordinate(new Point(x, y));
-		this.sprite = sprite;
+		this.gamePanel = gamePanel;
+		this.tileManager = tileManager;
+		this.viewport = viewport;
+		this.itemManager = itemManager;
+	}
+
+	public Item(int x, int y, AbstractItem abstractItem, GamePanel gamePanel, TileManager tileManager, Viewport viewport, ItemManager itemManager) {
+		super(abstractItem.name, abstractItem.sprite);
+		this.x = x;
+		this.y = y;
+		this.coordinate = TileManager.positionToCoordinate(new Point(x, y));
 		this.gamePanel = gamePanel;
 		this.tileManager = tileManager;
 		this.viewport = viewport;
@@ -135,7 +142,7 @@ public class Item {
 		if (buildable instanceof Building) {
 			Building building = (Building)(buildable);
 
-			if (building != lastBuilding && building.inputItem != null && name != building.inputItem) {
+			if (building != lastBuilding && building.recipe != null && name != building.recipe.inputItem.name) {
 				clogged = true;
 			}
 		}

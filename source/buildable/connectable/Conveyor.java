@@ -9,7 +9,7 @@ import source.tile.TileManager;
 public class Conveyor extends Connectable {
 
 	public static final int borderWidth = 3;
-	public static float itemSpeed = 0.5f;
+	public static float itemSpeed = 1;
 
 	public Conveyor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);

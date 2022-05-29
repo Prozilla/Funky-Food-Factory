@@ -19,7 +19,7 @@ public class ItemManager {
 	final String itemsPath = "textures/";
 	final String recipesPath = "building/recipes/Recipes.json";
 
-	public Map<String, BufferedImage> itemTextures;
+	public Map<String, AbstractItem> abstractItems;
 	public ArrayList<Item> items = new ArrayList<Item>();
 
 	public Map<Item, Item> recipes;
@@ -38,7 +38,7 @@ public class ItemManager {
 	}
 
 	public void addItems() {
-		itemTextures = new HashMap<String, BufferedImage>();
+		abstractItems = new HashMap<String, AbstractItem>();
 
 		addItem("iron_ore");
 		addItem("iron_ingot");
@@ -47,7 +47,7 @@ public class ItemManager {
 	public void addItem(String name) {
 		try {
 			System.out.println(String.format("Reading %s%s.png", itemsPath, name));
-			itemTextures.put(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", itemsPath, name))));
+			abstractItems.put(name, new AbstractItem(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", itemsPath, name)))));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
@@ -66,7 +66,7 @@ public class ItemManager {
 		float range = GamePanel.tileSize - GamePanel.tileScaleMultiplier * Conveyor.borderWidth;
 		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
 
-		Item item = new Item(center.x, center.y, name, itemTextures.get(name), gamePanel, tileManager, viewport, this);
+		Item item = new Item(center.x, center.y, abstractItems.get(name), gamePanel, tileManager, viewport, this);
 		// item.offset = offset;
 
 		items.add(item);

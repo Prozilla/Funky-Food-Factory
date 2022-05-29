@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 import source.UI.UI;
+import source.buildable.Buildable;
+import source.buildable.Building;
 import source.tile.TileManager;
 
 public class Mouse implements MouseMotionListener, MouseListener {
@@ -32,6 +34,31 @@ public class Mouse implements MouseMotionListener, MouseListener {
 		this.viewport = viewport;
 	}
 
+	public void handleClick(boolean isRightMouseButton) {
+		boolean openedModal = false;
+
+		if (UI.hoveringTile == null) {
+			if (!isRightMouseButton) {
+				Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+
+				if (buildable == null) {
+					tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
+				} else if (buildable instanceof Building) {
+					Building building = (Building)buildable;
+					building.openModal();
+					openedModal = true;
+				}
+			} else {
+				tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
+			}
+		} else if (!isRightMouseButton) {
+			tileManager.currentTile = UI.hoveringTile;
+		}
+
+		if (!openedModal)
+			UI.currentModal = null;
+	}
+
 	@Override
 	public void mouseDragged(MouseEvent event) {
 		updateCursor(event.getPoint());
@@ -40,7 +67,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 			if (!SwingUtilities.isMiddleMouseButton(event) && (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate)) {
 				lastDragCoordinate = mouseCoordinate;
 
-				gamePanel.handleClick(SwingUtilities.isRightMouseButton(event));
+				handleClick(SwingUtilities.isRightMouseButton(event));
 
 				if (SwingUtilities.isRightMouseButton(event))
 					holdingRightMouseButton = true;

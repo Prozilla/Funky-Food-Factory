@@ -1,7 +1,7 @@
 package source.buildable.building;
 
 import source.buildable.Building;
-import source.item.Item;
+import source.buildable.building.recipe.Recipe;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Viewport;
@@ -14,19 +14,7 @@ public class Smelter extends Building {
 		super(x, y, tile, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
-		this.inputItem = "iron_ore";
-		this.outputItem = "iron_ingot";
-	}
-
-	@Override
-	public void processItem(Item item) {
-		super.processItem(item);
-
-		if (item.name == inputItem) {
-			Item output = new Item(item.x, item.y, outputItem, itemManager.itemTextures.get(outputItem), gamePanel, tileManager, viewport, itemManager);
-			itemManager.items.remove(item);
-			itemManager.items.add(output);
-		}
+		this.recipe = new Recipe(itemManager.abstractItems.get("iron_ore"), itemManager.abstractItems.get("iron_ingot"));
 	}
 	
 }

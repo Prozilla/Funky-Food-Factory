@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				if (!SwingUtilities.isMiddleMouseButton(event))
-					handleClick(SwingUtilities.isRightMouseButton(event));
+					mouseListener.handleClick(SwingUtilities.isRightMouseButton(event));
 
 				if (SwingUtilities.isMiddleMouseButton(event))
 					Mouse.dragStart = event.getPoint();
@@ -84,18 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		tileManager.itemManager = itemManager;
 		tileManager.loadFactory();
-	}
-
-	public void handleClick(boolean isRightMouseButton) {
-		if (UI.hoveringTile == null) {
-			if (!isRightMouseButton) {
-				tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
-			} else {
-				tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
-			}
-		} else if (!isRightMouseButton) {
-			tileManager.currentTile = UI.hoveringTile;
-		}
 	}
 
 	public void startGameThread() {
