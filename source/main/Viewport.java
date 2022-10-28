@@ -9,8 +9,8 @@ import java.awt.Dimension;
 
 public class Viewport {
 
-	public float zoomMultiplier = 1;
-	final float minZoom = zoomMultiplier;
+	public float zoomFactor = 1;
+	final float minZoom = zoomFactor;
 	final float maxZoom = 4;
 	final float zoomSpeed = 1.25f;
 	
@@ -49,7 +49,7 @@ public class Viewport {
 	}
 
 	public void zoom(float amount) {
-		zoomedTileScale += amount * zoomMultiplier * zoomSpeed;
+		zoomedTileScale += amount * zoomFactor * zoomSpeed;
 
 		int minTileScale = (int)(minZoom * GamePanel.tileScaleMultiplier);
 		int maxTileScale = (int)(maxZoom * GamePanel.tileScaleMultiplier);
@@ -65,8 +65,16 @@ public class Viewport {
 		centerOffsetX = (initWidth - width) / 2;
 		centerOffsetY = (initHeight - height) / 2;
 
-		zoomMultiplier = (float)width / (float)initWidth;
-		System.out.println("Zoom: " + zoomMultiplier);
+		// centerOffsetX = (initWidth - width) / 2 - panX;
+		// centerOffsetY = (initHeight - height) / 2 - panY;
+
+		// if (Mouse.mousePosition != null) {
+		// 	centerOffsetX -= Mouse.mousePosition.x + (initWidth - width) / 2;
+		// 	centerOffsetY -= Mouse.mousePosition.y + (initHeight - width) / 2;
+		// }
+
+		zoomFactor = (float)width / (float)initWidth;
+		System.out.println("Zoom: " + zoomFactor);
 		System.out.println("Width: " + width);
 		System.out.println("Height: " + height);
 
@@ -114,8 +122,8 @@ public class Viewport {
 			return;
 
 		Point position = positionToViewport(new Point(x, y)); 
-		int zoomedWidth = (int)(spriteWidth * zoomMultiplier);
-		int zoomedHeight = (int)(spriteHeight * zoomMultiplier);
+		int zoomedWidth = (int)(spriteWidth * zoomFactor);
+		int zoomedHeight = (int)(spriteHeight * zoomFactor);
 
 		// if (zoomedX < 0 || zoomedY < 0 || zoomedX > width || zoomedY > height)
 		// 	return;
@@ -133,19 +141,19 @@ public class Viewport {
 
 	public void drawRect(Graphics2D graphics2D, int x, int y, int rectWidth, int rectHeight, Color color) {
 		Point position = viewportToPosition(new Point(x, y)); 
-		int zoomedWidth = (int)(rectWidth * zoomMultiplier);
-		int zoomedHeight = (int)(rectHeight * zoomMultiplier);
+		int zoomedWidth = (int)(rectWidth * zoomFactor);
+		int zoomedHeight = (int)(rectHeight * zoomFactor);
 
 		graphics2D.setColor(color);
 		graphics2D.fillRect(position.x, position.y, zoomedWidth, zoomedHeight);
 	}
 
 	public Point positionToViewport(Point position) {
-		return new Point((int)((position.x * zoomMultiplier) + centerOffsetX + panX), (int)((position.y * zoomMultiplier) + centerOffsetY + panY));
+		return new Point((int)((position.x * zoomFactor) + centerOffsetX + panX), (int)((position.y * zoomFactor) + centerOffsetY + panY));
 	}
 
 	public Point viewportToPosition(Point position) {
-		return new Point((int)((position.x - centerOffsetX - panX) / zoomMultiplier), (int)((position.y - centerOffsetY - panY) / zoomMultiplier));
+		return new Point((int)((position.x - centerOffsetX - panX) / zoomFactor), (int)((position.y - centerOffsetY - panY) / zoomFactor));
 	}
 
 }

@@ -39,12 +39,15 @@ public class GamePanel extends JPanel implements Runnable {
 	TileManager tileManager = new TileManager(this, viewport);
 	ItemManager itemManager = new ItemManager(this, tileManager, viewport);
 	Mouse mouseListener = new Mouse(this, tileManager, viewport);
-	UI ui = new UI(this, tileManager);
+	UI ui = UI.instance;
 
 	// Player
 	public int score = 0;
 
 	public GamePanel() {
+		UI.instance.setTileManager(tileManager);
+		UI.instance.gamePanel = this;
+
 		this.setBackground(Color.black);
 		this.addMouseMotionListener(mouseListener);
 		this.setDoubleBuffered(true);

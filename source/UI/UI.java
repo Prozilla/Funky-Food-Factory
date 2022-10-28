@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -22,6 +20,8 @@ import source.main.Mouse;
 import source.tile.Tile;
 
 public class UI {
+
+	public static UI instance = new UI();
 
 	// Debugging
 	public static final boolean showConnections = false;
@@ -39,28 +39,20 @@ public class UI {
 	public final static Color backgroundColorA = new Color(0.09f, 0.07f, 0.15f, 0.85f);
 	public final static Color backgroundColorB = new Color(0.09f, 0.07f, 0.15f, 0.95f);
 	
-	GamePanel gamePanel;
+	public GamePanel gamePanel;
 	TileManager tileManager;
 
 	public static Font font;
 	public final static int fontSize = 33;
 	public final static int cornerRadius = 25;
 
-	public static Modal currentModal;
+	public static UIElement currentModal;
 	public static Tile hoveringTile;
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
-	Map<String, BufferedImage> iconTextures;
+	public Map<String, BufferedImage> iconTextures;
 
-	public UI(GamePanel gamePanel, TileManager tileManager) {
-		this.gamePanel = gamePanel;
-		this.tileManager = tileManager;
-
-		tileManager.addTile(buildables, new String[]{"conveyor"});
-		tileManager.addTile(buildables, new String[]{"smelter"});
-		tileManager.addTile(buildables, new String[]{"importer"});
-		tileManager.addTile(buildables, new String[]{"exporter"});
-		
+	private UI() {
 		try {
 			InputStream inputStream = getClass().getResourceAsStream(fontsPath + "Retro Gaming.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
@@ -73,10 +65,20 @@ public class UI {
 		addIcons();
 	}
 
+	public void setTileManager(TileManager tileManager) {
+		this.tileManager = tileManager;
+
+		tileManager.addTile(buildables, new String[]{"conveyor"});
+		tileManager.addTile(buildables, new String[]{"smelter"});
+		tileManager.addTile(buildables, new String[]{"importer"});
+		tileManager.addTile(buildables, new String[]{"exporter"});
+	}
+
 	public void addIcons() {
 		iconTextures = new HashMap<String, BufferedImage>();
 
 		addIcon("coin");
+		addIcon("arrow");
 	}
 
 	public void addIcon(String name) {

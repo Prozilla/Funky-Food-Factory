@@ -16,8 +16,8 @@ import source.tile.TileManager;
 
 public class ItemManager {
 
-	final String itemsPath = "textures/";
-	final String recipesPath = "building/recipes/Recipes.json";
+	public final static String texturesPath = "textures/";
+	public final String recipesPath = "building/recipes/Recipes.json";
 
 	public Map<String, AbstractItem> abstractItems;
 	public ArrayList<Item> items = new ArrayList<Item>();
@@ -46,8 +46,8 @@ public class ItemManager {
 
 	public void addItem(String name) {
 		try {
-			System.out.println(String.format("Reading %s%s.png", itemsPath, name));
-			abstractItems.put(name, new AbstractItem(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", itemsPath, name)))));
+			System.out.println(String.format("Reading %s%s.png", texturesPath, name));
+			abstractItems.put(name, new AbstractItem(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", texturesPath, name)))));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}

@@ -15,13 +15,16 @@ import source.tile.TileManager;
 
 public class Building extends Buildable {
 
+	public String name;
 	public Recipe recipe;
 	public ArrayList<Recipe> possibleRecipes = new ArrayList<Recipe>();
 
 	public ItemManager itemManager;
 
-	public Building(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
+	public Building(String name, int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
+
+		this.name = name;
 		this.itemManager = itemManager;
 	}
 
@@ -38,7 +41,7 @@ public class Building extends Buildable {
 
 	public void openModal() {
 		if (recipe != null) {
-			UI.currentModal = new RecipePicker(String.format("%s > %s", recipe.inputItem.name, recipe.outputItem.name), new Point(x + GamePanel.tileSize, y), recipe);
+			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), recipe);
 		} else {
 			UI.currentModal = null;
 		}

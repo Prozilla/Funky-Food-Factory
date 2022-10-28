@@ -20,7 +20,7 @@ public class Importer extends Building {
 	boolean stopSpawning = false;
 
 	public Importer(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super(x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Importer", x, y, tile, gamePanel, tileManager, itemManager, viewport);
 		this.input = -2;
 		this.output = direction;
 		this.addConveyor();
