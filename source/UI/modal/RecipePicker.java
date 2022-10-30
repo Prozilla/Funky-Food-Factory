@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import source.UI.Clickable;
 import source.UI.Direction;
 import source.UI.ImageElement;
 import source.UI.UI;
@@ -17,7 +18,7 @@ public class RecipePicker extends UIElement {
 	public Integer activeRecipeIndex;
 	public ArrayList<Recipe> possibleRecipes;
 
-	public RecipePicker(String title, Point position, ArrayList<Recipe> possibleRecipes, Recipe activeRecipe) {
+	public RecipePicker(String title, Point position, ArrayList<Recipe> possibleRecipes, Recipe activeRecipe, Clickable clickable) {
 		super(position, new Point(20, 20), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
 
 		this.activeRecipe = activeRecipe;
@@ -32,6 +33,7 @@ public class RecipePicker extends UIElement {
 
 			UIElement recipeContainer = new UIElement(position, new Point(5, 0), null, UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 			recipeContainer.name = String.format("recipe%s", i);
+			recipeContainer.clickable = clickable;
 			appendChild(recipeContainer);
 
 			ImageElement inputImage = new ImageElement(position, new Point(10, 10), null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.inputItem.sprite, 25, 25);

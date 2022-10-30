@@ -3,7 +3,9 @@ package source.buildable;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import source.UI.Clickable;
 import source.UI.UI;
+import source.UI.UIElement;
 import source.UI.modal.RecipePicker;
 import source.buildable.building.recipe.Recipe;
 import source.item.Item;
@@ -39,9 +41,24 @@ public class Building extends Buildable {
 		}
 	}
 
+	public void setRecipe(int index) {
+		if (index >= possibleRecipes.size())
+			return;
+
+		activeRecipe = possibleRecipes.get(index);
+	}
+
 	public void openModal() {
 		if (activeRecipe != null) {
-			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe);
+			Clickable clickable = new Clickable() {
+				@Override
+				public void onClick(UIElement element) {
+					int recipeIndex = Integer.parseInt(element.name.replace("recipe", ""));
+					setRecipe(recipeIndex);
+				}
+			};
+
+			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe, clickable);
 		} else {
 			UI.currentModal = null;
 		}

@@ -38,27 +38,28 @@ public class Mouse implements MouseMotionListener, MouseListener {
 		boolean openedModal = false;
 
 		if (UI.hoveringElement == null) {
-			if (UI.hoveringInventoryTile == null) {
-				if (!isRightMouseButton) {
-					Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+			if (UI.currentModal == null) {
+				if (UI.hoveringInventoryTile == null) {
+					if (!isRightMouseButton) {
+						Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
 
-					if (buildable == null) {
-						tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
-					} else if (buildable instanceof Building) {
-						Building building = (Building)buildable;
-						building.openModal();
-						openedModal = true;
+						if (buildable == null) {
+							tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
+						} else if (buildable instanceof Building) {
+							Building building = (Building)buildable;
+							building.openModal();
+							openedModal = true;
+						}
+					} else {
+						tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
 					}
-				} else {
-					tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
+				} else if (!isRightMouseButton) {
+					tileManager.currentTile = UI.hoveringInventoryTile;
 				}
-			} else if (!isRightMouseButton) {
-				tileManager.currentTile = UI.hoveringInventoryTile;
-			}
-
-			if (!openedModal)
+			} else if (!openedModal) {
 				UI.currentModal = null;
-		} else {
+			}
+		} else if (UI.hoveringElement.clickable != null) {
 			UI.hoveringElement.clickable.onClick(UI.hoveringElement);
 		}
 	}
