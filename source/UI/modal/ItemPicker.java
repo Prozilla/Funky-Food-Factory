@@ -11,6 +11,7 @@ import source.UI.ImageElement;
 import source.UI.UI;
 import source.UI.UIElement;
 import source.item.AbstractItem;
+import source.item.ItemManager;
 
 public class ItemPicker extends UIElement {
 
@@ -43,17 +44,31 @@ public class ItemPicker extends UIElement {
 		}
 	}
 
+	public void setItem(String name) {
+		activeItemIndex = possibleItems.indexOf(ItemManager.abstractItems.get(name));
+		activeItem = possibleItems.get(activeItemIndex);
+	}
+
 	@Override
 	public void draw(Graphics2D graphics2D) {
-		// Set hover color
+		// Update styling
 		UIElement container = children.get(0);
 		for (int i = 0; i < container.children.size(); i++) {
 			UIElement element = container.children.get(i);
+
+			boolean hovering = element.hovering || element.hoveringChild;
+			boolean active = i == activeItemIndex;
 			
-			if (element.hovering || element.hoveringChild) {
+			if (hovering || active) {
 				element.backgroundColor = UI.backgroundColorA;
 			} else {
 				element.backgroundColor = null;
+			}
+
+			if (active) {
+				element.setBorder(UI.borderWidth, Color.WHITE);
+			} else {
+				element.setBorder(0, null);
 			}
 		}
 

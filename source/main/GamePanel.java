@@ -1,6 +1,8 @@
 package source.main;
 
 import java.awt.Color;
+
+import javax.management.ValueExp;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
@@ -16,7 +18,7 @@ import source.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
-	// Screen settings
+	// Screen
 	public final static int originalTileSize = 32;
 	public static float tileScaleMultiplier = 2;
 	public static float itemScaleMultiplier = tileScaleMultiplier / 3 * 2;
@@ -25,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public int horizontalTiles = 14;
 	public int verticalTiles = 10;
 
-	// Window settings
+	// Window
 	public int width = horizontalTiles * tileSize;
 	public int height = verticalTiles * tileSize;
 
@@ -43,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Player
 	public int score = 0;
+	public float scoreMultiplier = 5;
 
 	public GamePanel() {
 		UI.instance.setTileManager(tileManager);
@@ -143,6 +146,10 @@ public class GamePanel extends JPanel implements Runnable {
 		ui.draw(graphics2D);
 
 		graphics2D.dispose();
+	}
+
+	public void addScore(int value) {
+		score += Math.round(value * scoreMultiplier);
 	}
 
 }

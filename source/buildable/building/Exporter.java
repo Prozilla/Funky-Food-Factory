@@ -25,14 +25,19 @@ public class Exporter extends Building {
 
 		switch (item.name) {
 			case "iron_ore":
+			case "copper_ore":
 				reward = 1;
 				break;
 			case "iron_ingot":
+			case "copper_ingot":
 				reward = 2;
+				break;
+			case "screw":
+				reward = 4;
 				break;
 		}
 
-		gamePanel.score += reward;
+		gamePanel.addScore(reward);
 	}
 	
 }

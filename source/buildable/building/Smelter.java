@@ -15,8 +15,9 @@ public class Smelter extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(itemManager.abstractItems.get("iron_ore"), itemManager.abstractItems.get("iron_ingot")));
-		this.possibleRecipes.add(new Recipe(itemManager.abstractItems.get("copper_ore"), itemManager.abstractItems.get("copper_ingot")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("iron_ore"), ItemManager.abstractItems.get("iron_ingot")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("iron_ingot"), ItemManager.abstractItems.get("screw")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("copper_ore"), ItemManager.abstractItems.get("copper_ingot")));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

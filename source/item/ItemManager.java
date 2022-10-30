@@ -3,7 +3,6 @@ package source.item;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Graphics2D;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class ItemManager {
 	public final static String texturesPath = "textures/";
 	public final String recipesPath = "building/recipes/Recipes.json";
 
-	public Map<String, AbstractItem> abstractItems;
+	public static Map<String, AbstractItem> abstractItems;
 	public ArrayList<Item> items = new ArrayList<Item>();
 
 	GamePanel gamePanel;
