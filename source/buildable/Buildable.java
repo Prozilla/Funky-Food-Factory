@@ -16,8 +16,8 @@ import source.tile.TileManager;
 
 public class Buildable {
 
-	int x = 0;
-	int y = 0;
+	public int x = 0;
+	public int y = 0;
 	public Point coordinate = new Point(0, 0);
 
 	public Conveyor buildingConveyor;

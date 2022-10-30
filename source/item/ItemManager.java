@@ -22,8 +22,6 @@ public class ItemManager {
 	public Map<String, AbstractItem> abstractItems;
 	public ArrayList<Item> items = new ArrayList<Item>();
 
-	public Map<Item, Item> recipes;
-
 	GamePanel gamePanel;
 	TileManager tileManager;
 	Viewport viewport;
@@ -42,6 +40,9 @@ public class ItemManager {
 
 		addItem("iron_ore");
 		addItem("iron_ingot");
+		addItem("copper_ore");
+		addItem("copper_ingot");
+		addItem("screw");
 	}
 
 	public void addItem(String name) {

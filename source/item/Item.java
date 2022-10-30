@@ -142,7 +142,7 @@ public class Item extends AbstractItem {
 		if (buildable instanceof Building) {
 			Building building = (Building)(buildable);
 
-			if (building != lastBuilding && building.recipe != null && name != building.recipe.inputItem.name) {
+			if (building != lastBuilding && building.activeRecipe != null && name != building.activeRecipe.inputItem.name) {
 				clogged = true;
 			}
 		}

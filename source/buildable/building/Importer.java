@@ -2,8 +2,17 @@ package source.buildable.building;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.swing.plaf.synth.SynthStyle;
+
+import source.UI.Clickable;
+import source.UI.UI;
+import source.UI.UIElement;
+import source.UI.modal.ItemPicker;
 import source.buildable.Building;
+import source.item.AbstractItem;
 import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
@@ -18,6 +27,8 @@ public class Importer extends Building {
 
 	int itemsSpawned = 0;
 	boolean stopSpawning = false;
+
+	String itemName = "iron_ore";
 
 	public Importer(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
 		super("Importer", x, y, tile, gamePanel, tileManager, itemManager, viewport);
@@ -49,7 +60,7 @@ public class Importer extends Building {
 						}
 
 						if (!clogged) {
-							itemManager.spawnItem("iron_ore", coordinate);
+							itemManager.spawnItem(itemName, coordinate);
 							itemsSpawned++;
 
 							if (itemsSpawned == 1) {
@@ -64,6 +75,24 @@ public class Importer extends Building {
 		}
 
 		super.draw(graphics2D, isGhost);
+	}
+
+	void setItem(String name) {
+		itemName = name;
+	}
+
+	@Override
+	public void openModal() {
+		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(itemManager.abstractItems.get("iron_ore"), itemManager.abstractItems.get("copper_ore")));
+
+		Clickable clickable = new Clickable() {
+			@Override
+			public void onClick(UIElement element) {
+				setItem(element.name);
+			}
+		};
+
+		UI.currentModal = new ItemPicker(name, new Point(x + GamePanel.tileSize, y), possiblItems, itemManager.abstractItems.get("iron_ore"), clickable);
 	}
 	
 }

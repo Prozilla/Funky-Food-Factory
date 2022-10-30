@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.plaf.synth.SynthStyle;
+
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -47,7 +49,8 @@ public class UI {
 	public final static int cornerRadius = 25;
 
 	public static UIElement currentModal;
-	public static Tile hoveringTile;
+	public static UIElement hoveringElement = null;
+	public static Tile hoveringInventoryTile;
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
 	public Map<String, BufferedImage> iconTextures;
@@ -94,8 +97,13 @@ public class UI {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		if (currentModal != null)
+		if (currentModal != null) {
+			currentModal.checkHoverState();
 			currentModal.draw(graphics2D);
+		}
+
+		if (UI.hoveringElement != null)
+			UI.hoveringElement.hovering = true;
 
 		drawScore(graphics2D);
 		drawInventory(graphics2D);
@@ -112,7 +120,7 @@ public class UI {
 	public void drawInventory(Graphics2D graphics2D) {
 		int xStart = invHorizontalMargin;
 		int yStart = gamePanel.height - invSlotSize - invVerticalMargin;
-		hoveringTile = null;
+		hoveringInventoryTile = null;
 
 		List<String> keyList = new ArrayList<String>(buildables.keySet());
 		for(int i = 0; i < buildables.size(); i++) {
@@ -121,9 +129,9 @@ public class UI {
 			Tile tile = buildables.get(key);
 			boolean hovering = false;
 
-			if (Mouse.mousePosition != null && Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + invSlotSize && Mouse.mousePosition.y >= yStart && Mouse.mousePosition.y < yStart + invSlotSize)
+			if (UI.hoveringElement == null && Mouse.mousePosition != null && Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + invSlotSize && Mouse.mousePosition.y >= yStart && Mouse.mousePosition.y < yStart + invSlotSize)
 			{
-				hoveringTile = tile;
+				hoveringInventoryTile = tile;
 				hovering = true;
 			}
 

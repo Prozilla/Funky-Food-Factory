@@ -16,7 +16,7 @@ import source.tile.TileManager;
 public class Building extends Buildable {
 
 	public String name;
-	public Recipe recipe;
+	public Recipe activeRecipe;
 	public ArrayList<Recipe> possibleRecipes = new ArrayList<Recipe>();
 
 	public ItemManager itemManager;
@@ -32,16 +32,16 @@ public class Building extends Buildable {
 		item.lastBuilding = this;
 
 		// TO do: If recipe is null and recipe is required, clog conveyor
-		if (recipe != null && item.name == recipe.inputItem.name) {
-			Item output = new Item(item.x, item.y, recipe.outputItem, gamePanel, tileManager, viewport, itemManager);
+		if (activeRecipe != null && item.name == activeRecipe.inputItem.name) {
+			Item output = new Item(item.x, item.y, activeRecipe.outputItem, gamePanel, tileManager, viewport, itemManager);
 			itemManager.items.remove(item);
 			itemManager.items.add(output);
 		}
 	}
 
 	public void openModal() {
-		if (recipe != null) {
-			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), recipe);
+		if (activeRecipe != null) {
+			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe);
 		} else {
 			UI.currentModal = null;
 		}

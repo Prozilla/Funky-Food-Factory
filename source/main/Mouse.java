@@ -37,33 +37,37 @@ public class Mouse implements MouseMotionListener, MouseListener {
 	public void handleClick(boolean isRightMouseButton) {
 		boolean openedModal = false;
 
-		if (UI.hoveringTile == null) {
-			if (!isRightMouseButton) {
-				Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+		if (UI.hoveringElement == null) {
+			if (UI.hoveringInventoryTile == null) {
+				if (!isRightMouseButton) {
+					Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
 
-				if (buildable == null) {
-					tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
-				} else if (buildable instanceof Building) {
-					Building building = (Building)buildable;
-					building.openModal();
-					openedModal = true;
+					if (buildable == null) {
+						tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
+					} else if (buildable instanceof Building) {
+						Building building = (Building)buildable;
+						building.openModal();
+						openedModal = true;
+					}
+				} else {
+					tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
 				}
-			} else {
-				tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
+			} else if (!isRightMouseButton) {
+				tileManager.currentTile = UI.hoveringInventoryTile;
 			}
-		} else if (!isRightMouseButton) {
-			tileManager.currentTile = UI.hoveringTile;
-		}
 
-		if (!openedModal)
-			UI.currentModal = null;
+			if (!openedModal)
+				UI.currentModal = null;
+		} else {
+			UI.hoveringElement.clickable.onClick(UI.hoveringElement);
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent event) {
 		updateCursor(event.getPoint());
 
-		if (UI.hoveringTile == null) {
+		if (UI.hoveringInventoryTile == null) {
 			if (!SwingUtilities.isMiddleMouseButton(event) && (lastDragCoordinate == null || lastDragCoordinate != mouseCoordinate)) {
 				lastDragCoordinate = mouseCoordinate;
 

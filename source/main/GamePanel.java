@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
 			public void mouseExited(MouseEvent event) {
 				Mouse.mousePosition = null;
 				Mouse.mouseCoordinate = null;
-				UI.hoveringTile = null;
+				UI.hoveringInventoryTile = null;
 			}
 		});
 
