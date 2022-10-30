@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 import source.UI.UI;
+import source.UI.UIElement;
 import source.buildable.Buildable;
 import source.buildable.Building;
 import source.tile.TileManager;
@@ -59,8 +60,17 @@ public class Mouse implements MouseMotionListener, MouseListener {
 			} else if (!openedModal) {
 				UI.currentModal = null;
 			}
-		} else if (UI.hoveringElement.clickable != null) {
-			UI.hoveringElement.clickable.onClick(UI.hoveringElement);
+		} else {
+			UIElement element = UI.hoveringElement;
+
+			while (element != null) {
+				if (element.clickable != null) {
+					element.clickable.onClick(element);
+					break;
+				} else {
+					element = element.parent;
+				}
+			}
 		}
 	}
 

@@ -47,16 +47,30 @@ public class RecipePicker extends UIElement {
 		}
 	}
 
+	public void setRecipe(int index) {
+		activeRecipe = possibleRecipes.get(index);
+		activeRecipeIndex = index;
+	}
+
 	@Override
 	public void draw(Graphics2D graphics2D) {
-		// Set hover color
+		// Update styling
 		for (int i = 0; i < children.size(); i++) {
 			UIElement element = children.get(i);
+
+			boolean hovering = element.hovering || element.hoveringChild;
+			boolean active = i == activeRecipeIndex;
 			
-			if (element.hovering || element.hoveringChild) {
+			if (hovering || active) {
 				element.backgroundColor = UI.backgroundColorA;
 			} else {
 				element.backgroundColor = null;
+			}
+
+			if (active) {
+				element.setBorder(UI.borderWidth, Color.WHITE);
+			} else {
+				element.setBorder(0, null);
 			}
 		}
 

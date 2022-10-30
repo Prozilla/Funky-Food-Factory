@@ -21,6 +21,8 @@ public class Building extends Buildable {
 	public Recipe activeRecipe;
 	public ArrayList<Recipe> possibleRecipes = new ArrayList<Recipe>();
 
+	RecipePicker recipePicker;
+
 	public ItemManager itemManager;
 
 	public Building(String name, int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
@@ -46,6 +48,7 @@ public class Building extends Buildable {
 			return;
 
 		activeRecipe = possibleRecipes.get(index);
+		recipePicker.setRecipe(index);
 	}
 
 	public void openModal() {
@@ -58,7 +61,8 @@ public class Building extends Buildable {
 				}
 			};
 
-			UI.currentModal = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe, clickable);
+			recipePicker = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe, clickable);
+			UI.currentModal = recipePicker;
 		} else {
 			UI.currentModal = null;
 		}

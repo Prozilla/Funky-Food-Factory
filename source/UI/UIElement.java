@@ -8,6 +8,8 @@ import source.main.Mouse;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Font;
+import java.awt.BasicStroke;
+import java.awt.Stroke;
 
 public class UIElement {
 
@@ -22,6 +24,9 @@ public class UIElement {
 	public String text;
 	public float fontSize;
 	public Direction direction;
+
+	public int borderWidth = 0;
+	public Color borderColor = null;
 
 	public Integer width;
 	public Integer height;
@@ -53,6 +58,11 @@ public class UIElement {
 
 		if (this.margin == null)
 			this.margin = new Point();
+	}
+
+	public void setBorder(int width, Color color) {
+		borderWidth = width;
+		borderColor = color;
 	}
 
 	public void appendChild(UIElement element) {
@@ -153,6 +163,17 @@ public class UIElement {
 			graphics2D.setFont(UI.font.deriveFont(Font.PLAIN, UI.fontSize * fontSize));
 			graphics2D.setColor(color);
 			graphics2D.drawString(text, position.x + offset.x + padding.x / 2, position.y + offset.y + height + padding.y / 2);
+		}
+
+		// Draw border
+		if (borderWidth > 0 && borderColor != null) {
+			graphics2D.setColor(borderColor);
+			Stroke oldStroke = graphics2D.getStroke();
+			graphics2D.setStroke(new BasicStroke(borderWidth));
+
+			graphics2D.drawRoundRect(position.x + offset.x, position.y + offset.y, totalSize.x, totalSize.y, radius, radius);
+
+			graphics2D.setStroke(oldStroke);
 		}
 
 		// Draw children

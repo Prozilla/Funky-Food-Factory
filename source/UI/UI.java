@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.plaf.synth.SynthStyle;
-
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -47,6 +45,7 @@ public class UI {
 	public static Font font;
 	public final static int fontSize = 33;
 	public final static int cornerRadius = 25;
+	public final static int borderWidth = 2;
 
 	public static UIElement currentModal;
 	public static UIElement hoveringElement = null;
