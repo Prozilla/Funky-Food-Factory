@@ -32,7 +32,8 @@ public class Exporter extends Building {
 			case "copper_ingot":
 				reward = 2;
 				break;
-			case "screw":
+			case "iron_screw":
+			case "copper_sheet":
 				reward = 4;
 				break;
 		}

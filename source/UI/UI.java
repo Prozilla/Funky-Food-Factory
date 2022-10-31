@@ -74,6 +74,7 @@ public class UI {
 		tileManager.addTile(buildables, new String[]{"smelter"});
 		tileManager.addTile(buildables, new String[]{"importer"});
 		tileManager.addTile(buildables, new String[]{"exporter"});
+		tileManager.addTile(buildables, new String[]{"constructor"});
 	}
 
 	public void addIcons() {

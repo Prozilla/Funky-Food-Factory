@@ -39,9 +39,13 @@ public class ItemManager {
 
 		addItem("iron_ore");
 		addItem("iron_ingot");
+		addItem("iron_screw");
 		addItem("copper_ore");
 		addItem("copper_ingot");
-		addItem("screw");
+		addItem("copper_sheet");
+		addItem("uranium_ore");
+		addItem("uranium_cell");
+		addItem("uranium_fuel_rod");
 	}
 
 	public void addItem(String name) {
@@ -53,6 +57,7 @@ public class ItemManager {
 		}
 	}
 
+	// TO DO: Load recipes from JSON file
 	public void addRecipes() {
 		// recipes.put("")
 	}

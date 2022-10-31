@@ -83,7 +83,11 @@ public class Importer extends Building {
 
 	@Override
 	public void openModal() {
-		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(ItemManager.abstractItems.get("iron_ore"), ItemManager.abstractItems.get("copper_ore")));
+		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(
+			ItemManager.abstractItems.get("iron_ore"), 
+			ItemManager.abstractItems.get("copper_ore"),
+			ItemManager.abstractItems.get("uranium_ore")
+		));
 
 		Clickable clickable = new Clickable() {
 			@Override
@@ -92,7 +96,7 @@ public class Importer extends Building {
 			}
 		};
 
-		itemPicker = new ItemPicker(name, new Point(x + GamePanel.tileSize, y), possiblItems, ItemManager.abstractItems.get("iron_ore"), clickable);
+		itemPicker = new ItemPicker(name, new Point(x + GamePanel.tileSize, y), possiblItems, ItemManager.abstractItems.get(itemName), clickable);
 		UI.currentModal = itemPicker;
 	}
 	

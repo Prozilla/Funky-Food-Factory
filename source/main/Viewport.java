@@ -49,7 +49,7 @@ public class Viewport {
 	}
 
 	public void zoom(float amount) {
-		zoomedTileScale += amount * zoomFactor * zoomSpeed;
+		zoomedTileScale += Math.round(amount * zoomFactor * zoomSpeed);
 
 		int minTileScale = (int)(minZoom * GamePanel.tileScaleMultiplier);
 		int maxTileScale = (int)(maxZoom * GamePanel.tileScaleMultiplier);
@@ -65,6 +65,7 @@ public class Viewport {
 		centerOffsetX = (initWidth - width) / 2;
 		centerOffsetY = (initHeight - height) / 2;
 
+		// TO DO: zoom around cursor instead of world center
 		// centerOffsetX = (initWidth - width) / 2 - panX;
 		// centerOffsetY = (initHeight - height) / 2 - panY;
 
@@ -75,8 +76,6 @@ public class Viewport {
 
 		zoomFactor = (float)width / (float)initWidth;
 		System.out.println("Zoom: " + zoomFactor);
-		System.out.println("Width: " + width);
-		System.out.println("Height: " + height);
 
 		pan(new Point(), new Point());
 	}
