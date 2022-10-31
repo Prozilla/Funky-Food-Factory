@@ -47,9 +47,9 @@ public class TileManager {
 	public void loadFactory() {
 		placeBuildable(new Point(3, 5), "importer", 1);
 		placeBuildable(new Point(4, 5), "conveyor", 0);
-		placeBuildable(new Point(5, 5), "smelter", 0);
+		placeBuildable(new Point(5, 5), "constructor", 0);
 		placeBuildable(new Point(6, 5), "conveyor", 0);
-		placeBuildable(new Point(7, 5), "constructor", 0);
+		placeBuildable(new Point(7, 5), "smelter", 0);
 		placeBuildable(new Point(8, 5), "conveyor", 0);
 		placeBuildable(new Point(9, 5), "exporter", 1);
 	}
@@ -72,8 +72,9 @@ public class TileManager {
 			BufferedImage[] sprites = new BufferedImage[names.length];
 
 			for (int i = 0; i < names.length; i++) {
-				System.out.println(String.format("Reading %s%s.png", tilesPath, names[i]));
-				sprites[i] = ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", tilesPath, names[i])));
+				String path = String.format("%s%s.png", tilesPath, names[i]);
+				System.out.println("Reading: " + path);
+				sprites[i] = ImageIO.read(getClass().getResourceAsStream(path));
 			}
 
 			map.put(names[0], new Tile(names[0], sprites));

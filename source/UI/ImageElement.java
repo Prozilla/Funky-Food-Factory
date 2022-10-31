@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import source.main.Mouse;
+import source.main.Viewport;
 
 public class ImageElement extends UIElement {
 	
@@ -32,7 +33,9 @@ public class ImageElement extends UIElement {
 	public void draw(Graphics2D graphics2D) {
 		super.draw(graphics2D);
 
-		graphics2D.drawImage(sprite, position.x + offset.x + padding.x / 2, position.y + offset.y + padding.y / 2, width + padding.x / 2, height + padding.y / 2, null);
+		Point viewportPosition = Viewport.instance.positionToViewport(position);
+
+		graphics2D.drawImage(sprite, viewportPosition.x + offset.x + padding.x / 2, viewportPosition.y + offset.y + padding.y / 2, width + padding.x / 2, height + padding.y / 2, null);
 	}
 
 }

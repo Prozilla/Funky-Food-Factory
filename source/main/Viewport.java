@@ -9,10 +9,13 @@ import java.awt.Dimension;
 
 public class Viewport {
 
+	public static Viewport instance = new Viewport();
+
 	public float zoomFactor = 1;
-	final float minZoom = zoomFactor;
+	final float minZoom = 0.5f;
 	final float maxZoom = 4;
-	final float zoomSpeed = 1.25f;
+	final float zoomSpeed = 1f;
+	final float initialZoom = 2;
 	
 	public static float zoomedTileScale;
 	public static float zoomedItemScale;
@@ -32,9 +35,11 @@ public class Viewport {
 	public int panX = 0;
 	public int panY = 0;
 
+	public static int panMargin = 500;
+
 	GamePanel gamePanel;
 
-	public Viewport(GamePanel gamePanel) {
+	public void setGamePanel(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		setViewportSize();
 	}
@@ -45,39 +50,44 @@ public class Viewport {
 
 		gamePanel.setPreferredSize(new Dimension(initWidth, initHeight));
 
-		zoom(0);
+		zoom(initialZoom);
 	}
 
 	public void zoom(float amount) {
-		zoomedTileScale += Math.round(amount * zoomFactor * zoomSpeed);
+		if (amount > 0) {
+			amount *= amount;
+		} else {
+			amount *= -amount;
+		}
+
+		zoomedTileScale += amount * zoomFactor * zoomSpeed;
 
 		int minTileScale = (int)(minZoom * GamePanel.tileScaleMultiplier);
 		int maxTileScale = (int)(maxZoom * GamePanel.tileScaleMultiplier);
 
-		zoomedTileScale = zoomedTileScale < minTileScale ? minTileScale : zoomedTileScale > maxTileScale ? maxTileScale : zoomedTileScale;
-		zoomedItemScale = zoomedTileScale / GamePanel.tileScaleMultiplier * GamePanel.itemScaleMultiplier;
+		if (zoomedTileScale < minTileScale) {
+			zoomedTileScale = minTileScale;
+		} else if (zoomedTileScale > maxTileScale) {
+			zoomedTileScale = maxTileScale;
+		}
 
+		zoomedItemScale = zoomedTileScale / GamePanel.tileScaleMultiplier * GamePanel.itemScaleMultiplier;
 		zoomedTileSize = (int)(GamePanel.originalTileSize * zoomedTileScale);
 
 		width = gamePanel.horizontalTiles * zoomedTileSize;
 		height = gamePanel.verticalTiles * zoomedTileSize;
 
+		zoomFactor = (float)width / (float)initWidth;
+		System.out.println("Zoom: " + zoomFactor);
+
 		centerOffsetX = (initWidth - width) / 2;
 		centerOffsetY = (initHeight - height) / 2;
 
 		// TO DO: zoom around cursor instead of world center
-		// centerOffsetX = (initWidth - width) / 2 - panX;
-		// centerOffsetY = (initHeight - height) / 2 - panY;
+		centerOffsetX = (int)((initWidth - width) / 2);
+		centerOffsetY = (int)((initHeight - height) / 2);
 
-		// if (Mouse.mousePosition != null) {
-		// 	centerOffsetX -= Mouse.mousePosition.x + (initWidth - width) / 2;
-		// 	centerOffsetY -= Mouse.mousePosition.y + (initHeight - width) / 2;
-		// }
-
-		zoomFactor = (float)width / (float)initWidth;
-		System.out.println("Zoom: " + zoomFactor);
-
-		pan(new Point(), new Point());
+		updatePan();
 	}
 
 	public void pan(Point pointA, Point pointB) {
@@ -85,25 +95,29 @@ public class Viewport {
 		panY = oldPanY + pointB.y - pointA.y;
 
 		// Limit panning to viewport
-		if (panX + centerOffsetX > 0) {
-			panX = -centerOffsetX;
+		if (panX + centerOffsetX > panMargin) {
+			panX = -centerOffsetX + panMargin;
 			restartPan();
 		}
 
-		if (panY + centerOffsetY > 0) {
-			panY = -centerOffsetY;
+		if (panY + centerOffsetY > panMargin) {
+			panY = -centerOffsetY + panMargin;
 			restartPan();
 		}
 
-		if (initWidth - width - panX - centerOffsetX > 0) {
-			panX = initWidth - width - centerOffsetX;
+		if (initWidth - width - panX - centerOffsetX > panMargin) {
+			panX = initWidth - width - centerOffsetX - panMargin;
 			restartPan();
 		}
 
-		if (initHeight - height - panY - centerOffsetY > 0) {
-			panY = initHeight - height - centerOffsetY;
+		if (initHeight - height - panY - centerOffsetY > panMargin) {
+			panY = initHeight - height - centerOffsetY - panMargin;
 			restartPan();
 		}
+	}
+
+	void updatePan() {
+		pan(new Point(), new Point());
 	}
 
 	public void stopPan() {

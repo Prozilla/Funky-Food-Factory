@@ -29,6 +29,7 @@ public class Buildable {
 	float frameTime = 0;
 	public BufferedImage currentSprite;
 	public int spriteVariant = 0;
+	public int tileSize = GamePanel.originalTileSize;
 
 	public int spawnAnimationDuration = 10;
 
@@ -102,17 +103,14 @@ public class Buildable {
 			frame = Math.abs((int)Math.round(gamePanel.time * animationSpeed) + (mirrorSprite ? frameOffset : -frameOffset)) % frameCount;
 		}
 
-		// Crop to sprite variant
-		BufferedImage sprite = currentSprite.getSubimage(spriteVariant * GamePanel.originalTileSize, 0, GamePanel.originalTileSize, currentSprite.getHeight());
-
 		// Crop to current frame
-		sprite = sprite.getSubimage(0, frame * GamePanel.originalTileSize, GamePanel.originalTileSize, GamePanel.originalTileSize);
+		BufferedImage sprite = currentSprite.getSubimage(0, frame * tileSize, tileSize, tileSize);
 
 		// Crop to a side
 		if (cropToOutput) {
-			sprite = sprite.getSubimage(0, 0, GamePanel.originalTileSize / 2, GamePanel.originalTileSize);
+			sprite = sprite.getSubimage(0, 0, tileSize / 2, tileSize);
 		} else if (cropToInput) {
-			sprite = sprite.getSubimage(GamePanel.originalTileSize / 2, 0, GamePanel.originalTileSize / 2, GamePanel.originalTileSize);
+			sprite = sprite.getSubimage(tileSize / 2, 0, tileSize / 2, tileSize);
 		}
 
 		// Mirror image

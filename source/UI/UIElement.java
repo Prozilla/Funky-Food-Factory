@@ -3,13 +3,17 @@ package source.UI;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import source.main.Mouse;
-
+import javax.swing.plaf.DimensionUIResource;
+import javax.swing.text.Position;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Font;
 import java.awt.BasicStroke;
 import java.awt.Stroke;
+import java.awt.Dimension;
+
+import source.main.Mouse;
+import source.main.Viewport;
 
 public class UIElement {
 
@@ -148,32 +152,46 @@ public class UIElement {
 		return (UI.hoveringElement == this || hoveringChild);
 	}
 
+	public static void drawBackground(Graphics2D graphics2D, Point position, Dimension size, Color color, int radius) {
+		graphics2D.setColor(color);
+		graphics2D.fillRoundRect(position.x, position.y, size.width, size.height, radius, radius);
+	}
+
+	public static void drawText(Graphics2D graphics2D, Point position, String content, Font font, int fontStyle, float fontSize, Color color, int radius) {
+		graphics2D.setFont(font.deriveFont(fontStyle, fontSize));
+		graphics2D.setColor(color);
+		graphics2D.drawString(content, position.x, position.y);
+	}
+
+	public static void drawBorder(Graphics2D graphics2D, Point position, Dimension size, int thickness, Color color, int radius) {
+		Stroke oldStroke = graphics2D.getStroke();
+		graphics2D.setStroke(new BasicStroke(thickness));
+		graphics2D.setColor(color);
+
+		graphics2D.drawRoundRect(position.x, position.y, size.width, size.height, radius, radius);
+
+		graphics2D.setStroke(oldStroke);
+	}
+
 	public void draw(Graphics2D graphics2D) {
 		if (width == null || height == null || autoSize)
 			updateSize(graphics2D);
 
+		Point viewportPosition = Viewport.instance.positionToViewport(position);
+
 		// Draw background
 		if (backgroundColor != null) {
-			graphics2D.setColor(backgroundColor);
-			graphics2D.fillRoundRect(position.x + offset.x, position.y + offset.y, totalSize.x, totalSize.y, radius, radius);
+			drawBackground(graphics2D, new Point(viewportPosition.x + offset.x, viewportPosition.y + offset.y), new Dimension(totalSize.x, totalSize.y), backgroundColor, radius);
 		}
 
 		// Draw text
 		if (text != null && color != null) {
-			graphics2D.setFont(UI.font.deriveFont(Font.PLAIN, UI.fontSize * fontSize));
-			graphics2D.setColor(color);
-			graphics2D.drawString(text, position.x + offset.x + padding.x / 2, position.y + offset.y + height + padding.y / 2);
+			drawText(graphics2D, new Point(viewportPosition.x + offset.x + padding.x / 2, viewportPosition.y + offset.y + height + padding.y / 2), text, UI.font, Font.PLAIN, UI.fontSize * fontSize, color, radius);
 		}
 
 		// Draw border
 		if (borderWidth > 0 && borderColor != null) {
-			graphics2D.setColor(borderColor);
-			Stroke oldStroke = graphics2D.getStroke();
-			graphics2D.setStroke(new BasicStroke(borderWidth));
-
-			graphics2D.drawRoundRect(position.x + offset.x, position.y + offset.y, totalSize.x, totalSize.y, radius, radius);
-
-			graphics2D.setStroke(oldStroke);
+			drawBorder(graphics2D, new Point(viewportPosition.x + offset.x, viewportPosition.y + offset.y), new Dimension(totalSize.x, totalSize.y), borderWidth, borderColor, radius);
 		}
 
 		// Draw children

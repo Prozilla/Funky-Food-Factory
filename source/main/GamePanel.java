@@ -1,8 +1,5 @@
 package source.main;
 
-import java.awt.Color;
-
-import javax.management.ValueExp;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
@@ -11,6 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.Dimension;
 
 import source.UI.UI;
 import source.item.ItemManager;
@@ -20,8 +20,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Screen
 	public final static int originalTileSize = 32;
-	public static float tileScaleMultiplier = 2;
-	public static float itemScaleMultiplier = tileScaleMultiplier / 3 * 2;
+	public static float tileScaleMultiplier = 2f;
+	public static float itemScaleMultiplier = tileScaleMultiplier * (3 / 4);
 	public static int tileSize = (int)(originalTileSize * tileScaleMultiplier);
 
 	public int horizontalTiles = 14;
@@ -37,11 +37,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// System
 	Thread gameThread;
-	Viewport viewport = new Viewport(this);
+	Viewport viewport = Viewport.instance;
+	UI ui = UI.instance;
 	TileManager tileManager = new TileManager(this, viewport);
 	ItemManager itemManager = new ItemManager(this, tileManager, viewport);
 	Mouse mouseListener = new Mouse(this, tileManager, viewport);
-	UI ui = UI.instance;
 
 	// Player
 	public int score = 0;
@@ -50,8 +50,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public GamePanel() {
 		UI.instance.setTileManager(tileManager);
 		UI.instance.gamePanel = this;
+		viewport.setGamePanel(this);
 
-		this.setBackground(Color.black);
+		this.setBackground(UI.backgroundColorC);
 		this.addMouseMotionListener(mouseListener);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
@@ -85,6 +86,14 @@ public class GamePanel extends JPanel implements Runnable {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent event) {
 				viewport.zoom(event.getWheelRotation() / -2f);
+			}
+		});
+
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent componentEvent) {
+				Dimension newSize = componentEvent.getComponent().getBounds().getSize();
+				width = (int)newSize.getWidth();
+				height = (int)newSize.getHeight();
 			}
 		});
 

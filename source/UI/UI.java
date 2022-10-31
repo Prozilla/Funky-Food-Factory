@@ -1,12 +1,14 @@
 package source.UI;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.InputStream;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class UI {
 
 	public final static Color backgroundColorA = new Color(0.09f, 0.07f, 0.15f, 0.85f);
 	public final static Color backgroundColorB = new Color(0.09f, 0.07f, 0.15f, 0.95f);
+	public final static Color backgroundColorC = new Color(0.03f, 0.02f, 0.05f);
 	
 	public GamePanel gamePanel;
 	TileManager tileManager;
@@ -127,22 +130,22 @@ public class UI {
 			int x = xStart + (invHorizontalMargin + invSlotSize) * i;
 			String key = keyList.get(i);
 			Tile tile = buildables.get(key);
-			boolean hovering = false;
+			boolean active = tileManager.currentTile.name == tile.name;
 
+			boolean hovering = false;
 			if (UI.hoveringElement == null && Mouse.mousePosition != null && Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + invSlotSize && Mouse.mousePosition.y >= yStart && Mouse.mousePosition.y < yStart + invSlotSize)
 			{
 				hoveringInventoryTile = tile;
 				hovering = true;
 			}
 
-			drawInventorySlot(graphics2D, x, yStart, tile.sprites[0], hovering);
+			drawInventorySlot(graphics2D, x, yStart, tile.sprites[0], hovering, active);
 		}
 	}
 
-	public void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering) {
-		graphics2D.setColor(hovering ? backgroundColorB : backgroundColorA);
-
-		graphics2D.fillRoundRect(x, y, invSlotSize, invSlotSize, cornerRadius, cornerRadius);
+	// Should be adapted to new UIElement class
+	public void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering, boolean active) {
+		UIElement.drawBackground(graphics2D, new Point(x, y), new Dimension(invSlotSize, invSlotSize), hovering ? backgroundColorB : backgroundColorA, cornerRadius);
 
 		int difference = (invSlotSize - invSlotIconSize) / 2;
 		int iconX = x + difference;
@@ -152,6 +155,10 @@ public class UI {
 			icon = icon.getSubimage(0, 0, GamePanel.originalTileSize, GamePanel.originalTileSize);
 
 		graphics2D.drawImage(icon, iconX, iconY, invSlotIconSize, invSlotIconSize, null);
+
+		if (active) {
+			UIElement.drawBorder(graphics2D, new Point(x, y), new Dimension(invSlotSize, invSlotSize), 5, UI.backgroundColorB, cornerRadius);
+		}
 	}
 
 }

@@ -13,8 +13,9 @@ public class Conveyor extends Connectable {
 
 	public Conveyor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
-		super.frameCount = 8;
+		super.frameCount = 6;
 		this.animationSpeed = 30;
+		this.tileSize = 256;
 	}
 
 	@Override
@@ -47,29 +48,34 @@ public class Conveyor extends Connectable {
 			}
 		} else {
 			if (input == (output + 1) % 4) {
+				// Right turn
 				mirrorSprite = true;
-				rotation += 270;
+				rotation += 180;
 			} else {
+				// Left turn
 				mirrorSprite = false;
+				rotation += 90;
 			}
+
 
 			if (connections.contains(1) && connections.contains(2)) {
 				currentSprite = tile.sprites[1];
-				spriteVariant = mirrorSprite ? 2 : 3;
-				rotation += 0;
 			} else if (connections.contains(2) && connections.contains(3)) {
 				currentSprite = tile.sprites[1];
 				rotation += 90;
 			} else if (connections.contains(3) && connections.contains(0)) {
 				currentSprite = tile.sprites[1];
-				spriteVariant = mirrorSprite ? 3 : 2;
 				rotation += 180;
 			} else if (connections.contains(0) && connections.contains(1)) {
 				currentSprite = tile.sprites[1];
-				spriteVariant = 1;
 				rotation += 270;
 			}
+
+			// if (mirrorSprite)
+			// 	rotation -= 90;
 		}
+
+		mirrorSprite = !mirrorSprite;
 	}
 	
 }

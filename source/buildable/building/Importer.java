@@ -25,7 +25,7 @@ public class Importer extends Building {
 	int itemsSpawned = 0;
 	boolean stopSpawning = false;
 
-	String itemName = "iron_ore";
+	String itemName = "tomato";
 
 	ItemPicker itemPicker;
 
@@ -84,9 +84,9 @@ public class Importer extends Building {
 	@Override
 	public void openModal() {
 		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(
-			ItemManager.abstractItems.get("iron_ore"), 
-			ItemManager.abstractItems.get("copper_ore"),
-			ItemManager.abstractItems.get("uranium_ore")
+			ItemManager.abstractItems.get("tomato"),
+			ItemManager.abstractItems.get("corn"),
+			ItemManager.abstractItems.get("lettuce")
 		));
 
 		Clickable clickable = new Clickable() {

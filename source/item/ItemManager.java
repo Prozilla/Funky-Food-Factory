@@ -37,21 +37,20 @@ public class ItemManager {
 	public void addItems() {
 		abstractItems = new HashMap<String, AbstractItem>();
 
-		addItem("iron_ore");
-		addItem("iron_ingot");
-		addItem("iron_screw");
-		addItem("copper_ore");
-		addItem("copper_ingot");
-		addItem("copper_sheet");
-		addItem("uranium_ore");
-		addItem("uranium_cell");
-		addItem("uranium_fuel_rod");
+		addItem("tomato");
+		addItem("tomato_sauce");
+		addItem("pizza");
+		addItem("corn");
+		addItem("popcorn");
+		addItem("lettuce");
+		addItem("salad");
 	}
 
 	public void addItem(String name) {
 		try {
-			System.out.println(String.format("Reading %s%s.png", texturesPath, name));
-			abstractItems.put(name, new AbstractItem(name, ImageIO.read(getClass().getResourceAsStream(String.format("%s%s.png", texturesPath, name)))));
+			String path = String.format("%s%s.png", texturesPath, name);
+			System.out.println("Reading: " + path);
+			abstractItems.put(name, new AbstractItem(name, ImageIO.read(getClass().getResourceAsStream(path))));
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
