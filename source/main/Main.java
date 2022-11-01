@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		frame = new JFrame();
-		frame.setTitle("Funky Factories");
+		frame.setTitle(GamePanel.gameName);
 
 		GamePanel gamePanel = new GamePanel();
 		frame.add(gamePanel);

@@ -62,7 +62,7 @@ public class RecipePicker extends UIElement {
 			boolean active = i == activeRecipeIndex;
 			
 			if (hovering || active) {
-				element.backgroundColor = UI.backgroundColorA;
+				element.backgroundColor = UI.backgroundColorB;
 			} else {
 				element.backgroundColor = null;
 			}

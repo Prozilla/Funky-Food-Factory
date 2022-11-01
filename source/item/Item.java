@@ -24,7 +24,7 @@ public class Item extends AbstractItem {
 	public Point coordinate = new Point(0, 0);
 
 	public boolean clogged = false;
-	final int clogGap = 4;
+	final int clogGap = 0;
 
 	public Building lastBuilding;
 
@@ -149,7 +149,7 @@ public class Item extends AbstractItem {
 
 		for (int i = 0; i < itemManager.items.size(); i++) {
 			Item item = itemManager.items.get(i);
-			boolean inFront = !conveyor.mirrorSprite ? x > item.x || y > item.y : x < item.x || y < item.y;
+			boolean inFront = conveyor.mirrorSprite ? x > item.x || y > item.y : x < item.x || y < item.y;
 
 			if (item.clogged && inFront) {
 				double distance = (x - item.x) * (x - item.x) + (y - item.y) * (y - item.y);

@@ -47,6 +47,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public int score = 0;
 	public float scoreMultiplier = 5;
 
+	// Game
+	public final static String gameName = "Funky Food Factory";
+
 	public GamePanel() {
 		UI.instance.setTileManager(tileManager);
 		UI.instance.gamePanel = this;

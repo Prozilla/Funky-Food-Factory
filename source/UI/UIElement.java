@@ -3,8 +3,6 @@ package source.UI;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.swing.plaf.DimensionUIResource;
-import javax.swing.text.Position;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Font;
@@ -122,11 +120,18 @@ public class UIElement {
 	}
 
 	boolean isHovering() {
+		Point viewportPosition = Viewport.instance.positionToViewport(position);
+		viewportPosition.x += offset.x;
+		viewportPosition.y += offset.y;
+		
+		int viewportWidth = totalSize.x;
+		int viewportHeight = totalSize.y;
+
 		return Mouse.mousePosition != null && 
-			(Mouse.mousePosition.x >= position.x + offset.x) && 
-			(Mouse.mousePosition.x < position.x + offset.x + totalSize.x) && 
-			(Mouse.mousePosition.y >= position.y + offset.y) && 
-			(Mouse.mousePosition.y < position.y + offset.y + totalSize.y);
+			(Mouse.mousePosition.x >= viewportPosition.x) && 
+			(Mouse.mousePosition.x < viewportPosition.x + viewportWidth) && 
+			(Mouse.mousePosition.y >= viewportPosition.y) && 
+			(Mouse.mousePosition.y < viewportPosition.y + viewportHeight);
 	}
 
 	boolean checkHoverState() {

@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.Dimension;
 
 import source.main.Mouse;
 import source.main.Viewport;
@@ -23,11 +24,18 @@ public class ImageElement extends UIElement {
 
 	@Override
 	boolean isHovering() {
+		Point viewportPosition = Viewport.instance.positionToViewport(position);
+		viewportPosition.x += offset.x;
+		viewportPosition.y += offset.y;
+		
+		int viewportWidth = (int)((width + padding.x));
+		int viewportHeight = (int)((height + padding.y));
+
 		return Mouse.mousePosition != null && 
-			(Mouse.mousePosition.x >= position.x + offset.x + padding.x) && 
-			(Mouse.mousePosition.x < position.x + offset.x + padding.x + width + padding.x / 4) && 
-			(Mouse.mousePosition.y >= position.y + offset.y + padding.y) && 
-			(Mouse.mousePosition.y < position.y + offset.y + padding.y + height + padding.y / 4);
+			(Mouse.mousePosition.x >= viewportPosition.x) && 
+			(Mouse.mousePosition.x < viewportPosition.x + viewportWidth) && 
+			(Mouse.mousePosition.y >= viewportPosition.y) && 
+			(Mouse.mousePosition.y < viewportPosition.y + viewportHeight);
 	}
 
 	public void draw(Graphics2D graphics2D) {
