@@ -1,8 +1,8 @@
-# Funky Factories
+# Funky Food Factory
 
-Compact Industries is a small PC game made by Prozilla in Java using Java Swing. It is planning to be released on itch.io sometime in the future.
+Funky Food Factory is a PC game made by Prozilla using Java Swing. It's a minimalistic cooking simulator where you build a factory that procudes food items. This game is planned to be released on itch.io sometime in the future.
 
-https://user-images.githubusercontent.com/63581117/169697163-05117876-6e67-4fd2-a585-c69e730d08da.mp4
+![image](https://user-images.githubusercontent.com/63581117/199240649-0464f43a-0deb-4922-b4e8-58b17ff3413b.png)
 
 ## How to play
 
@@ -20,7 +20,3 @@ If you're using a mac you'll likely get an error message saying "The Java Jar fi
 - MMB: move camera
 - RMB: remove building
 - Scroll: zoom in/out
-
-## To do:
-
-- DistanceToCoordinate helper function (Point position, Point coordinate)
