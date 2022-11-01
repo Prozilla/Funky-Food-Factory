@@ -15,7 +15,7 @@ import source.main.Viewport;
 
 public class Item extends AbstractItem {
 
-	public final static int pixelSize = GamePanel.originalTileSize / 2;
+	public final static int pixelSize = 128;
 	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);
 
 	public int x = 0;

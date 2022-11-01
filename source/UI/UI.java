@@ -38,13 +38,14 @@ public class UI {
 	final int invHorizontalMargin = 20;
 	final int invVerticalMargin = 35;
 
-	public final static Color backgroundColorA = new Color(0.09f, 0.07f, 0.15f, 0.85f);
-	public final static Color backgroundColorB = new Color(0.09f, 0.07f, 0.15f, 0.95f);
-	public final static Color backgroundColorC = new Color(0.03f, 0.02f, 0.05f);
+	public final static Color backgroundColorA = Color.decode("#31373D");
+	public final static Color backgroundColorB = Color.decode("#25292e");
+	public final static Color backgroundColorC = Color.decode("#181b1f");
 	
 	public GamePanel gamePanel;
 	TileManager tileManager;
 
+	final String fontName = "Poppins-Bold";
 	public static Font font;
 	public final static int fontSize = 33;
 	public final static int cornerRadius = 25;
@@ -59,7 +60,7 @@ public class UI {
 
 	private UI() {
 		try {
-			InputStream inputStream = getClass().getResourceAsStream(fontsPath + "Retro Gaming.ttf");
+			InputStream inputStream = getClass().getResourceAsStream(String.format("%s%s.ttf", fontsPath, fontName));
 			font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 		} catch (FontFormatException e) {
 			e.printStackTrace();
@@ -77,7 +78,7 @@ public class UI {
 		tileManager.addTile(buildables, new String[]{"smelter"});
 		tileManager.addTile(buildables, new String[]{"importer"});
 		tileManager.addTile(buildables, new String[]{"exporter"});
-		tileManager.addTile(buildables, new String[]{"constructor"});
+		tileManager.addTile(buildables, new String[]{"compressor"});
 	}
 
 	public void addIcons() {

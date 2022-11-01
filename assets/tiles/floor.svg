@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="36"
+   height="36"
+   viewBox="0 0 9.5249997 9.5250003"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="floor.svg"
+   inkscape:export-filename="D:\Programming\Java\FactoryGame\source\tile\textures\floor.png"
+   inkscape:export-xdpi="682.66998"
+   inkscape:export-ydpi="682.66998"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="8.5062327"
+     inkscape:cx="17.222666"
+     inkscape:cy="14.871448"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#e1e8ed;stroke-width:0.264891;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1"
+       id="rect1040"
+       width="9.5249996"
+       height="9.5249996"
+       x="0"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ccd6dd;fill-opacity:1;stroke-width:0.132445;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect2090"
+       width="4.7624998"
+       height="4.7624998"
+       x="0"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ccd6dd;fill-opacity:1;stroke-width:0.132445;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect3030"
+       width="4.7624998"
+       height="4.7624998"
+       x="4.7624998"
+       y="4.7624998" />
+  </g>
+</svg>

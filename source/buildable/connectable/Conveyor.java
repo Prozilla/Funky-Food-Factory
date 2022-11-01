@@ -14,8 +14,7 @@ public class Conveyor extends Connectable {
 	public Conveyor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
 		super.frameCount = 6;
-		this.animationSpeed = 30;
-		this.tileSize = 256;
+		this.animationSpeed = 12;
 	}
 
 	@Override
@@ -25,8 +24,8 @@ public class Conveyor extends Connectable {
 		spriteVariant = 0;
 		currentSprite = tile.sprites[0];
 		rotation = 0;
-		cropToInput = false;
 		cropToOutput = false;
+		cropToInput = false;
 
 		curved = (input > -1 && output > -1 && !((connections.contains(0) && connections.contains(2)) || (connections.contains(1) && connections.contains(3))));
 

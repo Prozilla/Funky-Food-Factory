@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="36"
+   height="36"
+   viewBox="0 0 9.5249997 9.5250003"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="compressor.svg"
+   inkscape:export-filename="D:\Programming\Java\FactoryGame\source\tile\textures\constructor.png"
+   inkscape:export-xdpi="682.66998"
+   inkscape:export-ydpi="682.66998"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="17.012464"
+     inkscape:cx="12.814134"
+     inkscape:cy="17.781081"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#e1e8ed;fill-opacity:1;stroke:#ccd6dd;stroke-width:1.20327;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+       id="rect1040"
+       width="7.6450996"
+       height="7.6450996"
+       x="0.93995011"
+       y="0.93995011" />
+    <path
+       d="m 6.7805875,2.4472795 c -0.08742,-0.08742 -0.228779,-0.08742 -0.315268,0 l -0.809095,0.809095 -0.363628,-0.362697 c -0.06417,-0.06417 -0.159959,-0.08277 -0.243658,-0.04836 -0.0837,0.03441 -0.137639,0.116249 -0.137639,0.206459 v 1.339191 c 0,0.123689 0.09951,0.223199 0.223198,0.223199 h 1.339192 c 0.09021,0 0.172049,-0.05394 0.206459,-0.137639 0.03441,-0.0837 0.01581,-0.179489 -0.04836,-0.243659 l -0.362698,-0.362698 0.809095,-0.809095 c 0.08742,-0.08742 0.08742,-0.228778 0,-0.315268 z m -2.390085,2.464485 h -1.339191 c -0.09021,0 -0.172049,0.05394 -0.206459,0.137639 -0.03441,0.0837 -0.01581,0.179489 0.04836,0.243658 l 0.362697,0.362698 -0.809095,0.809095 c -0.08742,0.08742 -0.08742,0.228779 0,0.315268 l 0.297598,0.297598 c 0.08742,0.08742 0.228779,0.08742 0.315268,0 l 0.809095,-0.809095 0.362698,0.362698 c 0.06417,0.06417 0.159959,0.08277 0.243659,0.04836 0.0837,-0.03441 0.137639,-0.11625 0.137639,-0.206459 v -1.338262 c 0,-0.123689 -0.09951,-0.223198 -0.223199,-0.223198 z"
+       id="path2-6"
+       style="stroke-width:0.00929993;fill:#31373d;fill-opacity:1" />
+  </g>
+</svg>

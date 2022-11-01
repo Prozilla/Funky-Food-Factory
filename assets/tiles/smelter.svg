@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="36"
+   height="36"
+   viewBox="0 0 9.5249997 9.5250003"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="smelter.svg"
+   inkscape:export-filename="D:\Programming\Java\FactoryGame\source\tile\textures\smelter.png"
+   inkscape:export-xdpi="682.66998"
+   inkscape:export-ydpi="682.66998"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="17.012464"
+     inkscape:cx="16.31157"
+     inkscape:cy="16.840594"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#e1e8ed;fill-opacity:1;stroke:#ccd6dd;stroke-width:1.20327;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+       id="rect1040"
+       width="7.6450996"
+       height="7.6450996"
+       x="0.93995011"
+       y="0.93995011" />
+    <path
+       d="m 4.160706,2.4317122 c 0.07255,-0.0679 0.185096,-0.06697 0.257646,9.3e-4 0.256716,0.240904 0.497619,0.50041 0.722711,0.781309 0.102314,-0.133939 0.21858,-0.279969 0.344148,-0.399026 0.07348,-0.06883 0.186956,-0.06883 0.260436,9.3e-4 0.321825,0.306943 0.594353,0.71248 0.78596,1.097554 0.188816,0.379493 0.314384,0.767357 0.314384,1.040815 0,1.186846 -0.92827,2.189526 -2.083491,2.189526 -1.168243,0 -2.083491,-1.00361 -2.083491,-2.190456 0,-0.35717 0.165563,-0.793401 0.422279,-1.224981 0.259506,-0.438091 0.625977,-0.894785 1.059418,-1.296601 z m 0.617606,3.819113 c 0.235323,0 0.443672,-0.06511 0.63993,-0.195327 0.391584,-0.273458 0.496689,-0.820375 0.261366,-1.250095 -0.02604,-0.05209 -0.05209,-0.104174 -0.09115,-0.156262 l -0.470645,0.546917 c 0,0 -0.757126,-0.963615 -0.810144,-1.028724 -0.390654,0.481807 -0.586912,0.755266 -0.586912,1.067789 0,0.638069 0.470646,1.015702 1.057558,1.015702 z"
+       id="path2"
+       style="stroke-width:0.00930129;fill:#31373d;fill-opacity:1" />
+  </g>
+</svg>

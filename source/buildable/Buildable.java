@@ -36,8 +36,8 @@ public class Buildable {
 	// Sprite properties
 	public int rotation = 0;
 	public boolean mirrorSprite = false;
-	public boolean cropToInput = false;
 	public boolean cropToOutput = false;
+	public boolean cropToInput = false;
 
 	// Connections (-1: unset, -2: NaN)
 	public int input = -1;
@@ -130,19 +130,19 @@ public class Buildable {
 		int height = GamePanel.tileSize;
 
 		if (rotation != 90) {
-			if (((cropToInput && !mirrorSprite) || (cropToOutput && mirrorSprite))) {
+			if (((cropToOutput && !mirrorSprite) || (cropToInput && mirrorSprite))) {
 				spriteX +=  GamePanel.tileSize / 2;
 			}
 
-			if (cropToOutput || cropToInput) {
+			if (cropToInput || cropToOutput) {
 				width = GamePanel.tileSize / 2;
 			}
 		} else {
-			if (((cropToInput && !mirrorSprite) || (cropToOutput && mirrorSprite))) {
+			if (((cropToOutput && !mirrorSprite) || (cropToInput && mirrorSprite))) {
 				spriteY += GamePanel.tileSize / 2;
 			}
 
-			if (cropToOutput || cropToInput) {
+			if (cropToInput || cropToOutput) {
 				height = GamePanel.tileSize / 2;
 			}
 		}

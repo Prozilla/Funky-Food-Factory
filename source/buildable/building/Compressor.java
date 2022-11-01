@@ -8,10 +8,10 @@ import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
 
-public class Constructor extends Building {
+public class Compressor extends Building {
 
-	public Constructor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Constructor", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+	public Compressor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
+		super("Compressor", x, y, tile, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
 

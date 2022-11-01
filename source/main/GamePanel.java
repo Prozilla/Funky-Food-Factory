@@ -19,9 +19,9 @@ import source.tile.TileManager;
 public class GamePanel extends JPanel implements Runnable {
 
 	// Screen
-	public final static int originalTileSize = 32;
-	public static float tileScaleMultiplier = 2f;
-	public static float itemScaleMultiplier = tileScaleMultiplier * (3 / 4);
+	public final static int originalTileSize = 256;
+	public static float tileScaleMultiplier = 0.25f;
+	public static float itemScaleMultiplier = tileScaleMultiplier * 1;
 	public static int tileSize = (int)(originalTileSize * tileScaleMultiplier);
 
 	public int horizontalTiles = 14;

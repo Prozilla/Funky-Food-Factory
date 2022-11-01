@@ -24,17 +24,17 @@ public class Exporter extends Building {
 		int reward = 0;
 
 		switch (item.name) {
-			case "iron_ore":
-			case "copper_ore":
+			case "tomato":
+			case "corn":
+			case "lettuce":
 				reward = 1;
 				break;
-			case "iron_ingot":
-			case "copper_ingot":
+			case "tomato_sauce":
+			case "salad":
 				reward = 2;
 				break;
-			case "iron_screw":
-			case "copper_sheet":
-				reward = 4;
+			case "pizza":
+				reward = 6;
 				break;
 		}
 

@@ -2,7 +2,6 @@ package source.tile;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class TileManager {
 	public void loadFactory() {
 		placeBuildable(new Point(3, 5), "importer", 1);
 		placeBuildable(new Point(4, 5), "conveyor", 0);
-		placeBuildable(new Point(5, 5), "constructor", 0);
+		placeBuildable(new Point(5, 5), "compressor", 0);
 		placeBuildable(new Point(6, 5), "conveyor", 0);
 		placeBuildable(new Point(7, 5), "smelter", 0);
 		placeBuildable(new Point(8, 5), "conveyor", 0);
@@ -62,7 +61,7 @@ public class TileManager {
 		addTile(tiles, new String[]{"importer"});
 		addTile(tiles, new String[]{"exporter"});
 		addTile(tiles, new String[]{"smelter"});
-		addTile(tiles, new String[]{"constructor"});
+		addTile(tiles, new String[]{"compressor"});
 
 		currentTile = tiles.get("conveyor");
 	}
@@ -145,8 +144,8 @@ public class TileManager {
 			case "smelter":
 				buildable = new Smelter(point.x, point.y, tiles.get("smelter"), gamePanel, this, itemManager, viewport);
 				break;
-			case "constructor":
-				buildable = new source.buildable.building.Constructor(point.x, point.y, tiles.get("constructor"), gamePanel, this, itemManager, viewport);
+			case "compressor":
+				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get("compressor"), gamePanel, this, itemManager, viewport);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);
