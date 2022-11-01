@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.text.Position;
+
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -33,11 +35,6 @@ public class UI {
 	final String fontsPath = "fonts/";
 	final String iconsPath = "icons/";
 
-	final int invSlotSize = 100;
-	final int invSlotIconSize = 75;
-	final int invHorizontalMargin = 20;
-	final int invVerticalMargin = 35;
-
 	public final static Color backgroundColorA = Color.decode("#31373D");
 	public final static Color backgroundColorB = Color.decode("#25292e");
 	public final static Color backgroundColorC = Color.decode("#181b1f");
@@ -50,6 +47,18 @@ public class UI {
 	public final static int fontSize = 33;
 	public final static int cornerRadius = 25;
 	public final static int borderWidth = 2;
+
+	final int invSlotSize = 100;
+	final int invSlotIconSize = 75;
+	final int invSlotGap = 20;
+	final int invHorizontalMargin = 35;
+	final int invVerticalMargin = 35;
+
+	final int scoreTextSize = fontSize;
+	final int scoreGap = 10;
+	final int scoreMargin = 35;
+	final int scorePadding = 10;
+	final int scoreIconSize = fontSize;
 
 	public static UIElement currentModal;
 	public static UIElement hoveringElement = null;
@@ -114,11 +123,24 @@ public class UI {
 	}
 
 	public void drawScore(Graphics2D graphics2D) {
-		graphics2D.drawImage(iconTextures.get("coin"), 50, 50 - (int)(fontSize / 10f * 9f), fontSize, fontSize, null);
+		Point position = new Point(scoreMargin, scoreMargin);
 
+		// Calculate text width
+		String text = Integer.toString(gamePanel.score);
+		graphics2D.setFont(font.deriveFont(Font.PLAIN, scoreTextSize));
+		int textWidth = graphics2D.getFontMetrics().stringWidth(text);
+
+		// Draw background
+		int backgroundWidth = scoreIconSize + scoreGap + textWidth + scorePadding * 2;
+		int backgroundHeight = scoreIconSize + scorePadding * 2;
+		UIElement.drawBackground(graphics2D, new Point(position.x - scorePadding, position.y - scorePadding), new Dimension(backgroundWidth, backgroundHeight), backgroundColorA, cornerRadius);
+
+		// Draw icon
+		graphics2D.drawImage(iconTextures.get("coin"), position.x, position.y, scoreIconSize, scoreIconSize, null);
+
+		// Draw text
 		graphics2D.setColor(Color.white);
-		graphics2D.setFont(font.deriveFont(Font.PLAIN, fontSize));
-		graphics2D.drawString(Integer.toString(gamePanel.score), 50 + fontSize + 10, 50);
+		graphics2D.drawString(text, position.x + scoreIconSize + scoreGap, position.y + (int)(scoreTextSize / 10f * 9f));
 	}
 
 	public void drawInventory(Graphics2D graphics2D) {
@@ -128,7 +150,7 @@ public class UI {
 
 		List<String> keyList = new ArrayList<String>(buildables.keySet());
 		for(int i = 0; i < buildables.size(); i++) {
-			int x = xStart + (invHorizontalMargin + invSlotSize) * i;
+			int x = xStart + (invSlotGap + invSlotSize) * i;
 			String key = keyList.get(i);
 			Tile tile = buildables.get(key);
 			boolean active = tileManager.currentTile.name == tile.name;
