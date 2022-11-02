@@ -72,7 +72,7 @@ public class Viewport {
 		}
 
 		zoomedItemScale = zoomedTileScale / GamePanel.tileScaleMultiplier * GamePanel.itemScaleMultiplier;
-		zoomedTileSize = Math.round(GamePanel.originalTileSize * zoomedTileScale);
+		zoomedTileSize = Math.round(GamePanel.originalTileSize * zoomedTileScale / 2) * 2;
 
 		width = gamePanel.horizontalTiles * zoomedTileSize;
 		height = gamePanel.verticalTiles * zoomedTileSize;
