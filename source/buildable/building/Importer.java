@@ -84,10 +84,10 @@ public class Importer extends Building {
 	@Override
 	public void openModal() {
 		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(
-			ItemManager.abstractItems.get("tomato"),
-			ItemManager.abstractItems.get("corn"),
-			ItemManager.abstractItems.get("lettuce"),
-			ItemManager.abstractItems.get("melon")
+			ItemManager.abstractItems.get(Item.TOMATO),
+			ItemManager.abstractItems.get(Item.CORN),
+			ItemManager.abstractItems.get(Item.LETTUCE),
+			ItemManager.abstractItems.get(Item.MELON)
 		));
 
 		Clickable clickable = new Clickable() {

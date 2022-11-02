@@ -15,6 +15,17 @@ import source.main.Viewport;
 
 public class Item extends AbstractItem {
 
+	// Item names
+	public static final String CORN = "corn";
+	public static final String LETTUCE = "lettuce";
+	public static final String MELON = "melon";
+	public static final String MELON_SLICE = "melon_slice";
+	public static final String PIZZA = "pizza";
+	public static final String POPCORN = "popcorn";
+	public static final String SALAD = "salad";
+	public static final String TOMATO = "tomato";
+	public static final String TOMATO_SAUCE = "tomato_sauce";
+
 	public final static int pixelSize = 128;
 	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);
 

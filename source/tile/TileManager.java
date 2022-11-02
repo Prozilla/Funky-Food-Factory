@@ -56,15 +56,15 @@ public class TileManager {
 	public void addTiles() {
 		tiles = new HashMap<String, Tile>();
 
-		addTile(tiles, new String[]{"conveyor", "curved_conveyor"});
-		addTile(tiles, new String[]{"floor"});
-		addTile(tiles, new String[]{"importer"});
-		addTile(tiles, new String[]{"exporter"});
-		addTile(tiles, new String[]{"smelter"});
-		addTile(tiles, new String[]{"compressor"});
-		addTile(tiles, new String[]{"cutter"});
+		addTile(tiles, new String[]{Tile.CONVEYOR, Tile.CURVED_CONVEYOR});
+		addTile(tiles, new String[]{Tile.FLOOR});
+		addTile(tiles, new String[]{Tile.IMPORTER});
+		addTile(tiles, new String[]{Tile.EXPORTER});
+		addTile(tiles, new String[]{Tile.SMELTER});
+		addTile(tiles, new String[]{Tile.COMPRESSOR});
+		addTile(tiles, new String[]{Tile.CUTTER});
 
-		currentTile = tiles.get("conveyor");
+		currentTile = tiles.get(Tile.CONVEYOR);
 	}
 
 	public void addTile(Map<String, Tile> map, String[] names) {
@@ -133,26 +133,26 @@ public class TileManager {
 		Point point = coordinateToPosition(coordinate);
 
 		switch (name) {
-			case "conveyor":
-				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);
+			case Tile.CONVEYOR:
+				buildable = new Conveyor(point.x, point.y, tiles.get(Tile.CONVEYOR), gamePanel, this, viewport);
 				break;
-			case "importer":
-				buildable = new Importer(point.x, point.y, direction, tiles.get("importer"), gamePanel, this, itemManager, viewport);
+			case Tile.IMPORTER:
+				buildable = new Importer(point.x, point.y, direction, tiles.get(Tile.IMPORTER), gamePanel, this, itemManager, viewport);
 				break;
-			case "exporter":
-				buildable = new Exporter(point.x, point.y, direction, tiles.get("exporter"), gamePanel, this, itemManager, viewport);
+			case Tile.EXPORTER:
+				buildable = new Exporter(point.x, point.y, direction, tiles.get(Tile.EXPORTER), gamePanel, this, itemManager, viewport);
 				break;
-			case "smelter":
-				buildable = new Smelter(point.x, point.y, tiles.get("smelter"), gamePanel, this, itemManager, viewport);
+			case Tile.SMELTER:
+				buildable = new Smelter(point.x, point.y, tiles.get(Tile.SMELTER), gamePanel, this, itemManager, viewport);
 				break;
-			case "compressor":
-				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get("compressor"), gamePanel, this, itemManager, viewport);
+			case Tile.COMPRESSOR:
+				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get(Tile.COMPRESSOR), gamePanel, this, itemManager, viewport);
 				break;
-			case "cutter":
-				buildable = new source.buildable.building.Cutter(point.x, point.y, tiles.get("cutter"), gamePanel, this, itemManager, viewport);
+			case Tile.CUTTER:
+				buildable = new source.buildable.building.Cutter(point.x, point.y, tiles.get(Tile.CUTTER), gamePanel, this, itemManager, viewport);
 				break;
 			default:
-				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);
+				buildable = new Conveyor(point.x, point.y, tiles.get(Tile.CONVEYOR), gamePanel, this, viewport);
 				break;
 		}
 

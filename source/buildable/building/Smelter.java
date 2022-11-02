@@ -2,6 +2,7 @@ package source.buildable.building;
 
 import source.buildable.Building;
 import source.buildable.building.recipe.Recipe;
+import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Viewport;
@@ -15,8 +16,8 @@ public class Smelter extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("tomato_sauce"), ItemManager.abstractItems.get("pizza")));
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("corn"), ItemManager.abstractItems.get("popcorn")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.TOMATO_SAUCE), ItemManager.abstractItems.get(Item.PIZZA)));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.CORN), ItemManager.abstractItems.get(Item.POPCORN)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

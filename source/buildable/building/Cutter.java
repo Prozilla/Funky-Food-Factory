@@ -2,6 +2,7 @@ package source.buildable.building;
 
 import source.buildable.Building;
 import source.buildable.building.recipe.Recipe;
+import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Viewport;
@@ -15,7 +16,7 @@ public class Cutter extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("melon"), ItemManager.abstractItems.get("melon_slice")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.MELON), ItemManager.abstractItems.get(Item.MELON_SLICE)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

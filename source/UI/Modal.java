@@ -11,10 +11,14 @@ public class Modal extends UIElement {
 	public Integer activeOptionIndex = 0;
 	UIElement optionsContainer;
 
+	Clickable clickable;
+
 	public final int imageSize = 35;
 
 	public Modal(String title, Point position, Direction direction, Clickable clickable) {
 		super(position, new Vector4(12, 9, 0, 6), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
+
+		this.clickable = clickable;
 
 		optionsContainer = new UIElement(position, new Vector4(3, 0), new Vector4(0, 12, 0, 0), UI.cornerRadius, null, null, null, 0, direction);
 		appendChild(optionsContainer);

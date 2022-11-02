@@ -24,20 +24,20 @@ public class Exporter extends Building {
 		int reward = 0;
 
 		switch (item.name) {
-			case "tomato":
-			case "corn":
-			case "lettuce":
-			case "melon":
+			case Item.TOMATO:
+			case Item.CORN:
+			case Item.LETTUCE:
+			case Item.MELON:
 				reward = 1;
 				break;
-			case "tomato_sauce":
-			case "salad":
+			case Item.TOMATO_SAUCE:
+			case Item.SALAD:
 				reward = 2;
 				break;
-			case "melon_slice":
+			case Item.MELON_SLICE:
 				reward = 3;
 				break;
-			case "pizza":
+			case Item.PIZZA:
 				reward = 6;
 				break;
 		}

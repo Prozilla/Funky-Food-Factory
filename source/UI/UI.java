@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import java.awt.Cursor;
-
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
@@ -90,12 +89,12 @@ public class UI {
 	public void setTileManager(TileManager tileManager) {
 		this.tileManager = tileManager;
 
-		tileManager.addTile(buildables, new String[]{"conveyor"});
-		tileManager.addTile(buildables, new String[]{"smelter"});
-		tileManager.addTile(buildables, new String[]{"importer"});
-		tileManager.addTile(buildables, new String[]{"exporter"});
-		tileManager.addTile(buildables, new String[]{"compressor"});
-		tileManager.addTile(buildables, new String[]{"cutter"});
+		tileManager.addTile(buildables, new String[]{Tile.CONVEYOR});
+		tileManager.addTile(buildables, new String[]{Tile.SMELTER});
+		tileManager.addTile(buildables, new String[]{Tile.IMPORTER});
+		tileManager.addTile(buildables, new String[]{Tile.EXPORTER});
+		tileManager.addTile(buildables, new String[]{Tile.COMPRESSOR});
+		tileManager.addTile(buildables, new String[]{Tile.CUTTER});
 	}
 
 	public void addIcons() {

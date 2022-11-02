@@ -2,6 +2,7 @@ package source.buildable.building;
 
 import source.buildable.Building;
 import source.buildable.building.recipe.Recipe;
+import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Viewport;
@@ -15,8 +16,8 @@ public class Compressor extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("tomato"), ItemManager.abstractItems.get("tomato_sauce")));
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get("lettuce"), ItemManager.abstractItems.get("salad")));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.TOMATO), ItemManager.abstractItems.get(Item.TOMATO_SAUCE)));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.LETTUCE), ItemManager.abstractItems.get(Item.SALAD)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}
