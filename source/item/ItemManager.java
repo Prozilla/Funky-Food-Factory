@@ -44,6 +44,8 @@ public class ItemManager {
 		addItem("popcorn");
 		addItem("lettuce");
 		addItem("salad");
+		addItem("melon");
+		addItem("melon_slice");
 	}
 
 	public void addItem(String name) {

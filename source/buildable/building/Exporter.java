@@ -27,11 +27,15 @@ public class Exporter extends Building {
 			case "tomato":
 			case "corn":
 			case "lettuce":
+			case "melon":
 				reward = 1;
 				break;
 			case "tomato_sauce":
 			case "salad":
 				reward = 2;
+				break;
+			case "melon_slice":
+				reward = 3;
 				break;
 			case "pizza":
 				reward = 6;

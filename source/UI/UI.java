@@ -91,6 +91,7 @@ public class UI {
 		tileManager.addTile(buildables, new String[]{"importer"});
 		tileManager.addTile(buildables, new String[]{"exporter"});
 		tileManager.addTile(buildables, new String[]{"compressor"});
+		tileManager.addTile(buildables, new String[]{"cutter"});
 	}
 
 	public void addIcons() {

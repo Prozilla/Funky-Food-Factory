@@ -62,6 +62,7 @@ public class TileManager {
 		addTile(tiles, new String[]{"exporter"});
 		addTile(tiles, new String[]{"smelter"});
 		addTile(tiles, new String[]{"compressor"});
+		addTile(tiles, new String[]{"cutter"});
 
 		currentTile = tiles.get("conveyor");
 	}
@@ -146,6 +147,9 @@ public class TileManager {
 				break;
 			case "compressor":
 				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get("compressor"), gamePanel, this, itemManager, viewport);
+				break;
+			case "cutter":
+				buildable = new source.buildable.building.Cutter(point.x, point.y, tiles.get("cutter"), gamePanel, this, itemManager, viewport);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get("conveyor"), gamePanel, this, viewport);

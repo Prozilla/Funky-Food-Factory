@@ -86,7 +86,8 @@ public class Importer extends Building {
 		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(
 			ItemManager.abstractItems.get("tomato"),
 			ItemManager.abstractItems.get("corn"),
-			ItemManager.abstractItems.get("lettuce")
+			ItemManager.abstractItems.get("lettuce"),
+			ItemManager.abstractItems.get("melon")
 		));
 
 		Clickable clickable = new Clickable() {
