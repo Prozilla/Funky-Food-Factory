@@ -2,16 +2,16 @@ package source.util;
 
 public class Vector4 {
 
-	public int x;
-	public int y;
-	public int z;
-	public int w;
+	public int x; // Left
+	public int y; // Up
+	public int z; // Right
+	public int w; // Down
 
-	public Vector4(int x) {
+	public Vector4(int x, int y, int z, int w) {
 		this.x = x;
-		this.z = x;
-		this.y = x;
-		this.w = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 	}
 
 	public Vector4(int x, int y) {
@@ -21,11 +21,18 @@ public class Vector4 {
 		this.w = y;
 	}
 
-	public Vector4(int x, int y, int z, int w) {
+	public Vector4(int x) {
 		this.x = x;
-		this.z = y;
-		this.y = z;
-		this.w = w;
+		this.z = x;
+		this.y = x;
+		this.w = x;
+	}
+
+	public Vector4() {
+		this.x = 0;
+		this.z = 0;
+		this.y = 0;
+		this.w = 0;
 	}
 
 }

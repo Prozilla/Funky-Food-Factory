@@ -11,6 +11,7 @@ import source.UI.ImageElement;
 import source.UI.UI;
 import source.UI.UIElement;
 import source.buildable.building.recipe.Recipe;
+import source.util.Vector4;
 
 public class RecipePicker extends UIElement {
 
@@ -19,7 +20,7 @@ public class RecipePicker extends UIElement {
 	public ArrayList<Recipe> possibleRecipes;
 
 	public RecipePicker(String title, Point position, ArrayList<Recipe> possibleRecipes, Recipe activeRecipe, Clickable clickable) {
-		super(position, new Point(20, 20), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
+		super(position, new Vector4(12, 9, 0, 12), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
 
 		this.activeRecipe = activeRecipe;
 		this.possibleRecipes = possibleRecipes;
@@ -31,18 +32,22 @@ public class RecipePicker extends UIElement {
 			if (active)
 				activeRecipeIndex = i;
 
-			UIElement recipeContainer = new UIElement(position, new Point(5, 0), new Point(0, 15), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
+			int topMargin = i == 0 ? 15 : 3;
+
+			UIElement recipeContainer = new UIElement(position, new Vector4(15, 6), new Vector4(0, topMargin, 0, 0), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 			recipeContainer.name = String.format("recipe%s", i);
 			recipeContainer.clickable = clickable;
 			appendChild(recipeContainer);
 
-			ImageElement inputImage = new ImageElement(position, new Point(10, 10), null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.inputItem.sprite, 25, 25);
+			System.out.println(recipeContainer.margin.y);
+
+			ImageElement inputImage = new ImageElement(position, null, null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.inputItem.sprite, 25, 25);
 			recipeContainer.appendChild(inputImage);
 
-			ImageElement arrowImage = new ImageElement(position, new Point(5, 10), null, 0, null, null, null, 0, Direction.HORIZONTAL, UI.instance.iconTextures.get("arrow"), 25, 25);
+			ImageElement arrowImage = new ImageElement(position, null, new Vector4(12, 0), 0, null, null, null, 0, Direction.HORIZONTAL, UI.instance.iconTextures.get("arrow"), 25, 25);
 			recipeContainer.appendChild(arrowImage);
 
-			ImageElement outputImage = new ImageElement(position, new Point(10, 10), null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.outputItem.sprite, 25, 25);
+			ImageElement outputImage = new ImageElement(position, null, null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.outputItem.sprite, 25, 25);
 			recipeContainer.appendChild(outputImage);
 		}
 	}

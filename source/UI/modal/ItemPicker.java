@@ -12,6 +12,7 @@ import source.UI.UI;
 import source.UI.UIElement;
 import source.item.AbstractItem;
 import source.item.ItemManager;
+import source.util.Vector4;
 
 public class ItemPicker extends UIElement {
 
@@ -20,12 +21,12 @@ public class ItemPicker extends UIElement {
 	public ArrayList<AbstractItem> possibleItems;
 
 	public ItemPicker(String title, Point position, ArrayList<AbstractItem> possibleItems, AbstractItem activeItem, Clickable clickable) {
-		super(position, new Point(20, 20), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
+		super(position, new Vector4(12, 9, 12, 6), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
 
 		this.activeItem = activeItem;
 		this.possibleItems = possibleItems;
 
-		UIElement itemsContainer = new UIElement(position, new Point(5, 0), new Point(0, 15), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
+		UIElement itemsContainer = new UIElement(position, new Vector4(3, 0), new Vector4(0, 12, 0, 0), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 		appendChild(itemsContainer);
 
 		for (int i = 0; i < possibleItems.size(); i++) {
@@ -35,7 +36,7 @@ public class ItemPicker extends UIElement {
 			if (active)
 				activeItemIndex = i;
 
-			ImageElement itemImage = new ImageElement(position, new Point(10, 10), null, UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL, item.sprite, 25, 25);
+			ImageElement itemImage = new ImageElement(position, new Vector4(6, 6), null, UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL, item.sprite, 25, 25);
 			itemImage.name = item.name;
 
 			itemImage.clickable = clickable;
