@@ -38,29 +38,14 @@ public class Mouse implements MouseMotionListener, MouseListener {
 	public void handleClick(boolean isRightMouseButton) {
 		boolean openedModal = false;
 
-		if (UI.hoveringElement == null) {
-			if (UI.currentModal == null) {
-				if (UI.hoveringInventoryTile == null) {
-					if (!isRightMouseButton) {
-						Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+		// Menu buttons
+		if (UI.hoveringMenuButton != null) {
+			UI.instance.clickMenuButton((int)UI.hoveringMenuButton);
+			return;
+		}
 
-						if (buildable == null) {
-							tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
-						} else if (buildable instanceof Building) {
-							Building building = (Building)buildable;
-							building.openModal();
-							openedModal = true;
-						}
-					} else {
-						tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
-					}
-				} else if (!isRightMouseButton) {
-					tileManager.currentTile = UI.hoveringInventoryTile;
-				}
-			} else if (!openedModal) {
-				UI.currentModal = null;
-			}
-		} else {
+		// UI elements
+		if (UI.hoveringElement != null) {
 			UIElement element = UI.hoveringElement;
 
 			while (element != null) {
@@ -71,6 +56,35 @@ public class Mouse implements MouseMotionListener, MouseListener {
 					element = element.parent;
 				}
 			}
+
+			return;
+		}
+
+		// Inventory
+		if (UI.hoveringInventoryTile != null) {
+			tileManager.currentTile = UI.hoveringInventoryTile;
+
+			return;
+		}
+
+		// Buildables
+		if (!isRightMouseButton) {
+			Buildable buildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+
+			if (buildable == null) {
+				tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
+			} else if (buildable instanceof Building) {
+				Building building = (Building)buildable;
+				building.openModal();
+				openedModal = true;
+			}
+		} else {
+			tileManager.removeBuildable(Mouse.viewportMouseCoordinate);
+		}
+
+		// Closing modal
+		if (UI.currentModal != null && !openedModal) {
+			UI.currentModal = null;
 		}
 	}
 

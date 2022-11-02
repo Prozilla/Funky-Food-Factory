@@ -49,6 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Game
 	public final static String gameName = "Funky Food Factory";
+	public static float timeScale = 1;
+	public static boolean paused = false;
 
 	public GamePanel() {
 		UI.instance.setTileManager(tileManager);
@@ -127,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
 			lastTime = currentTime;
 
 			if (delta >= 1) {
-				deltaTime = delta;
+				deltaTime = delta * timeScale;
 				time += deltaTime / fps;
 
 				update();
@@ -162,6 +164,24 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void addScore(int value) {
 		score += Math.round(value * scoreMultiplier);
+	}
+
+	public void pause() {
+		timeScale = 0;
+		paused = true;
+	}
+
+	public void resume() {
+		timeScale = 1;
+		paused = false;
+	}
+
+	public void togglePause() {
+		if (paused) {
+			resume();
+		} else {
+			pause();
+		}
 	}
 
 }

@@ -61,12 +61,17 @@ public class UI {
 	final int scorePadding = 10;
 	final int scoreIconSize = fontSize;
 
+	final int menuButtonSize = 30;
+	final int menuMargin = 25;
+	final int menuGap = 20;
+
 	int scoreTextWidth;
 	String previousScoreText;
 
 	public static Modal currentModal;
 	public static UIElement hoveringElement = null;
 	public static Tile hoveringInventoryTile;
+	public static Integer hoveringMenuButton = null;
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
 	public Map<String, BufferedImage> iconTextures;
@@ -100,8 +105,12 @@ public class UI {
 	public void addIcons() {
 		iconTextures = new HashMap<String, BufferedImage>();
 
-		addIcon("coin");
-		addIcon("arrow");
+		addIcon(Icon.COIN);
+		addIcon(Icon.ARROW);
+		addIcon(Icon.PLAY);
+		addIcon(Icon.PAUSE);
+		addIcon(Icon.TOOLS);
+		addIcon(Icon.WAREHOUSE);
 	}
 
 	public void addIcon(String name) {
@@ -113,28 +122,36 @@ public class UI {
 		}
 	}
 
+	public void clickMenuButton(int index) {
+		switch (index) {
+			case 0:
+				gamePanel.togglePause();
+				break;
+		}
+	}
+
 	public void draw(Graphics2D graphics2D) {
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		if (currentModal != null) {
-			currentModal.checkHoverState();
-			currentModal.draw(graphics2D);
-		}
-
 		if (UI.hoveringElement != null)
 			UI.hoveringElement.hovering = true;
 
-		drawScore(graphics2D);
 		drawInventory(graphics2D);
+		drawModal(graphics2D);
+		drawScore(graphics2D);
+		drawMenu(graphics2D);
 
 		// Check if hovering a UI element that should show the hand cursor
-		boolean hoveringInteractable = UI.hoveringInventoryTile != null || (UI.hoveringElement != null && UI.hoveringElement.handCursor);
+		boolean hoveringInteractable = UI.hoveringInventoryTile != null || (UI.hoveringElement != null && UI.hoveringElement.handCursor) || hoveringMenuButton != null;
 
-		// Check if hovering a building with a modal
-		Buildable hoveringBuildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
-		if (hoveringBuildable != null && hoveringBuildable instanceof Building && ((Building)hoveringBuildable).hasModal)
-			hoveringInteractable = true;
+		if (!hoveringInteractable) {
+			// Check if hovering a building with a modal
+			Buildable hoveringBuildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+
+			if (hoveringBuildable != null && hoveringBuildable instanceof Building && ((Building)hoveringBuildable).hasModal)
+				hoveringInteractable = true;
+		}
 
 		int newCursor = hoveringInteractable ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
 
@@ -145,11 +162,18 @@ public class UI {
 		}
 	}
 
+	void drawModal(Graphics2D graphics2D) {
+		if (currentModal != null) {
+			currentModal.checkHoverState();
+			currentModal.draw(graphics2D);
+		}
+	}
+
 	void setScoreSize(Graphics2D graphics2D, String text) {
 		scoreTextWidth = graphics2D.getFontMetrics().stringWidth(text);
 	}
 
-	public void drawScore(Graphics2D graphics2D) {
+	void drawScore(Graphics2D graphics2D) {
 		Point position = new Point(scoreMargin, scoreMargin);
 
 		// Calculate text width
@@ -164,14 +188,14 @@ public class UI {
 		UIElement.drawBackground(graphics2D, new Point(position.x - scorePadding, position.y - scorePadding), new Dimension(backgroundWidth, backgroundHeight), backgroundColorA, cornerRadius);
 
 		// Draw icon
-		graphics2D.drawImage(iconTextures.get("coin"), position.x, position.y, scoreIconSize, scoreIconSize, null);
+		graphics2D.drawImage(iconTextures.get(Icon.COIN), position.x, position.y, scoreIconSize, scoreIconSize, null);
 
 		// Draw text
 		graphics2D.setColor(Color.white);
 		graphics2D.drawString(text, position.x + scoreIconSize + scoreGap, position.y + (int)(scoreTextSize / 10f * 9f));
 	}
 
-	public void drawInventory(Graphics2D graphics2D) {
+	void drawInventory(Graphics2D graphics2D) {
 		int xStart = invHorizontalMargin;
 		int yStart = gamePanel.height - invSlotSize - invVerticalMargin;
 		hoveringInventoryTile = null;
@@ -195,7 +219,7 @@ public class UI {
 	}
 
 	// Should be adapted to new UIElement class
-	public void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering, boolean active) {
+	void drawInventorySlot(Graphics2D graphics2D, int x, int y, BufferedImage icon, boolean hovering, boolean active) {
 		UIElement.drawBackground(graphics2D, new Point(x, y), new Dimension(invSlotSize, invSlotSize), hovering ? backgroundColorB : backgroundColorA, cornerRadius);
 
 		int difference = (invSlotSize - invSlotIconSize) / 2;
@@ -209,6 +233,33 @@ public class UI {
 
 		if (active) {
 			UIElement.drawBorder(graphics2D, new Point(x, y), new Dimension(invSlotSize, invSlotSize), 5, UI.backgroundColorB, cornerRadius);
+		}
+	}
+
+	void drawMenu(Graphics2D graphics2D) {
+		int x = gamePanel.width - menuMargin - menuButtonSize;
+
+		BufferedImage[] sprites = new BufferedImage[]{
+			iconTextures.get(Icon.PAUSE),
+			iconTextures.get(Icon.WAREHOUSE),
+			iconTextures.get(Icon.TOOLS)
+		};
+
+		hoveringMenuButton = null;
+
+		for (int i = 0; i < sprites.length; i++) {
+			BufferedImage sprite = sprites[i];
+			int y = menuMargin + (menuButtonSize + menuGap) * i;
+
+			if (Mouse.mousePosition != null && Mouse.mousePosition.x >= x && Mouse.mousePosition.x < x + menuButtonSize && Mouse.mousePosition.y >= y && Mouse.mousePosition.y < y + menuButtonSize)
+			{
+				hoveringMenuButton = i;
+			}
+
+			if (i == 0 && GamePanel.paused)
+				sprite = iconTextures.get(Icon.PLAY);
+
+			graphics2D.drawImage(sprite, x, y, menuButtonSize, menuButtonSize, null);
 		}
 	}
 

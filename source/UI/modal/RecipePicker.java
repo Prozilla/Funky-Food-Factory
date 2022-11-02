@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import source.UI.Clickable;
 import source.UI.Direction;
+import source.UI.Icon;
 import source.UI.ImageElement;
 import source.UI.Modal;
 import source.UI.UI;
@@ -40,7 +41,7 @@ public class RecipePicker extends Modal {
 			ImageElement inputImage = new ImageElement(position, null, null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.inputItem.sprite, imageSize, imageSize);
 			recipeContainer.appendChild(inputImage);
 
-			ImageElement arrowImage = new ImageElement(position, null, new Vector4(12, 0), 0, null, null, null, 0, Direction.HORIZONTAL, UI.instance.iconTextures.get("arrow"), imageSize, imageSize);
+			ImageElement arrowImage = new ImageElement(position, null, new Vector4(12, 0), 0, null, null, null, 0, Direction.HORIZONTAL, UI.instance.iconTextures.get(Icon.ARROW), imageSize, imageSize);
 			recipeContainer.appendChild(arrowImage);
 
 			ImageElement outputImage = new ImageElement(position, null, null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.outputItem.sprite, imageSize, imageSize);

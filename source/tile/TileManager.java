@@ -214,7 +214,7 @@ public class TileManager {
 				drawTile(graphics2D, tiles.get("floor").sprites[0], x, y);
 
 				// Hover
-				if (UI.hoveringInventoryTile == null && UI.hoveringElement == null && Mouse.mouseCoordinate != null && column == Mouse.viewportMouseCoordinate.x && row == Mouse.viewportMouseCoordinate.y) {
+				if (UI.hoveringInventoryTile == null && UI.hoveringElement == null && UI.hoveringMenuButton == null && Mouse.mouseCoordinate != null && column == Mouse.viewportMouseCoordinate.x && row == Mouse.viewportMouseCoordinate.y) {
 					// viewport.drawRect(graphics2D, x, y, GamePanel.tileSize, GamePanel.tileSize, new Color(1f, 1f, 1f, 0.25f));
 
 					// Draw ghost building

@@ -12,10 +12,10 @@ public class Viewport {
 	public static Viewport instance = new Viewport();
 
 	public float zoomFactor = 1f;
-	final float minZoom = 0.5f;
+	final float minZoom = 1f;
 	final float maxZoom = 4f;
 	final float zoomSpeed = 0.1f;
-	final float initialZoom = 1.25f;
+	final float initialZoom = 2f;
 	
 	public static float zoomedTileScale;
 	public static float zoomedItemScale;
@@ -72,7 +72,7 @@ public class Viewport {
 		}
 
 		zoomedItemScale = zoomedTileScale / GamePanel.tileScaleMultiplier * GamePanel.itemScaleMultiplier;
-		zoomedTileSize = (int)(GamePanel.originalTileSize * zoomedTileScale);
+		zoomedTileSize = Math.round(GamePanel.originalTileSize * zoomedTileScale);
 
 		width = gamePanel.horizontalTiles * zoomedTileSize;
 		height = gamePanel.verticalTiles * zoomedTileSize;
