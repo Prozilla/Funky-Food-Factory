@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.text.Position;
 import java.awt.Cursor;
 
 import java.awt.image.BufferedImage;
@@ -66,7 +65,7 @@ public class UI {
 	int scoreTextWidth;
 	String previousScoreText;
 
-	public static UIElement currentModal;
+	public static Modal currentModal;
 	public static UIElement hoveringElement = null;
 	public static Tile hoveringInventoryTile;
 

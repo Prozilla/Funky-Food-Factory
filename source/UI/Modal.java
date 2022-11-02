@@ -1,31 +1,59 @@
 package source.UI;
 
 import java.awt.Point;
-import java.awt.Graphics2D;
-import java.awt.Font;
 import java.awt.Color;
+import java.awt.Graphics2D;
 
-public class Modal {
-	
-	public String title;
+import source.util.Vector4;
 
-	public Point position;
+public class Modal extends UIElement {
 
-	public Modal(String title, Point position) {
-		this.title = title;
-		this.position = position;
+	public Integer activeOptionIndex = 0;
+	UIElement optionsContainer;
+
+	public final int imageSize = 35;
+
+	public Modal(String title, Point position, Direction direction, Clickable clickable) {
+		super(position, new Vector4(12, 9, 0, 6), null, UI.cornerRadius, Color.white, UI.backgroundColorA, title, 0.65f, Direction.VERTICAL);
+
+		optionsContainer = new UIElement(position, new Vector4(3, 0), new Vector4(0, 12, 0, 0), UI.cornerRadius, null, null, null, 0, direction);
+		appendChild(optionsContainer);
 	}
 
+	public void addOption(UIElement option) {
+		option.clickable = clickable;
+		option.handCursor = true;
+
+		optionsContainer.appendChild(option);
+	}
+
+	public void setOption(int index) {
+		activeOptionIndex = index;
+	}
+
+	@Override
 	public void draw(Graphics2D graphics2D) {
-		graphics2D.setFont(UI.font.deriveFont(Font.PLAIN, UI.fontSize / 3 * 2));
-		int width = graphics2D.getFontMetrics().stringWidth(title) + 20;
-		int height = graphics2D.getFontMetrics().getHeight() + 20;
+		// Update styling
+		for (int i = 0; i < optionsContainer.children.size(); i++) {
+			UIElement element = optionsContainer.children.get(i);
 
-		graphics2D.setColor(UI.backgroundColorB);
-		graphics2D.fillRoundRect(position.x, position.y, width, height, UI.cornerRadius, UI.cornerRadius);
+			boolean hovering = element.hovering || element.hoveringChild;
+			boolean active = i == activeOptionIndex;
+			
+			if (hovering || active) {
+				element.backgroundColor = UI.backgroundColorB;
+			} else {
+				element.backgroundColor = null;
+			}
 
-		graphics2D.setColor(Color.white);
-		graphics2D.drawString(title, position.x + 10, position.y + 10);
+			if (active) {
+				element.setBorder(UI.borderWidth, Color.WHITE);
+			} else {
+				element.setBorder(0, null);
+			}
+		}
+
+		super.draw(graphics2D);
 	}
 
 }
