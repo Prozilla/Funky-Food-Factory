@@ -13,7 +13,7 @@ public class Conveyor extends Connectable {
 
 	public Conveyor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
-		super.frameCount = 6;
+		super.frameCount = 8;
 		this.animationSpeed = 12;
 	}
 
