@@ -41,9 +41,7 @@ public class ImageElement extends UIElement {
 	public void draw(Graphics2D graphics2D) {
 		super.draw(graphics2D);
 
-		Point viewportPosition = Viewport.instance.positionToViewport(position);
-
-		graphics2D.drawImage(sprite, viewportPosition.x + offset.x + padding.x / 2, viewportPosition.y + offset.y + padding.y / 2, width + padding.x / 2, height + padding.y / 2, null);
+		graphics2D.drawImage(sprite, offsetPosition.x + padding.x / 2, offsetPosition.y + padding.y / 2, width, height, null);
 	}
 
 }

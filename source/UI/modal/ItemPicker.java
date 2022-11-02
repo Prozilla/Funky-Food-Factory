@@ -25,7 +25,7 @@ public class ItemPicker extends UIElement {
 		this.activeItem = activeItem;
 		this.possibleItems = possibleItems;
 
-		UIElement itemsContainer = new UIElement(position, new Point(5, 0), null, UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
+		UIElement itemsContainer = new UIElement(position, new Point(5, 0), new Point(0, 15), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 		appendChild(itemsContainer);
 
 		for (int i = 0; i < possibleItems.size(); i++) {

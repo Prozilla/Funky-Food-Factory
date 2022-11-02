@@ -31,7 +31,7 @@ public class RecipePicker extends UIElement {
 			if (active)
 				activeRecipeIndex = i;
 
-			UIElement recipeContainer = new UIElement(position, new Point(5, 0), null, UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
+			UIElement recipeContainer = new UIElement(position, new Point(5, 0), new Point(0, 15), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 			recipeContainer.name = String.format("recipe%s", i);
 			recipeContainer.clickable = clickable;
 			appendChild(recipeContainer);

@@ -36,6 +36,8 @@ public class UIElement {
 	public Point totalSize = new Point();
 	public boolean autoSize = true;
 
+	Point offsetPosition = new Point();
+
 	public boolean hovering = false;
 	public boolean hoveringChild = false;
 
@@ -88,14 +90,14 @@ public class UIElement {
 				int totalElementheight = (element.totalSize != null) ? element.totalSize.y + element.padding.y : 0;
 
 				if (direction == Direction.VERTICAL) {
-					element.offset = new Point(offset.x + padding.x / 2, offset.y + totalSize.y);
-					totalSize.y += totalElementheight;
+					element.offset = new Point(offset.x + padding.x / 2 + margin.x / 2, offset.y + totalSize.y);
+					totalSize.y += totalElementheight + element.margin.y;
 
 					if (width == null || totalElementWidth > width)
 						totalSize.x = totalElementWidth + padding.x;
 				} else {
-					element.offset = new Point(offset.x + totalSize.x, offset.y + padding.y / 2);
-					totalSize.x += totalElementWidth;
+					element.offset = new Point(offset.x + totalSize.x, offset.y + padding.y / 2 + margin.y / 2);
+					totalSize.x += totalElementWidth + element.margin.x;
 
 					if (height == null || totalElementheight > height)
 						totalSize.y = totalElementheight + padding.y;
@@ -104,9 +106,9 @@ public class UIElement {
 		}
 
 		if (direction == Direction.VERTICAL) {
-			totalSize.y += padding.y / 2;
+			totalSize.y += padding.y;
 		} else {
-			totalSize.x += padding.x / 2;
+			totalSize.x += padding.x;
 		}
 	}
 
@@ -183,20 +185,21 @@ public class UIElement {
 			updateSize(graphics2D);
 
 		Point viewportPosition = Viewport.instance.positionToViewport(position);
+		offsetPosition = new Point(viewportPosition.x + offset.x + margin.x / 2, viewportPosition.y + offset.y + margin.y / 2);
 
 		// Draw background
 		if (backgroundColor != null) {
-			drawBackground(graphics2D, new Point(viewportPosition.x + offset.x, viewportPosition.y + offset.y), new Dimension(totalSize.x, totalSize.y), backgroundColor, radius);
+			drawBackground(graphics2D, new Point(offsetPosition.x, offsetPosition.y), new Dimension(totalSize.x, totalSize.y), backgroundColor, radius);
 		}
 
 		// Draw text
 		if (text != null && color != null) {
-			drawText(graphics2D, new Point(viewportPosition.x + offset.x + padding.x / 2, viewportPosition.y + offset.y + height + padding.y / 2), text, UI.font, Font.PLAIN, UI.fontSize * fontSize, color, radius);
+			drawText(graphics2D, new Point(offsetPosition.x + padding.x / 2, offsetPosition.y + height + padding.y / 2), text, UI.font, Font.PLAIN, UI.fontSize * fontSize, color, radius);
 		}
 
 		// Draw border
 		if (borderWidth > 0 && borderColor != null) {
-			drawBorder(graphics2D, new Point(viewportPosition.x + offset.x, viewportPosition.y + offset.y), new Dimension(totalSize.x, totalSize.y), borderWidth, borderColor, radius);
+			drawBorder(graphics2D, new Point(offsetPosition.x, offsetPosition.y), new Dimension(totalSize.x, totalSize.y), borderWidth, borderColor, radius);
 		}
 
 		// Draw children

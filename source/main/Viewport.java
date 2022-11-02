@@ -11,11 +11,11 @@ public class Viewport {
 
 	public static Viewport instance = new Viewport();
 
-	public float zoomFactor = 1;
+	public float zoomFactor = 1f;
 	final float minZoom = 0.5f;
-	final float maxZoom = 4;
+	final float maxZoom = 4f;
 	final float zoomSpeed = 0.1f;
-	final float initialZoom = 1.5f;
+	final float initialZoom = 1.25f;
 	
 	public static float zoomedTileScale;
 	public static float zoomedItemScale;

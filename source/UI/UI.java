@@ -60,6 +60,9 @@ public class UI {
 	final int scorePadding = 10;
 	final int scoreIconSize = fontSize;
 
+	int scoreTextWidth;
+	String previousScoreText;
+
 	public static UIElement currentModal;
 	public static UIElement hoveringElement = null;
 	public static Tile hoveringInventoryTile;
@@ -122,16 +125,21 @@ public class UI {
 		drawInventory(graphics2D);
 	}
 
+	void setScoreSize(Graphics2D graphics2D, String text) {
+		scoreTextWidth = graphics2D.getFontMetrics().stringWidth(text);
+	}
+
 	public void drawScore(Graphics2D graphics2D) {
 		Point position = new Point(scoreMargin, scoreMargin);
 
 		// Calculate text width
 		String text = Integer.toString(gamePanel.score);
 		graphics2D.setFont(font.deriveFont(Font.PLAIN, scoreTextSize));
-		int textWidth = graphics2D.getFontMetrics().stringWidth(text);
+		if (previousScoreText == null || previousScoreText != text)
+			setScoreSize(graphics2D, text);
 
 		// Draw background
-		int backgroundWidth = scoreIconSize + scoreGap + textWidth + scorePadding * 2;
+		int backgroundWidth = scoreIconSize + scoreGap + scoreTextWidth + scorePadding * 2;
 		int backgroundHeight = scoreIconSize + scorePadding * 2;
 		UIElement.drawBackground(graphics2D, new Point(position.x - scorePadding, position.y - scorePadding), new Dimension(backgroundWidth, backgroundHeight), backgroundColorA, cornerRadius);
 
