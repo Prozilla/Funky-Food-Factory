@@ -73,7 +73,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 
 			if (buildable == null) {
 				tileManager.placeBuildable(Mouse.viewportMouseCoordinate, tileManager.currentTile.name, 1);
-			} else if (buildable instanceof Building) {
+			} else if (buildable instanceof Building && UI.currentModal == null) {
 				Building building = (Building)buildable;
 				building.openModal();
 				openedModal = true;

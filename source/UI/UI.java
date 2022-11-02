@@ -39,6 +39,7 @@ public class UI {
 	public final static Color backgroundColorA = Color.decode("#31373D");
 	public final static Color backgroundColorB = Color.decode("#25292e");
 	public final static Color backgroundColorC = Color.decode("#181b1f");
+	public final static Color backgroundColorD = Color.decode("#E1E8ED");
 	
 	public GamePanel gamePanel;
 	TileManager tileManager;

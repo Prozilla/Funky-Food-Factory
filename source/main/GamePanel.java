@@ -10,6 +10,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import source.UI.UI;
@@ -33,7 +34,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public int fps = 60;
 	public double time = 0;
+	public double scaledTime = 0;
 	public double deltaTime = 0;
+	public double scaledDeltaTime = 0;
 
 	// System
 	Thread gameThread;
@@ -51,13 +54,14 @@ public class GamePanel extends JPanel implements Runnable {
 	public final static String gameName = "Funky Food Factory";
 	public static float timeScale = 1;
 	public static boolean paused = false;
+	static Color backgroundColor = UI.backgroundColorD;
 
 	public GamePanel() {
 		UI.instance.setTileManager(tileManager);
 		UI.instance.gamePanel = this;
 		viewport.setGamePanel(this);
 
-		this.setBackground(UI.backgroundColorC);
+		this.setBackground(backgroundColor);
 		this.addMouseMotionListener(mouseListener);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
@@ -129,8 +133,10 @@ public class GamePanel extends JPanel implements Runnable {
 			lastTime = currentTime;
 
 			if (delta >= 1) {
-				deltaTime = delta * timeScale;
 				time += deltaTime / fps;
+				scaledTime += scaledDeltaTime / fps;
+				scaledDeltaTime = delta * timeScale;
+				deltaTime = delta;
 
 				update();
 				repaint();

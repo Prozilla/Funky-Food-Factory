@@ -131,7 +131,7 @@ public class Item extends AbstractItem {
 				}
 
 
-				Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.deltaTime * Conveyor.itemSpeed));
+				Point movement = TileManager.moveInDirection(direction, (int)Math.round(gamePanel.scaledDeltaTime * Conveyor.itemSpeed));
 
 				x += movement.x;
 				y += movement.y;

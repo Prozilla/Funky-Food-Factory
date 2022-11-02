@@ -45,7 +45,7 @@ public class Importer extends Building {
 			Point neighbourCoordinate = new Point(coordinate.x + coordinateOffset.x, coordinate.y + coordinateOffset.y);
 
 			if (tileManager.coordinateToBuildable.containsKey(neighbourCoordinate)) {
-				timeUntilNextSpawn -= gamePanel.deltaTime / gamePanel.fps;
+				timeUntilNextSpawn -= gamePanel.scaledDeltaTime / gamePanel.fps;
 
 				if (timeUntilNextSpawn <= 0) {
 					timeUntilNextSpawn = itemSpawnDelay;

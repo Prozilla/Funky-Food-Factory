@@ -46,7 +46,7 @@ public class Buildable {
 	public boolean allowAutoRotation = false;
 
 	double age = 0;
-	double death; // TO do: Should be set to the current age when building gets deleted (to do remove animation)
+	double death; // TO DO: Should be set to the current age when building gets deleted (to do remove animation)
 
 	public ArrayList<Integer> connections = new ArrayList<Integer>();
 
@@ -100,7 +100,7 @@ public class Buildable {
 			// 	frameOffset = (coordinate.x % 3) * -4;
 			// }
 
-			frame = Math.abs((int)Math.round(gamePanel.time * animationSpeed) + (mirrorSprite ? frameOffset : -frameOffset)) % frameCount;
+			frame = Math.abs((int)Math.round(gamePanel.scaledTime * animationSpeed) + (mirrorSprite ? frameOffset : -frameOffset)) % frameCount;
 		}
 
 		// Crop to current frame
