@@ -43,6 +43,7 @@ public class UIElement {
 
 	public boolean hovering = false;
 	public boolean hoveringChild = false;
+	public boolean handCursor = false;
 
 	public Clickable clickable;
 
@@ -75,6 +76,9 @@ public class UIElement {
 	public void appendChild(UIElement element) {
 		children.add(element);
 		element.parent = this;
+
+		if (handCursor)
+			element.handCursor = true;
 
 		arrangeChildren();
 	}

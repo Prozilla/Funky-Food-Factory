@@ -11,7 +11,7 @@ import source.tile.TileManager;
 public class Exporter extends Building {
 
 	public Exporter(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Exporter", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Exporter", x, y, tile, false, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.setConnection(false, -2);
 		this.setConnection(true, (direction + 2) % 4);

@@ -15,10 +15,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.text.Position;
+import java.awt.Cursor;
 
 import java.awt.image.BufferedImage;
 
 import source.tile.TileManager;
+import source.buildable.Buildable;
+import source.buildable.Building;
 import source.main.GamePanel;
 import source.main.Mouse;
 import source.tile.Tile;
@@ -69,6 +72,8 @@ public class UI {
 
 	Map<String, Tile> buildables = new HashMap<String, Tile>();
 	public Map<String, BufferedImage> iconTextures;
+
+	int currentCursor;
 
 	private UI() {
 		try {
@@ -124,6 +129,22 @@ public class UI {
 
 		drawScore(graphics2D);
 		drawInventory(graphics2D);
+
+		// Check if hovering a UI element that should show the hand cursor
+		boolean hoveringInteractable = UI.hoveringInventoryTile != null || (UI.hoveringElement != null && UI.hoveringElement.handCursor);
+
+		// Check if hovering a building with a modal
+		Buildable hoveringBuildable = tileManager.coordinateToBuildable.get(Mouse.viewportMouseCoordinate);
+		if (hoveringBuildable != null && hoveringBuildable instanceof Building && ((Building)hoveringBuildable).hasModal)
+			hoveringInteractable = true;
+
+		int newCursor = hoveringInteractable ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
+
+		if (newCursor != currentCursor) {
+			Cursor cursor = Cursor.getPredefinedCursor(newCursor);
+			gamePanel.setCursor(cursor);
+			currentCursor = newCursor;
+		}
 	}
 
 	void setScoreSize(Graphics2D graphics2D, String text) {

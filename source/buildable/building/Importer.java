@@ -30,7 +30,7 @@ public class Importer extends Building {
 	ItemPicker itemPicker;
 
 	public Importer(int x, int y, int direction, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Importer", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Importer", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
 		this.input = -2;
 		this.output = direction;
 		this.addConveyor();

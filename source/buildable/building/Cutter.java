@@ -11,7 +11,7 @@ import source.tile.TileManager;
 public class Cutter extends Building {
 
 	public Cutter(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Cutter", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Cutter", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
 

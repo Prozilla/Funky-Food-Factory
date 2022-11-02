@@ -11,7 +11,7 @@ import source.tile.TileManager;
 public class Smelter extends Building {
 
 	public Smelter(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Smelter", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Smelter", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
 

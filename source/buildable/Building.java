@@ -20,15 +20,17 @@ public class Building extends Buildable {
 	public String name;
 	public Recipe activeRecipe;
 	public ArrayList<Recipe> possibleRecipes = new ArrayList<Recipe>();
+	public boolean hasModal;
 
 	RecipePicker recipePicker;
 
 	public ItemManager itemManager;
 
-	public Building(String name, int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
+	public Building(String name, int x, int y, Tile tile, Boolean hasModal, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
 
 		this.name = name;
+		this.hasModal = hasModal;
 		this.itemManager = itemManager;
 	}
 
@@ -52,7 +54,7 @@ public class Building extends Buildable {
 	}
 
 	public void openModal() {
-		if (activeRecipe != null) {
+		if (hasModal && activeRecipe != null) {
 			Clickable clickable = new Clickable() {
 				@Override
 				public void onClick(UIElement element) {

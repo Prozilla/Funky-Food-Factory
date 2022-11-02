@@ -37,9 +37,8 @@ public class RecipePicker extends UIElement {
 			UIElement recipeContainer = new UIElement(position, new Vector4(15, 6), new Vector4(0, topMargin, 0, 0), UI.cornerRadius, null, null, null, 0, Direction.HORIZONTAL);
 			recipeContainer.name = String.format("recipe%s", i);
 			recipeContainer.clickable = clickable;
+			recipeContainer.handCursor = true;
 			appendChild(recipeContainer);
-
-			System.out.println(recipeContainer.margin.y);
 
 			ImageElement inputImage = new ImageElement(position, null, null, 0, null, null, null, 0, Direction.HORIZONTAL, recipe.inputItem.sprite, 25, 25);
 			recipeContainer.appendChild(inputImage);

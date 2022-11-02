@@ -40,6 +40,7 @@ public class ItemPicker extends UIElement {
 			itemImage.name = item.name;
 
 			itemImage.clickable = clickable;
+			itemImage.handCursor = true;
 
 			itemsContainer.appendChild(itemImage);
 		}

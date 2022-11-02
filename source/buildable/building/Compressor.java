@@ -11,7 +11,7 @@ import source.tile.TileManager;
 public class Compressor extends Building {
 
 	public Compressor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Compressor", x, y, tile, gamePanel, tileManager, itemManager, viewport);
+		super("Compressor", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
