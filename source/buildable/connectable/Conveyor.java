@@ -45,6 +45,11 @@ public class Conveyor extends Connectable {
 			} else if (output == -2) {
 				cropToInput = true;
 			}
+
+			if (cropToInput || cropToOutput) {
+				rotation += 180;
+				mirrorSprite = !mirrorSprite;
+			}
 		} else {
 			if (input == (output + 1) % 4) {
 				// Right turn
@@ -55,7 +60,6 @@ public class Conveyor extends Connectable {
 				mirrorSprite = false;
 				rotation += 90;
 			}
-
 
 			if (connections.contains(1) && connections.contains(2)) {
 				currentSprite = tile.sprites[1];
@@ -70,11 +74,14 @@ public class Conveyor extends Connectable {
 				rotation += 270;
 			}
 
-			// if (mirrorSprite)
-			// 	rotation -= 90;
-		}
+			rotation += 180;
 
-		mirrorSprite = !mirrorSprite;
+			if (mirrorSprite) {
+				rotation -= 90;
+			} else {
+				rotation += 90;
+			}
+		}
 	}
 	
 }

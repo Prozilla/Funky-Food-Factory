@@ -37,15 +37,8 @@ public class ItemManager {
 	public void addItems() {
 		abstractItems = new HashMap<String, AbstractItem>();
 
-		addItem(Item.CORN);
-		addItem(Item.LETTUCE);
-		addItem(Item.MELON);
-		addItem(Item.MELON_SLICE);
-		addItem(Item.PIZZA);
-		addItem(Item.POPCORN);
-		addItem(Item.SALAD);
-		addItem(Item.TOMATO);
-		addItem(Item.TOMATO_SAUCE);
+		addItem(Item.COPPER_ORE);
+		addItem(Item.COPPER_INGOT);
 	}
 
 	public void addItem(String name) {

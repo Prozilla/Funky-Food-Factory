@@ -16,8 +16,8 @@ public class Compressor extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.TOMATO), ItemManager.abstractItems.get(Item.TOMATO_SAUCE)));
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.LETTUCE), ItemManager.abstractItems.get(Item.SALAD)));
+		// this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.TOMATO), ItemManager.abstractItems.get(Item.TOMATO_SAUCE)));
+		// this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.LETTUCE), ItemManager.abstractItems.get(Item.SALAD)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

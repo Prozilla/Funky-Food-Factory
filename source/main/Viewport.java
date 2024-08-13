@@ -15,7 +15,7 @@ public class Viewport {
 	final float minZoom = 1f;
 	final float maxZoom = 4f;
 	final float zoomSpeed = 0.1f;
-	final float initialZoom = 2f;
+	final float initialZoom = 0f;
 	
 	public static float zoomedTileScale;
 	public static float zoomedItemScale;

@@ -61,8 +61,7 @@ public class TileManager {
 		addTile(tiles, new String[]{Tile.IMPORTER});
 		addTile(tiles, new String[]{Tile.EXPORTER});
 		addTile(tiles, new String[]{Tile.SMELTER});
-		addTile(tiles, new String[]{Tile.COMPRESSOR});
-		addTile(tiles, new String[]{Tile.CUTTER});
+		addTile(tiles, new String[]{Tile.CONSTRUCTOR});
 
 		currentTile = tiles.get(Tile.CONVEYOR);
 	}
@@ -145,11 +144,8 @@ public class TileManager {
 			case Tile.SMELTER:
 				buildable = new Smelter(point.x, point.y, tiles.get(Tile.SMELTER), gamePanel, this, itemManager, viewport);
 				break;
-			case Tile.COMPRESSOR:
-				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get(Tile.COMPRESSOR), gamePanel, this, itemManager, viewport);
-				break;
-			case Tile.CUTTER:
-				buildable = new source.buildable.building.Cutter(point.x, point.y, tiles.get(Tile.CUTTER), gamePanel, this, itemManager, viewport);
+			case Tile.CONSTRUCTOR:
+				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get(Tile.CONSTRUCTOR), gamePanel, this, itemManager, viewport);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get(Tile.CONVEYOR), gamePanel, this, viewport);

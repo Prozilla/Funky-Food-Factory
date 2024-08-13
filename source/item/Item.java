@@ -16,17 +16,12 @@ import source.main.Viewport;
 public class Item extends AbstractItem {
 
 	// Item names
-	public static final String CORN = "corn";
-	public static final String LETTUCE = "lettuce";
-	public static final String MELON = "melon";
-	public static final String MELON_SLICE = "melon_slice";
-	public static final String PIZZA = "pizza";
-	public static final String POPCORN = "popcorn";
-	public static final String SALAD = "salad";
-	public static final String TOMATO = "tomato";
-	public static final String TOMATO_SAUCE = "tomato_sauce";
+	public static final String COPPER_ORE = "copper_ore";
+	public static final String COPPER_INGOT = "copper_ingot";
+	public static final String IRON_ORE = "iron_ore";
+	public static final String IRON_INGOT = "iron_ingot";
 
-	public final static int pixelSize = 128;
+	public final static int pixelSize = 16;
 	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);
 
 	public int x = 0;

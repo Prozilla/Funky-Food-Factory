@@ -9,14 +9,14 @@ import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
 
-public class Cutter extends Building {
+public class Constructor extends Building {
 
-	public Cutter(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
-		super("Cutter", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
+	public Constructor(int x, int y, Tile tile, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
+		super("Constructor", x, y, tile, true, gamePanel, tileManager, itemManager, viewport);
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.MELON), ItemManager.abstractItems.get(Item.MELON_SLICE)));
+		// this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.MELON), ItemManager.abstractItems.get(Item.MELON_SLICE)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

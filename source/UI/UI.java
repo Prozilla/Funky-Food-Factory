@@ -44,7 +44,7 @@ public class UI {
 	public GamePanel gamePanel;
 	TileManager tileManager;
 
-	final String fontName = "Poppins-Bold";
+	final String fontName = "Retro Gaming";
 	public static Font font;
 	public final static int fontSize = 33;
 	public final static int cornerRadius = 25;
@@ -99,8 +99,7 @@ public class UI {
 		tileManager.addTile(buildables, new String[]{Tile.SMELTER});
 		tileManager.addTile(buildables, new String[]{Tile.IMPORTER});
 		tileManager.addTile(buildables, new String[]{Tile.EXPORTER});
-		tileManager.addTile(buildables, new String[]{Tile.COMPRESSOR});
-		tileManager.addTile(buildables, new String[]{Tile.CUTTER});
+		tileManager.addTile(buildables, new String[]{Tile.CONSTRUCTOR});
 	}
 
 	public void addIcons() {
