@@ -84,6 +84,7 @@ public class Importer extends Building {
 	@Override
 	public void openModal() {
 		ArrayList<AbstractItem> possiblItems = new ArrayList<AbstractItem>(Arrays.asList(
+			ItemManager.abstractItems.get(Item.IRON_ORE),
 			ItemManager.abstractItems.get(Item.COPPER_ORE)
 		));
 

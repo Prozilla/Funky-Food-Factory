@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
-import source.buildable.connectable.Conveyor;
 import source.main.GamePanel;
 import source.main.Viewport;
 import source.tile.TileManager;
@@ -39,6 +38,8 @@ public class ItemManager {
 
 		addItem(Item.COPPER_ORE);
 		addItem(Item.COPPER_INGOT);
+		addItem(Item.IRON_ORE);
+		addItem(Item.IRON_INGOT);
 	}
 
 	public void addItem(String name) {
@@ -62,11 +63,7 @@ public class ItemManager {
 
 		Point center = new Point(coordinate.x * GamePanel.tileSize + xOffset, coordinate.y * GamePanel.tileSize + yOffset);
 
-		float range = GamePanel.tileSize - GamePanel.tileScaleMultiplier * Conveyor.borderWidth;
-		Point offset = new Point((int)Math.round(Math.random() * range - range / 2), (int)Math.round(Math.random() * range - range / 2));
-
 		Item item = new Item(center.x, center.y, abstractItems.get(name), gamePanel, tileManager, viewport, this);
-		// item.offset = offset;
 
 		items.add(item);
 	}

@@ -47,7 +47,7 @@ public class UI {
 	final String fontName = "Retro Gaming";
 	public static Font font;
 	public final static int fontSize = 33;
-	public final static int cornerRadius = 25;
+	public final static int cornerRadius = 15;
 	public final static int borderWidth = 2;
 
 	final int invSlotSize = 100;

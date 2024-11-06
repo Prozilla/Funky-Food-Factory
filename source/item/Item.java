@@ -74,7 +74,10 @@ public class Item extends AbstractItem {
 
 		if (conveyor != null) {
 			if (!clogged) {
-				int direction = !buildingConveyor ? conveyor.input > -1 ? (conveyor.input + 2) % 4 : conveyor.output : (conveyor.rotation / 90 + 1) % 4;
+				int direction = conveyor.input > -1
+					? (conveyor.input + 2) % 4
+					: conveyor.output;
+					
 				Point offset = TileManager.moveInDirection(direction, GamePanel.tileSize / 2 + Item.size / 2);
 
 				switch (direction) {
