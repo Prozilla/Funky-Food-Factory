@@ -1,8 +1,5 @@
 package source.buildable;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
 import source.UI.Clickable;
 import source.UI.UI;
 import source.UI.UIElement;
@@ -15,28 +12,31 @@ import source.main.Viewport;
 import source.tile.Tile;
 import source.tile.TileManager;
 
-public class Building extends Buildable {
+import java.awt.*;
+import java.util.ArrayList;
 
+public class Building extends Buildable {
+	
 	public String name;
 	public Recipe activeRecipe;
 	public ArrayList<Recipe> possibleRecipes = new ArrayList<Recipe>();
 	public boolean hasModal;
-
+	
 	RecipePicker recipePicker;
-
+	
 	public ItemManager itemManager;
-
+	
 	public Building(String name, int x, int y, Tile tile, Boolean hasModal, GamePanel gamePanel, TileManager tileManager, ItemManager itemManager, Viewport viewport) {
 		super(x, y, tile, gamePanel, tileManager, viewport);
-
+		
 		this.name = name;
 		this.hasModal = hasModal;
 		this.itemManager = itemManager;
 	}
-
+	
 	public void processItem(Item item) {
 		item.lastBuilding = this;
-
+		
 		// TO do: If recipe is null and recipe is required, clog conveyor
 		if (activeRecipe != null && item.name == activeRecipe.inputItem.name) {
 			Item output = new Item(item.x, item.y, activeRecipe.outputItem, gamePanel, tileManager, viewport, itemManager);
@@ -44,17 +44,17 @@ public class Building extends Buildable {
 			itemManager.items.add(output);
 		}
 	}
-
+	
 	public void setRecipe(int index) {
 		if (index >= possibleRecipes.size())
 			return;
-
+		
 		activeRecipe = possibleRecipes.get(index);
-
+		
 		if (recipePicker != null)
 			recipePicker.setRecipe(index);
 	}
-
+	
 	public void openModal() {
 		if (hasModal && activeRecipe != null) {
 			Clickable clickable = new Clickable() {
@@ -64,7 +64,7 @@ public class Building extends Buildable {
 					setRecipe(recipeIndex);
 				}
 			};
-
+			
 			recipePicker = new RecipePicker(name, new Point(x + GamePanel.tileSize, y), possibleRecipes, activeRecipe, clickable);
 			UI.currentModal = recipePicker;
 		} else {

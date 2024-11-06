@@ -1,5 +1,5 @@
 {
-	"smelting": {
-		"iron_ore": "iron_ingot"
-	}
+  "smelting": {
+    "iron_ore": "iron_ingot"
+  }
 }
