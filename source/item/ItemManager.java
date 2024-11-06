@@ -38,8 +38,10 @@ public class ItemManager {
 
 		addItem(Item.COPPER_ORE);
 		addItem(Item.COPPER_INGOT);
+		addItem(Item.COPPER_ROD);
 		addItem(Item.IRON_ORE);
 		addItem(Item.IRON_INGOT);
+		addItem(Item.IRON_SCREW);
 	}
 
 	public void addItem(String name) {

@@ -25,7 +25,7 @@ public class Importer extends Building {
 	int itemsSpawned = 0;
 	boolean stopSpawning = false;
 
-	String itemName = Item.COPPER_ORE;
+	String itemName = Item.IRON_ORE;
 
 	ItemPicker itemPicker;
 
@@ -76,9 +76,11 @@ public class Importer extends Building {
 		super.draw(graphics2D, isGhost);
 	}
 
-	void setItem(String name) {
+	public void setItem(String name) {
 		itemName = name;
-		itemPicker.setItem(name);
+
+		if (itemPicker != null)
+			itemPicker.setItem(name);
 	}
 
 	@Override

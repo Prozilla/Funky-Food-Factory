@@ -32,6 +32,10 @@ public class Exporter extends Building {
 			case Item.IRON_INGOT:
 				reward = 2;
 				break;
+			case Item.COPPER_ROD:
+			case Item.IRON_SCREW:
+				reward = 4;
+				break;
 		}
 
 		gamePanel.addScore(reward);

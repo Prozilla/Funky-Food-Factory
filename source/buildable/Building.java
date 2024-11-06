@@ -50,7 +50,9 @@ public class Building extends Buildable {
 			return;
 
 		activeRecipe = possibleRecipes.get(index);
-		recipePicker.setRecipe(index);
+
+		if (recipePicker != null)
+			recipePicker.setRecipe(index);
 	}
 
 	public void openModal() {

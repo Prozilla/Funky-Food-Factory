@@ -18,8 +18,10 @@ public class Item extends AbstractItem {
 	// Item names
 	public static final String COPPER_ORE = "copper_ore";
 	public static final String COPPER_INGOT = "copper_ingot";
+	public static final String COPPER_ROD = "copper_rod";
 	public static final String IRON_ORE = "iron_ore";
 	public static final String IRON_INGOT = "iron_ingot";
+	public static final String IRON_SCREW = "iron_screw";
 
 	public final static int pixelSize = 16;
 	public static int size = (int)(pixelSize * GamePanel.itemScaleMultiplier);

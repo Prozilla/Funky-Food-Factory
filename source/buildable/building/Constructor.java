@@ -16,7 +16,8 @@ public class Constructor extends Building {
 		this.addConveyor();
 		this.allowAutoRotation = true;
 
-		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.IRON_INGOT), ItemManager.abstractItems.get(Item.IRON_INGOT)));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.IRON_INGOT), ItemManager.abstractItems.get(Item.IRON_SCREW)));
+		this.possibleRecipes.add(new Recipe(ItemManager.abstractItems.get(Item.COPPER_INGOT), ItemManager.abstractItems.get(Item.COPPER_ROD)));
 
 		this.activeRecipe = this.possibleRecipes.get(0);
 	}

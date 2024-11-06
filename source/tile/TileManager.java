@@ -14,10 +14,12 @@ import java.awt.image.BufferedImage;
 import source.UI.UI;
 import source.buildable.Buildable;
 import source.buildable.Connectable;
+import source.buildable.building.Constructor;
 import source.buildable.building.Exporter;
 import source.buildable.building.Importer;
 import source.buildable.building.Smelter;
 import source.buildable.connectable.Conveyor;
+import source.item.Item;
 import source.item.ItemManager;
 import source.main.GamePanel;
 import source.main.Mouse;
@@ -44,13 +46,23 @@ public class TileManager {
 	}
 
 	public void loadFactory() {
-		placeBuildable(new Point(3, 5), "importer", 1);
-		placeBuildable(new Point(4, 5), "conveyor", 0);
-		placeBuildable(new Point(5, 5), "compressor", 0);
-		placeBuildable(new Point(6, 5), "conveyor", 0);
-		placeBuildable(new Point(7, 5), "smelter", 0);
-		placeBuildable(new Point(8, 5), "conveyor", 0);
-		placeBuildable(new Point(9, 5), "exporter", 1);
+		Importer importer = (Importer)placeBuildable(new Point(3, 3), Tile.IMPORTER, 1);
+		importer.setItem(Item.IRON_ORE);
+		
+		placeBuildable(new Point(4, 3), Tile.CONVEYOR, 0);
+
+		Smelter smelter = (Smelter)placeBuildable(new Point(5, 3), Tile.SMELTER, 0);
+		smelter.setRecipe(0);
+
+		placeBuildable(new Point(6, 3), Tile.CONVEYOR, 0);
+		placeBuildable(new Point(6, 4), Tile.CONVEYOR, 0);
+		placeBuildable(new Point(6, 5), Tile.CONVEYOR, 0);
+
+		Constructor constructor = (Constructor)placeBuildable(new Point(7, 5), Tile.CONSTRUCTOR, 0);
+		constructor.setRecipe(0);
+
+		placeBuildable(new Point(8, 5), Tile.CONVEYOR, 0);
+		placeBuildable(new Point(9, 5), Tile.EXPORTER, 1);
 	}
 
 	public void addTiles() {
@@ -145,7 +157,7 @@ public class TileManager {
 				buildable = new Smelter(point.x, point.y, tiles.get(Tile.SMELTER), gamePanel, this, itemManager, viewport);
 				break;
 			case Tile.CONSTRUCTOR:
-				buildable = new source.buildable.building.Compressor(point.x, point.y, tiles.get(Tile.CONSTRUCTOR), gamePanel, this, itemManager, viewport);
+				buildable = new Constructor(point.x, point.y, tiles.get(Tile.CONSTRUCTOR), gamePanel, this, itemManager, viewport);
 				break;
 			default:
 				buildable = new Conveyor(point.x, point.y, tiles.get(Tile.CONVEYOR), gamePanel, this, viewport);
@@ -155,14 +167,16 @@ public class TileManager {
 		return buildable;
 	}
 
-	public void placeBuildable(Point coordinate, String name, int direction) {
+	public Buildable placeBuildable(Point coordinate, String name, int direction) {
 		if (coordinateToBuildable.containsKey(coordinate))
-			return;
+			return null;
 
 		Buildable buildable = createBuildable(coordinate, name, direction);
 
 		coordinateToBuildable.put(coordinate, buildable);
 		updateCoordinate(coordinate);
+
+		return buildable;
 	}
 
 	public void removeBuildable(Point coordinate) {
