@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_19
+}
+
+group 'dev.prozilla'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClass = 'dev.prozilla.funkyfactory.main.Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.lwjgl:lwjgl:3.2.3"
+    implementation "org.lwjgl:lwjgl-opengl:3.2.3"
+    implementation "org.lwjgl:lwjgl-glfw:3.2.3"
+    runtimeOnly "org.lwjgl:lwjgl:3.2.3:natives-windows"
+    runtimeOnly "org.lwjgl:lwjgl-opengl:3.2.3:natives-windows"
+    runtimeOnly "org.lwjgl:lwjgl-glfw:3.2.3:natives-windows"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
